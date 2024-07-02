@@ -20,9 +20,21 @@ include { NUMOPRH_STITCHING } from '../modules/local/numorph/stitching/main'
 */
 
 workflow NUMORPH_PREPROCESSING {
+
     take:
+    input_dir
+    output_dir
+    parameter_file
+    sample_name
+    stage
 
     main:
+    versions = Channel.empty()
+
+    NUMORPH_INTENSITYADJUSTMENT(input_dir, output_dir, parameter_file, sample_name, stage) 
+
+    
+    emit:
     
 
    

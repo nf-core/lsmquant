@@ -19,13 +19,8 @@
 
 ## Introduction
 
-**nf-core/lsmquant** is a bioinformatics pipeline that ...
+**nf-core/lsmquant** is a bioinformatics pipeline that performs preprocessing and analysis of light-sheet microscopy images of tissue cleard samples. The pipeline takes 2D single-channel 16-bit `.tif` images as input. The preprocessing consists of intesity adjustment, channel alignemnt, and tile stitching to reconstruct the 3D image. For mousebrain samples it offers a regsitration to the Allen Mouse Brain Reference Atlas for precise region annotation. Analysis of images can include call quantification via segmentation by a 3D-Unet and celltype classification by SVMs.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
 
 <!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
      workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
@@ -33,6 +28,28 @@
 
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+## Pipeline Summary
+
+The pipeline consits of three major stages, the `preprocessing`stage, the `registration`stage, and the `analysis` stage. 
+
+### Preprocessing
+
+For raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope preprocessing can be performed to recostruct the 3D image in nifti (`.nii`) format for further analysis. The complete `preprocessing` workflow performs: 
+
+- intensity adjustemnt of the images 
+- image channel alignemnt for at least two different channels
+- image tile stitching to recustruct the full image for each channel and z-slice
+
+### Registration
+
+Currently only available for whole mouse brain samples, recostructed images in `.nii`format can be registerd to the Allen Reference Atlas (ARA) for functional brain region annotation. The workflow performs:
+- downsampling of the high resolution `.nii`images
+- registration to the ARA
+
+### Analysis 
+
+
+
 
 ## Usage
 
@@ -81,6 +98,17 @@ For more details about the output files and reports, please refer to the
 ## Credits
 
 nf-core/lsmquant was originally written by Carolin Schwitalla.
+
+The pipeline is mainly based on the NuMorph (Nuclear-Based Morphometry) toolbox developed by Krupa et al., 2021.
+
+>**NuMorph: Tools for cortical cellular phenotyping in tissue-cleared whole-brain images**
+>
+>Krupa O, Fragola G, Hadden-Ford E, Mory JT, Liu T, Humphrey Z, Rees BW, Krishnamurthy A, Snider WD, Zylka MJ, Wu G, Xing L, Stein JL.
+>
+>Cell Rep. 2021 Oct 12, doi: [10.1016/j.celrep.2021.109802](https://doi.org/10.1016%2Fj.celrep.2021.109802)
+
+
+
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 

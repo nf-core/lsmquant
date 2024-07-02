@@ -23,14 +23,24 @@ input:
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-  
   ## TODO nf-core: Delete / customise this example input
+  - input:
+      type: val
+      description: directory containing the input images
+  - output:
+      type: val
+      description: directory where the all output will be saved
   - parameterfile:
-      type: file
+      type: val
       description: csv file containg all parameters that numorph needs to run
+      pattern: "*.csv"  
   - sample:
-      type: string
+      type: val
       description: sample name
+  - stage:
+      type: val
+      description: stage of the pipeline
+
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:

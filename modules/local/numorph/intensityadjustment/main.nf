@@ -15,20 +15,6 @@
 // TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
 //               list (`[]`) instead of a file can be used to work around this issue.
 
-// read the main csv file containing sample ids and paths to corresponding parameter csv files
-def samples = Channel
-    .fromPath(params.metaFile)
-    .splitCsv(header: true)
-    .map { row -> 
-        def meta = [id: row.sample_id, param_file: row.param_file, img_directory: row.img_directory]
-        return [meta]
-    }
-
-
-
-
-
-
 
 process NUMORPH_INTENSITYADJUSTMENT {
     tag "$meta.sample" // TODO caro: Set the process tag to the sample name
@@ -38,7 +24,7 @@ process NUMORPH_INTENSITYADJUSTMENT {
     //               Software MUST be pinned to channel (i.e. "bioconda"), version (i.e. "1.10").
     //               For Conda, the build (i.e. "h9402c20_2") must be EXCLUDED to support installation on different operating systems.
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "${moduleDir}/environment.yml"
+    //conda "${moduleDir}/environment.yml"
     container "numorph_preprocessing_module:latest"
 
     input:
@@ -48,7 +34,9 @@ process NUMORPH_INTENSITYADJUSTMENT {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(meta.input_dir), path(meta.output_dir), path(meta.param_file)
+    tuple val(meta), 
+    val(input_dir) val(output_dir), val(parameter_file), val(sample_name), val(stage)
+
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
@@ -72,7 +60,7 @@ process NUMORPH_INTENSITYADJUSTMENT {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    stage = intensity
+    stage = 'intensity'
 
     
     ./numorph_preprocessing_module \\
@@ -80,7 +68,7 @@ process NUMORPH_INTENSITYADJUSTMENT {
         'output_dir' '${meta.output_dir}' \\
         'parameter_file' '${meta.param_file}' \\
         'sample_name' '${meta.sample_name}' \\
-        \${stage} \\
+        'stage' ${stage} \\
         
 
     cat <<-END_VERSIONS > versions.yml
