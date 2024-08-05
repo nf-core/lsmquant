@@ -80,6 +80,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input
     //
+    /*
     Channel
         .fromSamplesheet("input")
         .map {
@@ -99,9 +100,9 @@ workflow PIPELINE_INITIALISATION {
                 return [ meta, fastqs.flatten() ]
         }
         .set { ch_samplesheet }
-
+*/
     emit:
-    samplesheet = ch_samplesheet
+    //samplesheet = ch_samplesheet
     versions    = ch_versions
 }
 
@@ -120,7 +121,7 @@ workflow PIPELINE_COMPLETION {
     outdir          //    path: Path to output directory where results will be published
     monochrome_logs // boolean: Disable ANSI colour codes in log output
     hook_url        //  string: hook URL for notifications
-    multiqc_report  //  string: Path to MultiQC report
+    //outdir  //  string: Path to results dir
 
     main:
 
@@ -131,7 +132,7 @@ workflow PIPELINE_COMPLETION {
     //
     workflow.onComplete {
         if (email || email_on_fail) {
-            completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs, multiqc_report.toList())
+            completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs)
         }
 
         completionSummary(monochrome_logs)

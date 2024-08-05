@@ -17,22 +17,24 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { LSMQUANT  } from './workflows/lsmquant'
+//include { NUMORPH_PREPROCESSING } from './subworkflows/local/numorph_preprocessing'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
-
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
+include { NUMORPH_INTENSITYADJUSTMENT   } from './modules/local/numorph/intensityadjustment'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
+    Channels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
-params.fasta = getGenomeAttribute('fasta')
+ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
+ch_output_dir = Channel.fromPath(params.outdir, type: 'dir')
+ch_parameter_file = Channel.fromPath(params.parameter_file )
+ch_sample_name = Channel.value(params.sample_name)
+ch_stage = Channel.value(params.stage)
+
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,19 +48,22 @@ params.fasta = getGenomeAttribute('fasta')
 workflow NFCORE_LSMQUANT {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    ch_input_dir
+    ch_output_dir
+    ch_parameter_file
+    ch_sample_name
+    ch_stage
 
     main:
-
-    //
-    // WORKFLOW: Run pipeline
-    //
-    LSMQUANT (
-        samplesheet
-    )
+    NUMORPH_INTENSITYADJUSTMENT(
+        ch_input_dir, 
+        ch_output_dir, 
+        ch_parameter_file, 
+        ch_sample_name, 
+        ch_stage)
 
     emit:
-    multiqc_report = LSMQUANT.out.multiqc_report // channel: /path/to/multiqc_report.html
+    NUMORPH_INTENSITYADJUSTMENT.out
 
 }
 /*
@@ -88,7 +93,11 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_LSMQUANT (
-        PIPELINE_INITIALISATION.out.samplesheet
+        ch_input_dir,
+        ch_output_dir,
+        ch_parameter_file,
+        ch_sample_name,
+        ch_stage
     )
 
     //
@@ -101,7 +110,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        NFCORE_LSMQUANT.out.multiqc_report
+       
     )
 }
 

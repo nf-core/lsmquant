@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl=2
 
-// define parameters 
+//define parameters 
 params.input_dir = 'input'
 params.output_dir = 'output'
 params.parameter_file = 'parameters.txt'
@@ -10,37 +10,39 @@ params.sample_name = 'sample'
 params.stage = 'intensity'
 
 // define channels
-input = Channel.of(params.input_dir)
-output = Channel.of(params.output_dir)
-parameters = Channel.of(params.parameter_file)
-sample_name = Channel.of(params.sample_name)
-stage = Channel.of(params.stage)
+input_dir = Channel.fromPath(params.input_dir, type: 'dir', checkIfExists: true)
+output_dir = Channel.fromPath(params.output_dir, type: 'dir')
+parameter_file = Channel.fromPath(params.parameter_file, )
+sample_name = Channel.value(params.sample_name)
+stage = Channel.value(params.stage)
 
 process INTENSITY {
 
     container 'numorph_preprocessing_module:latest'
 
     input:
-    val input
-    val output
-    val parameters
-    val sample_name
-    val stage   
+    path(input_dir)
+    path(output_dir)
+    path(parameter_file)
+    val(sample_name)
+    val(stage)
 
     output:
     path 'results_*'
 
     script:
     """
-    numorph_preprocessing_module 'input_dir' ${input} 'output_dir' ${output} 'parameter_file' ${parameters} 'sample_name' ${sample_name} 'stage' ${stage}
+    pwd > pwd.txt
+    ls  > ls.txt
+    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/${input_dir} 'output_dir' ${output_dir} 'parameter_file' ${parameter_file} 'sample_name' ${sample_name} 'stage' ${stage}
     """
 }
 
 workflow {
-    input.view()
-    output.view()
-    parameters.view()
+    input_dir.view()
+    output_dir.view()
+    parameter_file.view()
     sample_name.view()
     stage.view()
-    INTENSITY(input, output, parameters, sample_name, stage)
+    INTENSITY(input_dir, output_dir, parameter_file, sample_name, stage)
 }

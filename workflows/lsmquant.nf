@@ -3,7 +3,7 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
+include { NUMORPH_PREPROCESSING           } from '../subworkflows/local/numorph_preprocessing/main'
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
@@ -17,19 +17,35 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmq
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
+ch_output_dir = Channel.fromPath(params.outdir, type: 'dir')
+ch_parameter_file = Channel.fromPath(params.parameter_file)
+ch_sample_name = Channel.value(params.sample_name)
+ch_stage = Channel.value(params.stage)
+
+
 workflow LSMQUANT {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
+    ch_input_dir
+    ch_output_dir
+    ch_parameter_file
+    ch_sample_name
+    ch_stage
 
     main:
+
+    NUMORPH_PREPROCESSING(ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+
 
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
+
     //
     // MODULE: Run FastQC
     //
+    /*
     FASTQC (
         ch_samplesheet
     )
@@ -89,6 +105,7 @@ workflow LSMQUANT {
     emit:
     multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
+    */
 }
 
 /*

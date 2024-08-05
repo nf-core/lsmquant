@@ -17,7 +17,7 @@
 
 
 process NUMORPH_INTENSITYADJUSTMENT {
-    tag "$meta.sample" // TODO caro: Set the process tag to the sample name
+    tag "$sample_name" // TODO caro: Set the process tag to the sample name
     label 'process_single'
 
     // TODO nf-core: List required Conda package(s).
@@ -34,21 +34,25 @@ process NUMORPH_INTENSITYADJUSTMENT {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), 
-    val(input_dir) val(output_dir), val(parameter_file), val(sample_name), val(stage)
+    
+    path(input)
+    path(outdir)
+    path(parameter_file)
+    val(sample_name)
+    val(stage)
 
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta)
-    path("${meta.output_dir}/*")
+    path(outdir)
+    //path("${meta.output_dir}/*")
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${sample_name}"
     
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
@@ -60,15 +64,7 @@ process NUMORPH_INTENSITYADJUSTMENT {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    stage = 'intensity'
-
-    
-    ./numorph_preprocessing_module \\
-        'input_dir' '${meta.input_dir}' \\
-        'output_dir' '${meta.output_dir}' \\
-        'parameter_file' '${meta.param_file}' \\
-        'sample_name' '${meta.sample_name}' \\
-        'stage' ${stage} \\
+    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'intensity'
         
 
     cat <<-END_VERSIONS > versions.yml
@@ -79,7 +75,7 @@ process NUMORPH_INTENSITYADJUSTMENT {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${$sample_name}"
     // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
     //               Have a look at the following examples:
     //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
