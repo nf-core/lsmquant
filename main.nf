@@ -18,10 +18,10 @@ nextflow.enable.dsl = 2
 */
 
 //include { NUMORPH_PREPROCESSING } from './subworkflows/local/numorph_preprocessing'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
+include { PIPELINE_INITIALISATION       } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
+include { PIPELINE_COMPLETION           } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
 include { NUMORPH_INTENSITYADJUSTMENT   } from './modules/local/numorph/intensityadjustment'
-
+include { LSMQUANT                      } from './workflows/lsmquant'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Channels
@@ -55,15 +55,17 @@ workflow NFCORE_LSMQUANT {
     ch_stage
 
     main:
-    NUMORPH_INTENSITYADJUSTMENT(
-        ch_input_dir, 
-        ch_output_dir, 
-        ch_parameter_file, 
-        ch_sample_name, 
-        ch_stage)
+    LSMQUANT(ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    
+    def lsmquant_output = LSMQUANT.out
 
     emit:
-    NUMORPH_INTENSITYADJUSTMENT.out
+    png             = lsmquant_output.png
+    tif             = lsmquant_output.tif
+    json            = lsmquant_output.json
+    mat             = lsmquant_output.mat
+    versions        = lsmquant_output.versions 
+    
 
 }
 /*
