@@ -41,13 +41,15 @@ process NUMORPHSTITCH {
     path "variables/*.mat"                      , emit: mat
     path "versions.yml"                         , emit: versions
 
+    errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
+
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${sample_name}"
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf

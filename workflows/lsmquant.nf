@@ -64,6 +64,7 @@ workflow LSMQUANT {
     // TODO caro: stage needs to be set to align in this step
     //NUMORPHALIGN (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
     
+    //def align_output = NUMORPHALIGN.out
 
     //
     // MODULE: Run NumorphStitch
@@ -135,10 +136,19 @@ workflow LSMQUANT {
     )
     */
     emit:
-    png             = intensity_output.png
-    tif             = intensity_output.tif
-    json            = intensity_output.json
-    mat             = intensity_output.mat
+    intensity_png             = intensity_output.png
+    intensity_tif             = intensity_output.tif
+    intensity_json            = intensity_output.json
+    intensity_mat             = intensity_output.mat
+    //align_tif                 = align_output.align_tif
+    //align_json                = align_output.json
+    //align_mat                 = align_output.mat
+    //align_int_png             = align_output.intensity_png
+    //align_int_tif             = align_output.intensity_tif
+
+
+
+
     versions        = ch_versions              // channel: [ path(versions.yml) ]
 
     

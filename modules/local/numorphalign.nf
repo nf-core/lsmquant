@@ -34,12 +34,14 @@ process NUMORPHALIGN {
     val(stage)
 
     output:
-    path "samples/intensity_adjustment/*.png"   , emit: png
-    path "samples/intensity_adjustment/*.tif"   , emit: tif
-    path "samples/alignment/*.tif"              , emit: tif
+    path "samples/intensity_adjustment/*.png"   , emit: intensity_png
+    path "samples/intensity_adjustment/*.tif"   , emit: intensity_tif
+    path "samples/alignment/*.tif"              , emit: align_tif
     path "variables/*.json"                     , emit: json
     path "variables/*.mat"                      , emit: mat
     path "versions.yml"                         , emit: versions
+
+    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
 
 
     when:
@@ -47,7 +49,7 @@ process NUMORPHALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${sample_name}"
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -58,18 +60,14 @@ process NUMORPHALIGN {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
-
+    echo $PWD
+    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'align'
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        numorphalign: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
+        numorph: 1.0
+    END_VERSIONS    
+
     """
 
     stub:

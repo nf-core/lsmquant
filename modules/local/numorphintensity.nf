@@ -41,6 +41,8 @@ process NUMORPHINTENSITY {
     path "variables/*.mat"                      , emit: mat
     path "versions.yml"                         , emit: versions
 
+    errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -57,13 +59,13 @@ process NUMORPHINTENSITY {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
+    
+    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'intensity'
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         numorph: 1.0
-    END_VERSIONS
-    
-    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'intensity'
-        
+    END_VERSIONS    
 
     """
 
