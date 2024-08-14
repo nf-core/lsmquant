@@ -20,7 +20,6 @@ nextflow.enable.dsl = 2
 //include { NUMORPH_PREPROCESSING } from './subworkflows/local/numorph_preprocessing'
 include { PIPELINE_INITIALISATION       } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
 include { PIPELINE_COMPLETION           } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
-include { NUMORPH_INTENSITYADJUSTMENT   } from './modules/local/numorph/intensityadjustment'
 include { LSMQUANT                      } from './workflows/lsmquant'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
