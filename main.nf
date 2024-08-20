@@ -59,16 +59,16 @@ workflow NFCORE_LSMQUANT {
     def lsmquant_output = LSMQUANT.out
 
     emit:
-    versions        = lsmquant_output.versions
+    versions                  = lsmquant_output.versions
     intensity_png             = lsmquant_output.intensity_png
     intensity_tif             = lsmquant_output.intensity_tif
     intensity_json            = lsmquant_output.intensity_json
     intensity_mat             = lsmquant_output.intensity_mat
-    //align_tif                 = lsmquant_output.align_tif
-    //align_json                = lsmquant_output.align_json
-    //align_mat                 = lsmquant_output.align_mat
-    //align_int_png             = lsmquant_output.align_int_png
-    //align_int_tif             = lsmquant_output.align_int_tif 
+    align_tif                 = lsmquant_output.align_tif
+    align_json                = lsmquant_output.align_json
+    align_mat                 = lsmquant_output.align_mat
+    align_int_png             = lsmquant_output.align_int_png
+    align_int_tif             = lsmquant_output.align_int_tif 
     
 
 }
