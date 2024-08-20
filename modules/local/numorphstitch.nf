@@ -34,14 +34,14 @@ process NUMORPHSTITCH {
     val(stage)
 
     output:
-    path "samples/intensity_adjustment/*.png"   , emit: png
-    path "samples/intensity_adjustment/*.tif"   , emit: tif
-    path "stitched/*.tif"                       , emit: tif
+    path "samples/intensity_adjustment/*.png"   , emit: intensity_png
+    path "samples/intensity_adjustment/*.tif"   , emit: intensity_tif
+    path "stitched/*.tif"                       , emit: stitch_tif
     path "variables/*.json"                     , emit: json
     path "variables/*.mat"                      , emit: mat
     path "versions.yml"                         , emit: versions
 
-    errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
+    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
 
 
     when:
@@ -60,17 +60,12 @@ process NUMORPHSTITCH {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
+    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'stitch'
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        numorphstitch: \$(samtools --version |& sed '1!d ; s/samtools //')
+        numorph: 1.0
     END_VERSIONS
     """
 

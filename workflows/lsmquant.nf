@@ -70,7 +70,10 @@ workflow LSMQUANT {
     // MODULE: Run NumorphStitch
     //
     // TODO caro: stage needs to be set to stitch in this step
-    //NUMORPHSTITCH (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    NUMORPHSTITCH (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+
+    def stitch_output = NUMORPHSTITCH.out
+
 
 
     //
@@ -145,8 +148,11 @@ workflow LSMQUANT {
     align_mat                 = align_output.mat
     align_int_png             = align_output.intensity_png
     align_int_tif             = align_output.intensity_tif
-
-
+    stitch_tif                = stitch_output.stitch_tif
+    stitch_json               = stitch_output.json
+    stitch_mat                = stitch_output.mat
+    stitch_int_png            = stitch_output.intensity_png
+    stitch_int_tif            = stitch_output.intensity_tif
 
 
     versions        = ch_versions              // channel: [ path(versions.yml) ]

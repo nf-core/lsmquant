@@ -68,9 +68,14 @@ workflow NFCORE_LSMQUANT {
     align_json                = lsmquant_output.align_json
     align_mat                 = lsmquant_output.align_mat
     align_int_png             = lsmquant_output.align_int_png
-    align_int_tif             = lsmquant_output.align_int_tif 
-    
+    align_int_tif             = lsmquant_output.align_int_tif
+    stitch_tif                = lsmquant_output.stitch_tif
+    stitch_json               = lsmquant_output.stitch_json
+    stitch_mat                = lsmquant_output.stitch_mat
+    stitch_int_png            = lsmquant_output.stitch_int_png
+    stitch_int_tif            = lsmquant_output.stitch_int_tif
 
+    
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

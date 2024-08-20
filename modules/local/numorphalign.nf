@@ -41,7 +41,7 @@ process NUMORPHALIGN {
     path "variables/*.mat"                      , emit: mat
     path "versions.yml"                         , emit: versions
 
-    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
+    errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
 
 
     when:
