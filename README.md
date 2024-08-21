@@ -26,8 +26,12 @@
      workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
 <!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
 
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+1. Intensity Adjustment
+2. Channel Alignment
+3. Iterative Stitching
+4. Resampling 
+5. Allen Referece Atlas Registration
+
 ## Pipeline Summary
 
 The pipeline consits of three major stages, the `preprocessing`stage, the `registration`stage, and the `analysis` stage. 
@@ -48,6 +52,11 @@ Currently only available for whole mouse brain samples, recostructed images in `
 
 ### Analysis 
 
+Analysis will include semantic segmentation of cell nuclei via 3D-Unet
+
+Work in progress..
+
+
 
 
 
@@ -56,21 +65,20 @@ Currently only available for whole mouse brain samples, recostructed images in `
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
 
-First, prepare a samplesheet with your input data that looks as follows:
+To run the pipeline you need to provide a parameter sheet (.csv file) that needs to have this specific structure: 
+Please get the basic tempalte file here ( include maybe link to template csv which can be found in the repo ?)
+ `parametersheet.csv`
 
-`samplesheet.csv`:
+Please specify which step you want to run with `--stage`. The following are valide options: 
 
-```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-```
+- 'intensity'
+- 'align'
+- 'stitch'
+- 'resample'
+- 'register'
+- 'process'
 
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
-
--->
 
 Now, you can run the pipeline using:
 
@@ -79,8 +87,11 @@ Now, you can run the pipeline using:
 ```bash
 nextflow run nf-core/lsmquant \
    -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
-   --outdir <OUTDIR>
+   --input <path/to/image/folder> \
+   --outdir <OUTDIR> \
+   --parameter_file <filepath> \
+   --sample_name <samplename> \
+   --stage <stage> 
 ```
 
 > [!WARNING]

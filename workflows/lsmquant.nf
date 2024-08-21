@@ -6,8 +6,10 @@
 include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
 include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
-include { FASTQC                 } from '../modules/nf-core/fastqc/main'
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample'
+include { NUMORPHREGISTER        } from '../modules/local/numorphregister'
+//include { FASTQC                 } from '../modules/nf-core/fastqc/main'
+//include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -45,7 +47,6 @@ workflow LSMQUANT {
     ch_stage = Channel.value(params.stage)
 
 
-
     //
     // MODULE: Run NumorphIntensity
     //
@@ -54,14 +55,9 @@ workflow LSMQUANT {
     def intensity_output = NUMORPHINTENSITY.out
 
 
-    // TODO caro: get output from intensity and pass to align
-
-
-
     //
     // MODULE: Run NumorphAlign
     //
-    // TODO caro: stage needs to be set to align in this step
     NUMORPHALIGN (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
     
     def align_output = NUMORPHALIGN.out
@@ -69,11 +65,25 @@ workflow LSMQUANT {
     //
     // MODULE: Run NumorphStitch
     //
-    // TODO caro: stage needs to be set to stitch in this step
     NUMORPHSTITCH (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
 
     def stitch_output = NUMORPHSTITCH.out
 
+
+    //
+    // MODULE: Run NumorphResample
+    //
+    NUMORPHRESAMPLE (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+   
+    def resample_output = NUMORPHRESAMPLE.out
+
+
+    //
+    // MODULE: Run NumorphRegister
+    //
+    NUMORPHREGISTER (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+
+    def register_output = NUMORPHREGISTER.out
 
 
     //
