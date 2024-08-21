@@ -74,6 +74,13 @@ workflow NFCORE_LSMQUANT {
     stitch_mat                = lsmquant_output.stitch_mat
     stitch_int_png            = lsmquant_output.stitch_int_png
     stitch_int_tif            = lsmquant_output.stitch_int_tif
+    resample_nii             = lsmquant_output.resample_nii
+    resample_int_png          = lsmquant_output.resample_int_png
+    resample_int_tif          = lsmquant_output.resample_int_tif
+    resample_json             = lsmquant_output.resample_json
+    resample_mat              = lsmquant_output.resample_mat
+    resample_stitch_tif       = lsmquant_output.resample_stitch_tif
+
 
     
 }

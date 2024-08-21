@@ -24,7 +24,7 @@
 
 
 <div style="text-align: center;">
-<img src="docs/images/metromap-lsmquant.png" alt="lasmquant metromap">
+<img src="docs/images/lsmquant-metromap.png" alt="lasmquant metromap">
 </div>
 
 

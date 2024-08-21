@@ -80,10 +80,10 @@ workflow LSMQUANT {
 
     //
     // MODULE: Run NumorphRegister
-    //
-    NUMORPHREGISTER (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    // not ready yet
+    //NUMORPHREGISTER (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
 
-    def register_output = NUMORPHREGISTER.out
+    //def register_output = NUMORPHREGISTER.out
 
 
     //
@@ -163,6 +163,13 @@ workflow LSMQUANT {
     stitch_mat                = stitch_output.mat
     stitch_int_png            = stitch_output.intensity_png
     stitch_int_tif            = stitch_output.intensity_tif
+    resample_int_png          = resample_output.intensity_png
+    resample_int_tif          = resample_output.intensity_tif
+    resample_stitch_tif       = resample_output.stitch_tif
+    resample_json             = resample_output.json
+    resample_mat              = resample_output.mat
+    resample_nii              = resample_output.resampled_nii
+    
 
 
     versions        = ch_versions              // channel: [ path(versions.yml) ]

@@ -46,7 +46,7 @@ process NUMORPHRESAMPLE {
     
     
 
-        //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
+    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
 
 
     when:
@@ -54,7 +54,7 @@ process NUMORPHRESAMPLE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${sample_name}"
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -65,18 +65,12 @@ process NUMORPHRESAMPLE {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    samtools \\
-        sort \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        -T $prefix \\
-        $bam
-
+    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'resample'
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        numorphresample: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
+        numorph: 1.0
+    END_VERSIONS 
     """
 
     stub:
