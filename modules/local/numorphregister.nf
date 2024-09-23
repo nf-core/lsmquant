@@ -33,14 +33,20 @@ process NUMORPHREGISTER {
     val(stage)
 
     output:
-    path "samples/intensity_adjustment/*.png"   , emit: intensity_png
-    path "samples/intensity_adjustment/*.tif"   , emit: intensity_tif
-    path "stitched/*.tif"                       , emit: stitch_tif
-    path "variables/*.json"                     , emit: json
-    path "variables/*.mat"                      , emit: mat
-    path "resampled/*.nii"                      , emit: resampled_nii
-    path "registered/*.nii"                     , emit: registered_nii
-    path "versions.yml"                         , emit: versions
+    path "${outdir}/samples/intensity_adjustment/*.png"   , emit: intensity_png
+    path "${outdir}/samples/intensity_adjustment/*.tif"   , emit: intensity_tif
+    path "${outdir}/stitched/*.tif"                       , emit: stitch_tif
+    path "${outdir}/variables/*.json"                     , emit: json
+    path "${outdir}/variables/*.mat"                      , emit: mat
+    path "${outdir}/resampled/*.nii"                      , emit: resampled_nii
+    path "${outdir}/registered/*.nii"                     , emit: registered_nii
+    path "versions.yml"                                   , emit: versions
+    path input                                            , emit: input 
+    path outdir                                           , emit: outdir
+    path parameter_file                                   , emit: parameter_file
+    val sample_name                                       , emit: sample_name
+
+
 
             //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
 

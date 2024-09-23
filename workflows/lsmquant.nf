@@ -6,8 +6,8 @@
 include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
 include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
-include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample'
-include { NUMORPHREGISTER        } from '../modules/local/numorphregister'
+//include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample'
+//include { NUMORPHREGISTER        } from '../modules/local/numorphregister'
 //include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 //include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
@@ -29,43 +29,62 @@ workflow LSMQUANT {
 
     take:
     ch_input_dir        // Channel: /path/to/input directory
-    ch_output_dir       // Channel: /path/to/output directory
+    //ch_output_dir       // Channel: /path/to/output directory dont need this 
     ch_parameter_file   // Channel: /path/to/parameter file
     ch_sample_name      // Channel: sample name
-    ch_stage            // Channel: stage
+    //ch_stage            // Channel: stage
 
     main:
 
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
+    
 
     // create channels from params
-    ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
-    ch_output_dir = Channel.fromPath(params.outdir, type: 'dir')
-    ch_parameter_file = Channel.fromPath(params.parameter_file)
-    ch_sample_name = Channel.value(params.sample_name)
-    ch_stage = Channel.value(params.stage)
+    //ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
+    //ch_output_dir = Channel.fromPath(params.outdir, type: 'dir')
+    //ch_parameter_file = Channel.fromPath(params.parameter_file)
+    //ch_sample_name = Channel.value(params.sample_name)
+    //ch_stage = Channel.value(params.stage)
 
+    //println "Workflow work directory: ${ch_output_dir}"
+    
 
     //
     // MODULE: Run NumorphIntensity
     //
-    NUMORPHINTENSITY(ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    NUMORPHINTENSITY(ch_input_dir, ch_parameter_file, ch_sample_name)
 
     def intensity_output = NUMORPHINTENSITY.out
+    //ch_versions = ch_versions.mix(intensity_output.versions)
+   
+    // combine the output of intensity module
+    //ch_int_combined = intensity_output.int_out_samples.mix(intensity_output.int_out_variables).mix(intensity_output.int_NM_variables)
+
+    intensity_output.int_out_variables.view()
+    intensity_output.int_output_samples.view()
+    intensity_output.int_NM_variables.view()
+
+
+
 
 
     //
     // MODULE: Run NumorphAlign
     //
-    NUMORPHALIGN (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
-    
+    // quick and dirfty solution 
+    NUMORPHALIGN (ch_input_dir, intensity_output.int_output_samples,intensity_output.int_out_variables, intensity_output.int_NM_variables,ch_parameter_file, ch_sample_name)
+
+    // 
     def align_output = NUMORPHALIGN.out
+    // combine the output of align module
+    //ch_align_combined = align_output.align_out_samples.mix(align_output.align_out_variables).mix(align_output.align_NM_variables)
 
     //
     // MODULE: Run NumorphStitch
     //
-    NUMORPHSTITCH (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    // quick and dirfty solution 
+    NUMORPHSTITCH (ch_input_dir, align_output.align_output_samples,align_output.align_output_variables,align_output.align_NM_variables , ch_parameter_file, ch_sample_name)
 
     def stitch_output = NUMORPHSTITCH.out
 
@@ -73,9 +92,9 @@ workflow LSMQUANT {
     //
     // MODULE: Run NumorphResample
     //
-    NUMORPHRESAMPLE (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    //NUMORPHRESAMPLE (stitch_output.input, stitch_output.outdir, stitch_output.parameter_file, stitch_output.sample_name, Channel.value("resample"))
    
-    def resample_output = NUMORPHRESAMPLE.out
+    //def resample_output = NUMORPHRESAMPLE.out
 
 
     //
@@ -86,17 +105,7 @@ workflow LSMQUANT {
     //def register_output = NUMORPHREGISTER.out
 
 
-    //
-    // MODULE: Run FastQC
-    //
-    /*
-    FASTQC (
-        ch_samplesheet
-    )
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]})
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
-    */
-    ch_versions = ch_versions.mix(intensity_output.versions)
+    
     //
     // Collate and save software versions
     //
@@ -108,67 +117,39 @@ workflow LSMQUANT {
             newLine: true
         ).set { ch_collated_versions }
 
-    /*
-    //
-    // MODULE: MultiQC
-    //
-    ch_multiqc_config        = Channel.fromPath(
-        "$projectDir/assets/multiqc_config.yml", checkIfExists: true)
-    ch_multiqc_custom_config = params.multiqc_config ?
-        Channel.fromPath(params.multiqc_config, checkIfExists: true) :
-        Channel.empty()
-    ch_multiqc_logo          = params.multiqc_logo ?
-        Channel.fromPath(params.multiqc_logo, checkIfExists: true) :
-        Channel.empty()
-
-    summary_params      = paramsSummaryMap(
-        workflow, parameters_schema: "nextflow_schema.json")
-    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(summary_params))
-
-    ch_multiqc_custom_methods_description = params.multiqc_methods_description ?
-        file(params.multiqc_methods_description, checkIfExists: true) :
-        file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
-    ch_methods_description                = Channel.value(
-        methodsDescriptionText(ch_multiqc_custom_methods_description))
-
-    ch_multiqc_files = ch_multiqc_files.mix(
-        ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
-    ch_multiqc_files = ch_multiqc_files.mix(
-        ch_methods_description.collectFile(
-            name: 'methods_description_mqc.yaml',
-            sort: true
-        )
-    )
-
-    MULTIQC (
-        ch_multiqc_files.collect(),
-        ch_multiqc_config.toList(),
-        ch_multiqc_custom_config.toList(),
-        ch_multiqc_logo.toList()
-    )
-    */
+    
     emit:
-    intensity_png             = intensity_output.png
-    intensity_tif             = intensity_output.tif
-    intensity_json            = intensity_output.json
-    intensity_mat             = intensity_output.mat
-    align_tif                 = align_output.align_tif
-    align_json                = align_output.json
-    align_mat                 = align_output.mat
-    align_int_png             = align_output.intensity_png
-    align_int_tif             = align_output.intensity_tif
-    stitch_tif                = stitch_output.stitch_tif
-    stitch_json               = stitch_output.json
-    stitch_mat                = stitch_output.mat
-    stitch_int_png            = stitch_output.intensity_png
-    stitch_int_tif            = stitch_output.intensity_tif
-    resample_int_png          = resample_output.intensity_png
-    resample_int_tif          = resample_output.intensity_tif
-    resample_stitch_tif       = resample_output.stitch_tif
-    resample_json             = resample_output.json
-    resample_mat              = resample_output.mat
-    resample_nii              = resample_output.resampled_nii
+    //int_output                      = intensity_output.
+    //int_samples                      = intensity_output.int_output_samples
+    //int_variables                    = intensity_output.int_out_variables
+    //int_NM_variables                 = intensity_output.int_NM_variables
+    out_samples              = stitch_output.stitch_output_samples
+    out_variables            = stitch_output.stitch_output_variables
+    NM_variables             = stitch_output.stitch_NM_variables
+    out_stitched             = stitch_output.stitch_output_stitched
+
+    //output                     = stitch_output.output
+
+    //intensity_png             = intensity_output.png
+    //intensity_tif             = intensity_output.tif
+    //intensity_json            = intensity_output.json
+    //intensity_mat             = intensity_output.mat
+    //align_tif                 = align_output.align_tif
+    //align_json                = align_output.json
+    //align_mat                 = align_output.mat
+    //align_int_png             = align_output.intensity_png
+    //align_int_tif             = align_output.intensity_tif
+    //stitch_tif                = stitch_output.stitch_tif
+    //stitch_json               = stitch_output.json
+    //stitch_mat                = stitch_output.mat
+    //stitch_int_png            = stitch_output.intensity_png
+    //stitch_int_tif            = stitch_output.intensity_tif
+    //resample_int_png          = resample_output.intensity_png
+    //resample_int_tif          = resample_output.intensity_tif
+    //resample_stitch_tif       = resample_output.stitch_tif
+    //resample_json             = resample_output.json
+    //resample_mat              = resample_output.mat
+    //resample_nii              = resample_output.resampled_nii
     
 
 

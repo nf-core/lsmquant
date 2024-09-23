@@ -16,7 +16,7 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process NUMORPHALIGN {
-    tag "$sample_name"
+    tag "$ch_sample_name"
     label 'process_single'
 
     container "numorph_preprocessing_module:latest"
@@ -27,21 +27,36 @@ process NUMORPHALIGN {
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     
-    path(input)
-    path(outdir)
-    path(parameter_file)
-    val(sample_name)
-    val(stage)
+    path ch_input_dir
+    path int_samples
+    path int_variables
+    path NM_variables
+    //path results_dir
+    path ch_parameter_file
+    val ch_sample_name
+    //val ch_stage
 
     output:
-    path "samples/intensity_adjustment/*.png"   , emit: intensity_png
-    path "samples/intensity_adjustment/*.tif"   , emit: intensity_tif
-    path "samples/alignment/*.tif"              , emit: align_tif
-    path "variables/*.json"                     , emit: json
-    path "variables/*.mat"                      , emit: mat
+    path "results/samples/*"                    , emit: align_output_samples
+    path "results/variables/*"                  , emit: align_output_variables
+    path "results/NM_variables.json"            , emit: align_NM_variables
     path "versions.yml"                         , emit: versions
+    //path "samples/*"             , emit: align_out_samples  
+    //path "variables/*"           , emit: align_out_variables
+    //path "NM_variables.json"     , emit: align_NM_variables
+    //path ch_output_dir , emit: output
+    //path "samples/intensity_adjustment/*.png"   , emit: intensity_png
+    //path "samples/intensity_adjustment/*.tif"   , emit: intensity_tif
+    //path "samples/alignment/*.tif"              , emit: align_tif
+    //path "variables/*.json"                     , emit: json
+    //path "variables/*.mat"                      , emit: mat
+    
+    //path input                                            , emit: input 
+    //val outdir                                           , emit: outdir
+    //path parameter_file                                   , emit: parameter_file
+    //val sample_name                                       , emit: sample_name
 
-    errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
+    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
 
 
     when:
@@ -49,7 +64,7 @@ process NUMORPHALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${sample_name}"
+    def prefix = task.ext.prefix ?: "${ch_sample_name}"
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -60,9 +75,23 @@ process NUMORPHALIGN {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    echo $PWD
-    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'align'
+    echo "Task working directory: \$PWD"
     
+    mkdir -p \$PWD/results/samples/
+    mkdir -p \$PWD/results/variables/
+
+    mv $int_samples \$PWD/results/samples
+    mv $int_variables \$PWD/results/variables
+    mv $NM_variables \$PWD/results
+
+    results="\$PWD/results"
+
+
+    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$ch_input_dir 'output_dir' \$results 'parameter_file' $ch_parameter_file 'sample_name' $ch_sample_name 'stage' 'align'
+    
+    echo "my output files"
+    ls -lha \$PWD
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         numorph: 1.0
