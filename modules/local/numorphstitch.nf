@@ -28,35 +28,22 @@ process NUMORPHSTITCH {
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     path ch_input_dir
-    //path ch_output_dir
+    
     path align_samples
     path align_variables
     path NM_variables
     path ch_parameter_file
     val ch_sample_name
-    //val ch_stage
+    
 
     output:
-    //path ch_output_dir , emit: output
-    //path "${outdir}/samples/intensity_adjustment/*.png"   , emit: intensity_png
-    //path "${outdir}/samples/intensity_adjustment/*.tif"   , emit: intensity_tif
-    //path "${outdir}/stitched/*.tif"                       , emit: stitch_tif
-    //path "${outdir}/variables/*.json"                     , emit: json
-    //path "${outdir}/variables/*.mat"   
+      
     path "results/samples/*"                    , emit: stitch_output_samples
     path "results/variables/*"                  , emit: stitch_output_variables
     path "results/NM_variables.json"            , emit: stitch_NM_variables    
     path "results/stitched/*"                   , emit: stitch_output_stitched
     path "versions.yml"                         , emit: versions
-    //path input                                            , emit: input 
-    //path outdir                                           , emit: outdir
-    //path parameter_file                                   , emit: parameter_file
-    //val sample_name                                       , emit: sample_name
-
-
-    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
-
-
+    
     when:
     task.ext.when == null || task.ext.when
 

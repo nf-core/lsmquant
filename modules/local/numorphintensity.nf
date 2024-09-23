@@ -34,31 +34,13 @@ process NUMORPHINTENSITY {
     //val ch_stage
 
     output:
-    //path "results/*"                    , emit: int_output
+    
     path "results/samples/*"            , emit: int_output_samples
     path "results/variables/*"          , emit: int_out_variables
     path "results/NM_variables.json"    , emit: int_NM_variables
     path "versions.yml"                 , emit: versions
     
-    //path "${ch_output_dir.toString()}"            , emit: int_output
-    //path "numorphintensity/*"             , emit: int_output  
-    //path "${ch_output_dir.toString()}/variables/*"           , emit: int_out_variables
-    //path "${ch_output_dir.toString()}/NM_variables.json"     , emit: int_NM_variables
-    //path "samples/intensity_adjustment/*.png"   , emit: png
-    //path "samples/intensity_adjustment/*.tif"   , emit: tif
-    //path "*/samples/intensity_adjustment/*"   , emit:  int_output_samples_intensity
-    //path "variables/*.json"                     , emit: json
-    //path "variables/*.mat"                      , emit: mat
-    //path ch_input_dir                                            , emit: input 
-    //path ch_output_dir                                           , emit: outdir
-    //path ch_parameter_file                                   , emit: parameter_file
-    //val ch_stage                                       , emit: sample_name    
-    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
-    //path "*"              , emit:  int_output
-    
-    
 
-    
 
     when:
     task.ext.when == null || task.ext.when

@@ -31,33 +31,17 @@ process NUMORPHALIGN {
     path int_samples
     path int_variables
     path NM_variables
-    //path results_dir
     path ch_parameter_file
     val ch_sample_name
-    //val ch_stage
+    
 
     output:
     path "results/samples/*"                    , emit: align_output_samples
     path "results/variables/*"                  , emit: align_output_variables
     path "results/NM_variables.json"            , emit: align_NM_variables
     path "versions.yml"                         , emit: versions
-    //path "samples/*"             , emit: align_out_samples  
-    //path "variables/*"           , emit: align_out_variables
-    //path "NM_variables.json"     , emit: align_NM_variables
-    //path ch_output_dir , emit: output
-    //path "samples/intensity_adjustment/*.png"   , emit: intensity_png
-    //path "samples/intensity_adjustment/*.tif"   , emit: intensity_tif
-    //path "samples/alignment/*.tif"              , emit: align_tif
-    //path "variables/*.json"                     , emit: json
-    //path "variables/*.mat"                      , emit: mat
     
-    //path input                                            , emit: input 
-    //val outdir                                           , emit: outdir
-    //path parameter_file                                   , emit: parameter_file
-    //val sample_name                                       , emit: sample_name
-
-    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
-
+    
 
     when:
     task.ext.when == null || task.ext.when
