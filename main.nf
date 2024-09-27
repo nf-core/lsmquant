@@ -49,10 +49,8 @@ workflow NFCORE_LSMQUANT {
 
     take:
     ch_input_dir
-    //ch_output_dir
     ch_parameter_file
     ch_sample_name
-    //ch_stage
 
     main:
     LSMQUANT(ch_input_dir, ch_parameter_file, ch_sample_name)
@@ -65,6 +63,7 @@ workflow NFCORE_LSMQUANT {
     out_variables                  = lsmquant_output.out_variables
     out_NM_variables               = lsmquant_output.NM_variables
     out_stitched                   = lsmquant_output.out_stitched
+    out_resampled                  = lsmquant_output.out_resampled
     
 
 
