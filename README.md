@@ -39,7 +39,7 @@
 
 ## Pipeline Summary
 
-The pipeline consits of three major stages, the `preprocessing`stage, the `registration`stage, and the `analysis` stage. 
+The pipeline consists of three major stages, the `preprocessing`stage, the `registration`stage, and the `analysis` stage. 
 
 ### Preprocessing
 
