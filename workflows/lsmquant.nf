@@ -6,7 +6,7 @@
 include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
 include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
-//include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample'
+include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample'
 //include { NUMORPHREGISTER        } from '../modules/local/numorphregister'
 //include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 //include { MULTIQC                } from '../modules/nf-core/multiqc/main'
@@ -65,9 +65,9 @@ workflow LSMQUANT {
     //
     // MODULE: Run NumorphResample
     //
-    //NUMORPHRESAMPLE (stitch_output.input, stitch_output.outdir, stitch_output.parameter_file, stitch_output.sample_name, Channel.value("resample"))
+    NUMORPHRESAMPLE (ch_input_dir, stitch_output.stitch_output_samples, stitch_output.stitch_output_variables, stitch_output.stitch_output_stitched, stitch_output.stitch_NM_variables, ch_parameter_file, ch_sample_name)
    
-    //def resample_output = NUMORPHRESAMPLE.out
+    def resample_output = NUMORPHRESAMPLE.out
 
 
     //
@@ -92,11 +92,12 @@ workflow LSMQUANT {
 
     
     emit:
-    out_samples              = stitch_output.stitch_output_samples
-    out_variables            = stitch_output.stitch_output_variables
-    NM_variables             = stitch_output.stitch_NM_variables
-    out_stitched             = stitch_output.stitch_output_stitched
-    versions        = ch_versions              // channel: [ path(versions.yml) ]
+    out_samples              = resample_output.resample_output_samples
+    out_variables            = resample_output.resample_output_variables
+    NM_variables             = resample_output.resample_NM_variables
+    out_stitched             = resample_output.resample_output_stitched
+    out_resampled            = resample_output.resample_output_resampled
+    versions                 = ch_versions              // channel: [ path(versions.yml) ]
 
     
 }

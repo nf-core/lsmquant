@@ -28,10 +28,9 @@ process NUMORPHINTENSITY {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     
     path ch_input_dir
-    //path ch_output_dir
     path ch_parameter_file
     val ch_sample_name
-    //val ch_stage
+    
 
     output:
     
