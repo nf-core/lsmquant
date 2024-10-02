@@ -16,7 +16,7 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process NUMORPHREGISTER {
-    tag "$sample_name"
+    tag "$ch_sample_name"
     label 'process_single'
 
     container "numorph_preprocessing_module:latest"
@@ -26,25 +26,23 @@ process NUMORPHREGISTER {
     //               MUST be provided as an input via a Groovy Map called "meta".
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    path(input)
-    path(outdir)
-    path(parameter_file)
-    val(sample_name)
-    val(stage)
+    path ch_input_dir
+    path resample_samples
+    path resample_variables
+    path resample_stitched
+    path resample_resampled
+    path NM_variables
+    path ch_parameter_file
+    val ch_sample_name
 
     output:
-    path "${outdir}/samples/intensity_adjustment/*.png"   , emit: intensity_png
-    path "${outdir}/samples/intensity_adjustment/*.tif"   , emit: intensity_tif
-    path "${outdir}/stitched/*.tif"                       , emit: stitch_tif
-    path "${outdir}/variables/*.json"                     , emit: json
-    path "${outdir}/variables/*.mat"                      , emit: mat
-    path "${outdir}/resampled/*.nii"                      , emit: resampled_nii
-    path "${outdir}/registered/*.nii"                     , emit: registered_nii
-    path "versions.yml"                                   , emit: versions
-    path input                                            , emit: input 
-    path outdir                                           , emit: outdir
-    path parameter_file                                   , emit: parameter_file
-    val sample_name                                       , emit: sample_name
+    path "results/samples/*"                    , emit: register_output_samples
+    path "results/variables/*"                  , emit: register_output_variables
+    path "results/NM_variables.json"            , emit: register_NM_variables    
+    path "results/stitched/*"                   , emit: register_output_stitched
+    path "results/resampled/*"                  , emit: register_output_resampled
+    path "results/registered/*"                 , emit: register_output_registered
+    path "versions.yml"                         , emit: versions                                     
 
 
 
@@ -56,7 +54,7 @@ process NUMORPHREGISTER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${sample_name}"
+    def prefix = task.ext.prefix ?: "${ch_sample_name}"
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -67,6 +65,18 @@ process NUMORPHREGISTER {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
+    mkdir -p \$PWD/results/samples/
+    mkdir -p \$PWD/results/variables/
+    mkdir -p \$PWD/results/stitched/
+    mkdir -p \$PWD/results/resampled/
+
+    mv $resample_samples \$PWD/results/samples
+    mv $resample_variables \$PWD/results/variables
+    mv $resample_stitched \$PWD/results/stitched
+    mv $resample_resampled \$PWD/results/resampled
+    
+    results="\$PWD/results"
+
     /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'register'
     
     cat <<-END_VERSIONS > versions.yml

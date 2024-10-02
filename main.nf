@@ -64,6 +64,7 @@ workflow NFCORE_LSMQUANT {
     out_NM_variables               = lsmquant_output.NM_variables
     out_stitched                   = lsmquant_output.out_stitched
     out_resampled                  = lsmquant_output.out_resampled
+    out_registered                 = lsmquant_output.out_registered
     
 
 

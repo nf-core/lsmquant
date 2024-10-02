@@ -7,8 +7,7 @@ include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
 include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
 include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample'
-//include { NUMORPHREGISTER        } from '../modules/local/numorphregister'
-//include { FASTQC                 } from '../modules/nf-core/fastqc/main'
+include { NUMORPHREGISTER        } from '../modules/local/numorphregister'
 //include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -72,10 +71,10 @@ workflow LSMQUANT {
 
     //
     // MODULE: Run NumorphRegister
-    // not ready yet
-    //NUMORPHREGISTER (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    // 
+    NUMORPHREGISTER (ch_input_dir, resample_output.resample_output_samples, resample_output.resample_output_variables, resample_output.resample_output_stitched, resample_output.resample_output_resampled, resample_output.resample_NM_variables, ch_parameter_file, ch_sample_name)
 
-    //def register_output = NUMORPHREGISTER.out
+    def register_output = NUMORPHREGISTER.out
 
 
     
@@ -92,11 +91,12 @@ workflow LSMQUANT {
 
     
     emit:
-    out_samples              = resample_output.resample_output_samples
-    out_variables            = resample_output.resample_output_variables
-    NM_variables             = resample_output.resample_NM_variables
-    out_stitched             = resample_output.resample_output_stitched
-    out_resampled            = resample_output.resample_output_resampled
+    out_samples              = register_output.register_output_samples
+    out_variables            = register_output.register_output_variables
+    NM_variables             = register_output.register_NM_variables
+    out_stitched             = register_output.register_output_stitched
+    out_resampled            = register_output.register_output_resampled
+    out_registered           = register_output.register_output_registered
     versions                 = ch_versions              // channel: [ path(versions.yml) ]
 
     
