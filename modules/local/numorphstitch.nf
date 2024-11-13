@@ -28,7 +28,7 @@ process NUMORPHSTITCH {
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     path ch_input_dir
-    
+    path int_samples
     path align_samples
     path align_variables
     path NM_variables
@@ -38,10 +38,10 @@ process NUMORPHSTITCH {
 
     output:
       
-    path "results/samples/*"                    , emit: stitch_output_samples
-    path "results/variables/*"                  , emit: stitch_output_variables
-    path "results/NM_variables.json"            , emit: stitch_NM_variables    
-    path "results/stitched/*"                   , emit: stitch_output_stitched
+    //path "results/samples/*"                    , emit: stitch_output_samples
+    path "results/variables/*"                  , emit: variables
+    path "results/NM_variables.json"            , emit: NM_variables    
+    path "results/stitched/*"                   , emit: stitched
     path "versions.yml"                         , emit: versions
     
     when:
@@ -60,10 +60,12 @@ process NUMORPHSTITCH {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    mkdir -p \$PWD/results/samples/
+    mkdir -p \$PWD/results/samples/intensity_adjustment/
+    mkdir -p \$PWD/results/samples/alignment/
     mkdir -p \$PWD/results/variables/
 
-    mv $align_samples \$PWD/results/samples
+    mv $int_samples \$PWD/results/samples/intensity_adjustment
+    mv $align_samples \$PWD/results/samples/alignment
     mv $align_variables \$PWD/results/variables
     mv $NM_variables \$PWD/results
 

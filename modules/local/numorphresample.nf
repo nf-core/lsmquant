@@ -29,7 +29,7 @@ process NUMORPHRESAMPLE {
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     path ch_input_dir
-    path stitch_samples
+    path align_samples
     path stitch_variables
     path stitch_stitched
     path NM_variables
@@ -38,11 +38,10 @@ process NUMORPHRESAMPLE {
     
 
     output:
-    path "results/samples/*"                    , emit: resample_output_samples
-    path "results/variables/*"                  , emit: resample_output_variables
-    path "results/NM_variables.json"            , emit: resample_NM_variables    
-    path "results/stitched/*"                   , emit: resample_output_stitched
-    path "results/resampled/*"                  , emit: resample_output_resampled
+    //path "results/samples/*"                    , emit: resample_output_samples
+    //path "results/variables/*"                  , emit: resample_output_variables
+    path "results/NM_variables.json"            , emit: NM_variables    
+    path "results/resampled/*"                  , emit: resampled
     path "versions.yml"                         , emit: versions
 
 
@@ -73,9 +72,10 @@ process NUMORPHRESAMPLE {
     mkdir -p \$PWD/results/variables/
     mkdir -p \$PWD/results/stitched/
 
-    mv $stitch_samples \$PWD/results/samples
+    mv $align_samples \$PWD/results/samples
     mv $stitch_variables \$PWD/results/variables
     mv $stitch_stitched \$PWD/results/stitched
+    mv $NM_variables \$PWD/results
 
     results="\$PWD/results"
 

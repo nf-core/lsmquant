@@ -36,10 +36,10 @@ process NUMORPHALIGN {
     
 
     output:
-    path "results/samples/*"                    , emit: align_output_samples
-    path "results/variables/*"                  , emit: align_output_variables
-    path "results/NM_variables.json"            , emit: align_NM_variables
-    path "versions.yml"                         , emit: versions
+    path "results/samples/alignment/*"                    , emit: samples
+    path "results/variables/*"                            , emit: variables
+    path "results/NM_variables.json"                      , emit: align_NM_variables
+    path "versions.yml"                                   , emit: versions
     
     
 

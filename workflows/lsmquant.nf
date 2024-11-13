@@ -30,49 +30,89 @@ workflow LSMQUANT {
     ch_input_dir        // Channel: /path/to/input directory
     ch_parameter_file   // Channel: /path/to/parameter file
     ch_sample_name      // Channel: sample name
+    
 
 
     main:
 
     ch_versions = Channel.empty()
-    ch_multiqc_files = Channel.empty()
+    ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
+    ch_parameter_file = Channel.fromPath(params.parameter_file )
+    ch_sample_name = Channel.value(params.sample_name)
+ 
     
 
     //
     // MODULE: Run NumorphIntensity
     //
-    NUMORPHINTENSITY(ch_input_dir, ch_parameter_file, ch_sample_name)
+    NUMORPHINTENSITY (
+        ch_input_dir,
+        ch_parameter_file,
+        ch_sample_name
+    )
 
-    def intensity_output = NUMORPHINTENSITY.out
+    def intensity_out = NUMORPHINTENSITY.out
   
     //
     // MODULE: Run NumorphAlign
     //
-    NUMORPHALIGN (ch_input_dir, intensity_output.int_output_samples,intensity_output.int_out_variables, intensity_output.int_NM_variables,ch_parameter_file, ch_sample_name)
+    NUMORPHALIGN (
+        ch_input_dir,
+        intensity_out.samples,
+        intensity_out.variables,
+        intensity_out.int_NM_variables,
+        ch_parameter_file,
+        ch_sample_name
+        )
 
     // 
-    def align_output = NUMORPHALIGN.out
+    def align_out = NUMORPHALIGN.out
    
     //
     // MODULE: Run NumorphStitch
     //
-    NUMORPHSTITCH (ch_input_dir, align_output.align_output_samples,align_output.align_output_variables,align_output.align_NM_variables , ch_parameter_file, ch_sample_name)
+    NUMORPHSTITCH (
+        ch_input_dir,
+        intensity_out.samples,
+        align_out.samples,
+        align_out.variables,
+        align_out.align_NM_variables,
+        ch_parameter_file,
+        ch_sample_name
+        )
 
-    def stitch_output = NUMORPHSTITCH.out
+    def stitch_out = NUMORPHSTITCH.out
 
 
     //
     // MODULE: Run NumorphResample
     //
-    NUMORPHRESAMPLE (ch_input_dir, stitch_output.stitch_output_samples, stitch_output.stitch_output_variables, stitch_output.stitch_output_stitched, stitch_output.stitch_NM_variables, ch_parameter_file, ch_sample_name)
+    NUMORPHRESAMPLE (
+        ch_input_dir,
+        align_out.samples,
+        stitch_out.variables,
+        stitch_out.stitched,
+        stitch_out.NM_variables,
+        ch_parameter_file,
+        ch_sample_name
+        )
    
-    def resample_output = NUMORPHRESAMPLE.out
+    def resample_out = NUMORPHRESAMPLE.out
 
 
     //
     // MODULE: Run NumorphRegister
     // 
-    NUMORPHREGISTER (ch_input_dir, resample_output.resample_output_samples, resample_output.resample_output_variables, resample_output.resample_output_stitched, resample_output.resample_output_resampled, resample_output.resample_NM_variables, ch_parameter_file, ch_sample_name)
+    NUMORPHREGISTER (
+        ch_input_dir,
+        align_out.samples,
+        stitch_out.variables,
+        stitch_out.stitched,
+        resample_out.resampled,
+        resample_out.NM_variables,
+        ch_parameter_file,
+        ch_sample_name
+        )
 
     def register_output = NUMORPHREGISTER.out
 
@@ -90,15 +130,7 @@ workflow LSMQUANT {
         ).set { ch_collated_versions }
 
     
-    emit:
-    out_samples              = register_output.register_output_samples
-    out_variables            = register_output.register_output_variables
-    NM_variables             = register_output.register_NM_variables
-    out_stitched             = register_output.register_output_stitched
-    out_resampled            = register_output.register_output_resampled
-    out_registered           = register_output.register_output_registered
-    versions                 = ch_versions              // channel: [ path(versions.yml) ]
-
+   
     
 }
 

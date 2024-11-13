@@ -22,21 +22,7 @@ include { PIPELINE_INITIALISATION       } from './subworkflows/local/utils_nfcor
 include { PIPELINE_COMPLETION           } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
 include { LSMQUANT                      } from './workflows/lsmquant'
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Channels
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
 
-ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
-//ch_output_dir = Channel.fromPath(params.outdir, type: 'dir')
-ch_parameter_file = Channel.fromPath(params.parameter_file )
-ch_sample_name = Channel.value(params.sample_name)
-ch_stage = Channel.value(params.stage)
-
-println "Output directory is: ${params.outdir}"
-
-
-/*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOWS FOR PIPELINE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,13 +32,14 @@ println "Output directory is: ${params.outdir}"
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
 workflow NFCORE_LSMQUANT {
-
     take:
     ch_input_dir
     ch_parameter_file
     ch_sample_name
 
     main:
+    
+
     LSMQUANT(ch_input_dir, ch_parameter_file, ch_sample_name)
     
     def lsmquant_output = LSMQUANT.out
@@ -97,9 +84,9 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_LSMQUANT (
-        ch_input_dir,
-        ch_parameter_file,
-        ch_sample_name,
+        params.input,
+        params.parameter_file,
+        params.sample_name,
 
     )
 

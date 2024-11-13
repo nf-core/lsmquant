@@ -77,7 +77,7 @@ process NUMORPHREGISTER {
     
     results="\$PWD/results"
 
-    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$input 'output_dir' \$PWD/$outdir 'parameter_file' $parameter_file 'sample_name' $sample_name 'stage' 'register'
+    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$ch_input_dir 'output_dir' \$results 'parameter_file' $ch_parameter_file 'sample_name' $ch_sample_name 'stage' 'register'
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -4,8 +4,7 @@
 //               https://nf-co.re/join
 // TODO nf-core: A subworkflow SHOULD import at least two modules
 
-include { SAMTOOLS_SORT      } from '../../../modules/nf-core/samtools/sort/main'
-include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
+
 include { NUMORPHINTENSITY   } from '../../../modules/local/numorphintensity'
 include { NUMORPHALIGN       } from '../../../modules/local/numorphalign'
 include { NUMORPHSTITCH      } from '../../../modules/local/numorphstitch'
