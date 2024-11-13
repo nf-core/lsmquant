@@ -42,16 +42,8 @@ workflow NFCORE_LSMQUANT {
 
     LSMQUANT(ch_input_dir, ch_parameter_file, ch_sample_name)
     
-    def lsmquant_output = LSMQUANT.out
+    
 
-    emit:
-    versions                       = lsmquant_output.versions
-    out_samples                    = lsmquant_output.out_samples
-    out_variables                  = lsmquant_output.out_variables
-    out_NM_variables               = lsmquant_output.NM_variables
-    out_stitched                   = lsmquant_output.out_stitched
-    out_resampled                  = lsmquant_output.out_resampled
-    out_registered                 = lsmquant_output.out_registered
     
 
 
