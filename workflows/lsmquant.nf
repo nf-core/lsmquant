@@ -8,7 +8,9 @@ include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
 include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample'
 include { NUMORPHREGISTER        } from '../modules/local/numorphregister'
-//include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+include { BASICPY                } from '../modules/nf-core/basicpy'
+
+
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -39,10 +41,20 @@ workflow LSMQUANT {
     ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
     ch_parameter_file = Channel.fromPath(params.parameter_file )
     ch_sample_name = Channel.value(params.sample_name)
- 
-    
 
-    //
+ 
+    //Run workflow steps based on parameter input values
+    if (params.intensity) {
+        NUMORPHINTENSITY(ch_input_dir, ch_parameter_file, ch_sample_name)
+
+    }
+    if (params.basicpy ) {
+        BASICPY()
+
+    }
+    
+    if (params.numorph) {
+        //
     // MODULE: Run NumorphIntensity
     //
     NUMORPHINTENSITY (
@@ -115,6 +127,10 @@ workflow LSMQUANT {
         )
 
     def register_output = NUMORPHREGISTER.out
+      
+    }
+
+    
 
 
     
