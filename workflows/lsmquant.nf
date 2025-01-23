@@ -44,95 +44,44 @@ workflow LSMQUANT {
 
  
     //Run workflow steps based on parameter input values
-    if (params.intensity) {
+    if (params.stage == 'intensity') {
         NUMORPHINTENSITY(ch_input_dir, ch_parameter_file, ch_sample_name)
 
     }
-    if (params.basicpy ) {
+    if (params.stage == 'basicpy') {
         BASICPY()
 
     }
     
-    if (params.numorph) {
-        //
-    // MODULE: Run NumorphIntensity
-    //
-    NUMORPHINTENSITY (
-        ch_input_dir,
-        ch_parameter_file,
-        ch_sample_name
-    )
+    if (params.stage == 'preprocess') {
 
-    def intensity_out = NUMORPHINTENSITY.out
+        NUMORPHINTENSITY (
+            ch_input_dir,
+            ch_parameter_file,
+            ch_sample_name
+        )
+        def intensity_out = NUMORPHINTENSITY.out
   
-    //
-    // MODULE: Run NumorphAlign
-    //
-    NUMORPHALIGN (
-        ch_input_dir,
-        intensity_out.samples,
-        intensity_out.variables,
-        intensity_out.int_NM_variables,
-        ch_parameter_file,
-        ch_sample_name
+        NUMORPHALIGN (
+            ch_input_dir,
+            intensity_out.NM_variables,
+            ch_parameter_file,
+            ch_sample_name
         )
-
-    // 
-    def align_out = NUMORPHALIGN.out
+        def align_out = NUMORPHALIGN.out
    
-    //
-    // MODULE: Run NumorphStitch
-    //
-    NUMORPHSTITCH (
-        ch_input_dir,
-        intensity_out.samples,
-        align_out.samples,
-        align_out.variables,
-        align_out.align_NM_variables,
-        ch_parameter_file,
-        ch_sample_name
+        NUMORPHSTITCH (
+            ch_input_dir,
+            align_out.variables,
+            align_out.NM_variables,
+            ch_parameter_file,
+            ch_sample_name
         )
 
-    def stitch_out = NUMORPHSTITCH.out
+        def stitch_out = NUMORPHSTITCH.out
 
 
-    //
-    // MODULE: Run NumorphResample
-    //
-    NUMORPHRESAMPLE (
-        ch_input_dir,
-        align_out.samples,
-        stitch_out.variables,
-        stitch_out.stitched,
-        stitch_out.NM_variables,
-        ch_parameter_file,
-        ch_sample_name
-        )
-   
-    def resample_out = NUMORPHRESAMPLE.out
-
-
-    //
-    // MODULE: Run NumorphRegister
-    // 
-    NUMORPHREGISTER (
-        ch_input_dir,
-        align_out.samples,
-        stitch_out.variables,
-        stitch_out.stitched,
-        resample_out.resampled,
-        resample_out.NM_variables,
-        ch_parameter_file,
-        ch_sample_name
-        )
-
-    def register_output = NUMORPHREGISTER.out
-      
     }
-
-    
-
-
     
     //
     // Collate and save software versions

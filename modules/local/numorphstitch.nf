@@ -19,7 +19,7 @@ process NUMORPHSTITCH {
     tag "$ch_sample_name"
     label 'process_single'
  
-    container "numorph_preprocessing_module:latest"
+    container "numorph_preprocessing:latest"
 
 
     input:
@@ -28,8 +28,8 @@ process NUMORPHSTITCH {
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     path ch_input_dir
-    path int_samples
-    path align_samples
+    // path int_samples
+    //path align_samples
     path align_variables
     path NM_variables
     path ch_parameter_file
@@ -60,18 +60,16 @@ process NUMORPHSTITCH {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    mkdir -p \$PWD/results/samples/intensity_adjustment/
-    mkdir -p \$PWD/results/samples/alignment/
+    
     mkdir -p \$PWD/results/variables/
 
-    mv $int_samples \$PWD/results/samples/intensity_adjustment
-    mv $align_samples \$PWD/results/samples/alignment
+    
     mv $align_variables \$PWD/results/variables
     mv $NM_variables \$PWD/results
 
     results="\$PWD/results"
 
-    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$ch_input_dir 'output_dir' \$results 'parameter_file' $ch_parameter_file 'sample_name' $ch_sample_name 'stage' 'stitch'
+    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$ch_input_dir 'output_dir' \$results 'parameter_file' $ch_parameter_file 'sample_name' $ch_sample_name 'stage' 'stitch' 'NM_variables' $NM_variables
 
 
     cat <<-END_VERSIONS > versions.yml

@@ -19,7 +19,7 @@ process NUMORPHALIGN {
     tag "$ch_sample_name"
     label 'process_single'
 
-    container "numorph_preprocessing_module:latest"
+    container "numorph_preprocessing:latest"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
@@ -28,8 +28,8 @@ process NUMORPHALIGN {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     
     path ch_input_dir
-    path int_samples
-    path int_variables
+    //path int_samples
+    //path int_variables
     path NM_variables
     path ch_parameter_file
     val ch_sample_name
@@ -38,7 +38,7 @@ process NUMORPHALIGN {
     output:
     path "results/samples/alignment/*"                    , emit: samples
     path "results/variables/*"                            , emit: variables
-    path "results/NM_variables.json"                      , emit: align_NM_variables
+    path "results/NM_variables.mat"                       , emit: NM_variables
     path "versions.yml"                                   , emit: versions
     
     
@@ -64,14 +64,14 @@ process NUMORPHALIGN {
     mkdir -p \$PWD/results/samples/
     mkdir -p \$PWD/results/variables/
 
-    mv $int_samples \$PWD/results/samples
-    mv $int_variables \$PWD/results/variables
+    
     mv $NM_variables \$PWD/results
 
     results="\$PWD/results"
+    echo \$results
 
 
-    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$ch_input_dir 'output_dir' \$results 'parameter_file' $ch_parameter_file 'sample_name' $ch_sample_name 'stage' 'align'
+    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$ch_input_dir 'output_dir' \$results 'parameter_file' $ch_parameter_file 'sample_name' $ch_sample_name 'stage' 'align' 'NM_variables' $NM_variables
     
     echo "my output files"
     ls -lha \$PWD
