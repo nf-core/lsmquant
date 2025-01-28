@@ -12,39 +12,62 @@ include { NUMORPHSTITCH      } from '../../../modules/local/numorphstitch'
 workflow NUMORPHPREPROCESSING {
 
     take:
-    // TODO nf-core: edit input (take) channels]
     ch_input_dir        // Channel: /path/to/input directory
-    ch_output_dir       // Channel: /path/to/output directory
     ch_parameter_file   // Channel: /path/to/parameter file
     ch_sample_name      // Channel: sample name
-    ch_stage            // Channel: stage
+    
 
     main:
 
     ch_versions = Channel.empty()
+    ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
+    ch_parameter_file = Channel.fromPath(params.parameter_file )
+    ch_sample_name = Channel.value(params.sample_name)
+    //ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
+    //ch_parameter_file = Channel.fromPath(params.parameter_file )
+    //ch_sample_name = Channel.value(params.sample_name)
 
-    // TODO nf-core: substitute modules here for the modules of your subworkflow
 
-    // MODULE: Run NumorphIntensity
-    NUMORPHINTENSITY(ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    NUMORPHINTENSITY (
+        ch_input_dir,
+        ch_parameter_file,
+        ch_sample_name
+    )
+    def intensity_out = NUMORPHINTENSITY.out
 
+    NUMORPHALIGN (
+        ch_input_dir,
+        intensity_out.adj_params_mat,
+        intensity_out.path_table_mat,
+        intensity_out.thresholds_mat,
+        intensity_out.NM_variables,
+        ch_parameter_file,
+        ch_sample_name
+    )
+    def align_out = NUMORPHALIGN.out
 
-    // MODULE: Run NumorphAlign
-    NUMORPHALIGN (ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
+    NUMORPHSTITCH (
+        ch_input_dir,
+        align_out.alignment_table_mat,
+        align_out.z_displacement_align_mat,
+        align_out.path_table_mat,
+        intensity_out.thresholds_mat,
+        intensity_out.adj_params_mat,
+        align_out.NM_variables,
+        ch_parameter_file,
+        ch_sample_name
+    )
+
+    def stitch_out = NUMORPHSTITCH.out
+
     
-    // MODULE: Run NumorphStitch
-    NUMORPHSTITCH(ch_input_dir, ch_output_dir, ch_parameter_file, ch_sample_name, ch_stage)
 
     
-
-    
-    ch_versions = ch_versions.mix(NUMORPHINTENSITY.out.versions.first())
+    ch_versions = ch_versions.mix(NUMORPHSTITCH.out.versions.first())
 
     emit:
     // TODO nf-core: edit emitted channels
-    bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
+
 
     versions = ch_versions                     // channel: [ versions.yml ]
 }

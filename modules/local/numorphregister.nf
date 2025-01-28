@@ -19,7 +19,7 @@ process NUMORPHREGISTER {
     tag "$ch_sample_name"
     label 'process_single'
 
-    container "numorph_preprocessing_module:latest"
+    container "numorph_analyze:latest"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
@@ -69,6 +69,7 @@ process NUMORPHREGISTER {
     mkdir -p \$PWD/results/variables/
     mkdir -p \$PWD/results/stitched/
     mkdir -p \$PWD/results/resampled/
+    mkdir -p \$PWD/results/registered/
 
     mv $resample_samples \$PWD/results/samples
     mv $resample_variables \$PWD/results/variables

@@ -33,14 +33,26 @@ include { LSMQUANT                      } from './workflows/lsmquant'
 //
 workflow NFCORE_LSMQUANT {
     take:
-    ch_input_dir
-    ch_parameter_file
-    ch_sample_name
+    ch_input // the sample sheet 
+    //ch_parameter_file
+    //ch_sample_name
+    //ch_sample_sheet
 
     main:
-    
+    Channel
+        .fromPath(ch_input)
+        .splitCsv(header: true)
+        .map { row -> 
+            def meta = [id: row.sample_id]
+            tuple(meta, file(row.img_directory), file(row.parameter_file))  
+        }
+        .set { sample_data }
+        
+        
 
-    LSMQUANT(ch_input_dir, ch_parameter_file, ch_sample_name)
+
+    //LSMQUANT(ch_input_dir, ch_parameter_file, ch_sample_name)
+    LSMQUANT(sample_data)
     
     
 
@@ -74,12 +86,15 @@ workflow {
 
     //
     // WORKFLOW: Run main workflow
-    //
-    NFCORE_LSMQUANT (
-        params.input,
-        params.parameter_file,
-        params.sample_name,
+    //old working version of the pipeline
+    //NFCORE_LSMQUANT (
+     //   params.input,
+      //  params.parameter_file,
+      //  params.sample_name,
 
+    //)
+    NFCORE_LSMQUANT (
+        params.input
     )
 
     //
