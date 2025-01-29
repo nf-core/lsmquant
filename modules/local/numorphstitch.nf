@@ -16,62 +16,47 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process NUMORPHSTITCH {
-    tag "$ch_sample_name"
+    tag "$meta.id"
     label 'process_single'
  
-    container "numorph_preprocessing_module:latest"
+    container "numorph_preprocessing:latest"
 
 
     input:
-    // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    path ch_input_dir
-    path int_samples
-    path align_samples
-    path align_variables
+    tuple val(meta), path(img_directory), path(parameter_file)
+    path alignment_table_mat
+    path z_displacement_align_mat
+    path path_table_mat
+    path thresholds_mat
+    path adj_params_mat
     path NM_variables
-    path ch_parameter_file
-    val ch_sample_name
     
 
     output:
-      
-    //path "results/samples/*"                    , emit: stitch_output_samples
-    path "results/variables/*"                  , emit: variables
-    path "results/NM_variables.json"            , emit: NM_variables    
-    path "results/stitched/*"                   , emit: stitched
-    path "versions.yml"                         , emit: versions
+    path "results/variables/*"                      , emit: variables    
+    path "results/stitched/*"                       , emit: stitched
+    path "versions.yml"                             , emit: versions
     
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${ch_sample_name}"
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p \$PWD/results/samples/intensity_adjustment/
-    mkdir -p \$PWD/results/samples/alignment/
+    
     mkdir -p \$PWD/results/variables/
 
-    mv $int_samples \$PWD/results/samples/intensity_adjustment
-    mv $align_samples \$PWD/results/samples/alignment
-    mv $align_variables \$PWD/results/variables
+    mv $alignment_table_mat \$PWD/results/variables
+    mv $z_displacement_align_mat \$PWD/results/variables
+    mv $thresholds_mat \$PWD/results/variables
+    mv $adj_params_mat \$PWD/results/variables
+    mv $path_table_mat \$PWD/results/variables
     mv $NM_variables \$PWD/results
 
     results="\$PWD/results"
 
-    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$ch_input_dir 'output_dir' \$results 'parameter_file' $ch_parameter_file 'sample_name' $ch_sample_name 'stage' 'stitch'
+    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'stitch' 'NM_variables' $NM_variables
 
 
     cat <<-END_VERSIONS > versions.yml

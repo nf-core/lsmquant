@@ -6,9 +6,6 @@
 include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
 include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
-include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample'
-include { NUMORPHREGISTER        } from '../modules/local/numorphregister'
-include { BASICPY                } from '../modules/nf-core/basicpy'
 
 
 include { paramsSummaryMap       } from 'plugin/nf-validation'
@@ -29,110 +26,46 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmq
 workflow LSMQUANT {
 
     take:
-    ch_input_dir        // Channel: /path/to/input directory
-    ch_parameter_file   // Channel: /path/to/parameter file
-    ch_sample_name      // Channel: sample name
+    sample_data
     
-
 
     main:
 
     ch_versions = Channel.empty()
-    ch_input_dir = Channel.fromPath(params.input, type: 'dir', checkIfExists: true)
-    ch_parameter_file = Channel.fromPath(params.parameter_file )
-    ch_sample_name = Channel.value(params.sample_name)
-
- 
-    //Run workflow steps based on parameter input values
-    if (params.intensity) {
-        NUMORPHINTENSITY(ch_input_dir, ch_parameter_file, ch_sample_name)
-
-    }
-    if (params.basicpy ) {
-        BASICPY()
-
-    }
     
-    if (params.numorph) {
-        //
-    // MODULE: Run NumorphIntensity
-    //
-    NUMORPHINTENSITY (
-        ch_input_dir,
-        ch_parameter_file,
-        ch_sample_name
-    )
+    
+    if (params.stage == 'preprocess') {
 
-    def intensity_out = NUMORPHINTENSITY.out
+        NUMORPHINTENSITY (sample_data)
+        def intensity_out = NUMORPHINTENSITY.out 
+
   
-    //
-    // MODULE: Run NumorphAlign
-    //
-    NUMORPHALIGN (
-        ch_input_dir,
-        intensity_out.samples,
-        intensity_out.variables,
-        intensity_out.int_NM_variables,
-        ch_parameter_file,
-        ch_sample_name
+        NUMORPHALIGN (
+            sample_data,
+            intensity_out.adj_params_mat,
+            intensity_out.path_table_mat,
+            intensity_out.thresholds_mat,
+            intensity_out.NM_variables
         )
+        def align_out = NUMORPHALIGN.out
 
-    // 
-    def align_out = NUMORPHALIGN.out
+        
    
-    //
-    // MODULE: Run NumorphStitch
-    //
-    NUMORPHSTITCH (
-        ch_input_dir,
-        intensity_out.samples,
-        align_out.samples,
-        align_out.variables,
-        align_out.align_NM_variables,
-        ch_parameter_file,
-        ch_sample_name
-        )
-
-    def stitch_out = NUMORPHSTITCH.out
-
-
-    //
-    // MODULE: Run NumorphResample
-    //
-    NUMORPHRESAMPLE (
-        ch_input_dir,
-        align_out.samples,
-        stitch_out.variables,
-        stitch_out.stitched,
-        stitch_out.NM_variables,
-        ch_parameter_file,
-        ch_sample_name
-        )
-   
-    def resample_out = NUMORPHRESAMPLE.out
-
-
-    //
-    // MODULE: Run NumorphRegister
-    // 
-    NUMORPHREGISTER (
-        ch_input_dir,
-        align_out.samples,
-        stitch_out.variables,
-        stitch_out.stitched,
-        resample_out.resampled,
-        resample_out.NM_variables,
-        ch_parameter_file,
-        ch_sample_name
-        )
-
-    def register_output = NUMORPHREGISTER.out
-      
-    }
-
+        NUMORPHSTITCH (
+            sample_data,
+            align_out.alignment_table_mat,
+            align_out.z_displacement_align_mat,
+            align_out.path_table_mat,
+            intensity_out.thresholds_mat,
+            intensity_out.adj_params_mat,
+            align_out.NM_variables
+            )
     
+        def stitch_out = NUMORPHSTITCH.out 
 
 
+        
+    }
     
     //
     // Collate and save software versions
@@ -146,9 +79,10 @@ workflow LSMQUANT {
         ).set { ch_collated_versions }
 
     
-   
+
     
 }
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
