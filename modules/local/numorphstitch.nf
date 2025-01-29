@@ -30,17 +30,10 @@ process NUMORPHSTITCH {
     path thresholds_mat
     path adj_params_mat
     path NM_variables
-    //path ch_parameter_file
-    //val ch_sample_name
     
 
     output:
-    path "results/variables/*"                       , emit: variables
-    //path "results/variables/adjusted_z.csv"         , emit: adjusted_z
-    //path "results/variables/path_table.json"        , emit: path_table
-    //path "results/variables/stitch_tforms.json"     , emit: stitch_tforms
-    //path "results/variables/z_disp_matrix.json"     , emit: z_disp_matrix
-    //path "results/NM_variables.json"                , emit: NM_variables    
+    path "results/variables/*"                      , emit: variables    
     path "results/stitched/*"                       , emit: stitched
     path "versions.yml"                             , emit: versions
     

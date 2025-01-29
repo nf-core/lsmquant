@@ -10,6 +10,7 @@
 */
 
 nextflow.enable.dsl = 2
+nextflow.preview.output = true
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,10 +35,7 @@ include { LSMQUANT                      } from './workflows/lsmquant'
 workflow NFCORE_LSMQUANT {
     take:
     ch_input // the sample sheet 
-    //ch_parameter_file
-    //ch_sample_name
-    //ch_sample_sheet
-
+    
     main:
     Channel
         .fromPath(ch_input)
@@ -51,7 +49,7 @@ workflow NFCORE_LSMQUANT {
         
 
 
-    //LSMQUANT(ch_input_dir, ch_parameter_file, ch_sample_name)
+    
     LSMQUANT(sample_data)
     
     
@@ -86,13 +84,7 @@ workflow {
 
     //
     // WORKFLOW: Run main workflow
-    //old working version of the pipeline
-    //NFCORE_LSMQUANT (
-     //   params.input,
-      //  params.parameter_file,
-      //  params.sample_name,
-
-    //)
+    
     NFCORE_LSMQUANT (
         params.input
     )

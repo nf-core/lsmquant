@@ -8,13 +8,11 @@ process NUMORPHALIGN {
 
     input:
     tuple val(meta), path(img_directory),  path(parameter_file)
-    //path ch_input_dir
     path adj_params_mat
     path path_table_mat
     path thresholds_mat
     path NM_variables
-    //path ch_parameter_file
-    //val ch_sample_name
+
     
     output:
     path "results/samples/alignment/*"                    , emit: samples

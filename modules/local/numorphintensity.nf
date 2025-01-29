@@ -10,10 +10,7 @@ process NUMORPHINTENSITY {
     //               MUST be provided as an input via a Groovy Map called "meta".
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    
-    //path ch_input_dir
-    //path ch_parameter_file
-    //val ch_sample_name
+
     tuple val(meta), path(img_directory), path(parameter_file)
     
 
