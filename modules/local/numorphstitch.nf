@@ -19,7 +19,7 @@ process NUMORPHSTITCH {
     tag "$meta.id"
     label 'process_single'
  
-    container "numorph_preprocessing:latest"
+    container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
 
 
     input:

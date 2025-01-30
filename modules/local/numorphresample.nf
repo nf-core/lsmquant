@@ -29,6 +29,7 @@ process NUMORPHRESAMPLE {
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     path ch_input_dir
+    tuple val(meta), path(img_directory), path(parameter_file)
     path align_samples
     path stitch_variables
     path stitch_stitched
