@@ -6,7 +6,7 @@
 include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
 include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
-
+include { NUMORPH_PREPROCESSING  } from '../subworkflows/local/numorph_preprocessing'
 
 include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -33,39 +33,15 @@ workflow LSMQUANT {
 
     ch_versions = Channel.empty()
     
-    
-    if (params.stage == 'preprocess') {
 
-        NUMORPHINTENSITY (sample_data)
-        def intensity_out = NUMORPHINTENSITY.out 
-
-  
-        NUMORPHALIGN (
-            sample_data,
-            intensity_out.adj_params_mat,
-            intensity_out.path_table_mat,
-            intensity_out.thresholds_mat,
-            intensity_out.NM_variables
-        )
-        def align_out = NUMORPHALIGN.out
-
-        
-   
-        NUMORPHSTITCH (
-            sample_data,
-            align_out.alignment_table_mat,
-            align_out.z_displacement_align_mat,
-            align_out.path_table_mat,
-            intensity_out.thresholds_mat,
-            intensity_out.adj_params_mat,
-            align_out.NM_variables
-            )
-    
-        def stitch_out = NUMORPHSTITCH.out 
-
-
-        
+    if (params.stage == 'numorph_preprocess') {
+        NUMORPH_PREPROCESSING (sample_data)
     }
+
+
+
+        
+
     
     //
     // Collate and save software versions
