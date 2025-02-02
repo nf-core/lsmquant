@@ -45,6 +45,7 @@ workflow NUMORPH_PREPROCESSING {
     
     stitched                  = stitch_out.stitched                    // channel: [ path(stitched_dir) ]
     intensity_thresholds      = intensity_out.thresholds_mat          // channel: [path(thresholds_mat) ]
+    NM_variables              = stitch_out.NM_variables             // channel: [path(NM_variables) ]
     versions                  = ch_versions                           // channel: [ versions.yml ]
 }
 

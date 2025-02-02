@@ -4,7 +4,8 @@ process NUMORPHALIGN {
     tag "$meta.id"
     label 'process_single'
 
-    container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
+    //container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
+    container "numorph_preprocessing:latest"
 
     input:
     tuple val(meta), path(img_directory),  path(parameter_file)

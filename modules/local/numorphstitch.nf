@@ -19,7 +19,8 @@ process NUMORPHSTITCH {
     tag "$meta.id"
     label 'process_single'
  
-    container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
+    //container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
+    container "numorph_preprocessing:latest"
 
 
     input:
@@ -33,9 +34,10 @@ process NUMORPHSTITCH {
     
 
     output:
-    path "results/variables/*"                      , emit: variables    
-    path "results/stitched/*"                       , emit: stitched
-    path "versions.yml"                             , emit: versions
+    tuple val(meta),  path("results/stitched/*"), path(parameter_file)      , emit: stitched
+    path "results/variables/*"                                              , emit: variables    
+    path "results/NM_variables.mat"                                         , emit: NM_variables
+    path "versions.yml"                                                     , emit: versions
     
     when:
     task.ext.when == null || task.ext.when

@@ -16,7 +16,7 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 process NUMORPHRESAMPLE {
-    tag "$ch_sample_name"
+    tag "$meta.id"
     label 'process_single'
 
     container "numorph_analyze:latest"
@@ -28,22 +28,15 @@ process NUMORPHRESAMPLE {
     //               MUST be provided as an input via a Groovy Map called "meta".
     //               This information may not be required in some instances e.g. indexing reference genome files:
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    path ch_input_dir
-    tuple val(meta), path(img_directory), path(parameter_file)
-    path align_samples
-    path stitch_variables
-    path stitch_stitched
+    
+    tuple val(meta), path(stitch_directory), path(parameter_file)
     path NM_variables
-    path ch_parameter_file
-    val ch_sample_name
     
 
     output:
-    //path "results/samples/*"                    , emit: resample_output_samples
-    //path "results/variables/*"                  , emit: resample_output_variables
-    path "results/NM_variables.json"            , emit: NM_variables    
-    path "results/resampled/*"                  , emit: resampled
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("results/resampled/*"), path(parameter_file)                  , emit: resampled
+    path "results/NM_variables.mat"                                                     , emit: NM_variables    
+    path "versions.yml"                                                                 , emit: versions
 
 
     
@@ -58,23 +51,18 @@ process NUMORPHRESAMPLE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${ch_sample_name}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     
     """
-    mkdir -p \$PWD/results/samples/
-    mkdir -p \$PWD/results/variables/
     mkdir -p \$PWD/results/stitched/
-    mkdir -p \$PWD/results/resampled/
-
-    mv $align_samples \$PWD/results/samples
-    mv $stitch_variables \$PWD/results/variables
-    mv $stitch_stitched \$PWD/results/stitched
+    
+    mv $stitch_directory \$PWD/results/stitched
     mv $NM_variables \$PWD/results
 
     results="\$PWD/results"
 
 
-    /usr/bin/mlrtapp/numorph_preprocessing_module 'input_dir' \$PWD/$ch_input_dir 'output_dir' \$results 'parameter_file' $ch_parameter_file 'sample_name' $ch_sample_name 'stage' 'resample'
+    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/results/stitched 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'resample'
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

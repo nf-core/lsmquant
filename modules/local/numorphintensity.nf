@@ -3,7 +3,9 @@ process NUMORPHINTENSITY {
     tag "$meta.id"
     label 'process_single'
  
-    container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
+    //container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
+    container "numorph_preprocessing:latest"
+
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"

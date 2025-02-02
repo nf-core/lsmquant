@@ -12,6 +12,8 @@ include { paramsSummaryMap       } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmquant_pipeline'
+include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample.nf'
+include { NUMORPHREGISTER        } from '../modules/local/numorphregister.nf'
 //include { NUMORPHPREPROCESSING   } from '../subworkflows/local/numorphpreprocessing'
 
 /*
@@ -34,9 +36,37 @@ workflow LSMQUANT {
     ch_versions = Channel.empty()
     
 
-    if (params.stage == 'numorph_preprocess') {
+    if (params.stage == 'full') {
         NUMORPH_PREPROCESSING (sample_data)
+
+        def stitched_data = NUMORPH_PREPROCESSING.out.stitched   
+ 
+
+        NUMORPHRESAMPLE (
+            stitched_data,
+            NUMORPH_PREPROCESSING.out.NM_variables
+          )
+
+        def resample_out = NUMORPHRESAMPLE.out
+
+        //NUMORPHREGISTER (
+        //    resample_out.resampled,
+        //    resample_out.NM_variables
+        //    )
+
+
+
     }
+    //if (params.stage == 'preprocessing') {
+        //NUMORPH_PREPROCESSING (sample_data)
+        
+    //}
+
+    
+
+    
+
+    
 
 
 
