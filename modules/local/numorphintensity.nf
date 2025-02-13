@@ -1,7 +1,7 @@
 
 process NUMORPHINTENSITY {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
  
     //container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
     container "numorph_preprocessing:latest"

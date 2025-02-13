@@ -38,7 +38,7 @@ process NUMORPHALIGN {
     mkdir -p \$PWD/results/variables/
 
     
-    mv $NM_variables \$PWD/results
+    
     mv $adj_params_mat \$PWD/results/variables
     mv $path_table_mat \$PWD/results/variables
     mv $thresholds_mat \$PWD/results/variables
@@ -47,7 +47,7 @@ process NUMORPHALIGN {
     echo \$results
 
 
-    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'align' 'NM_variables' $NM_variables
+    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'align' 'NM_variables' \$PWD/$NM_variables 
     
     echo "my output files"
     ls -lha \$PWD

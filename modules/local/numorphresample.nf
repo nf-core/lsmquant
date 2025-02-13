@@ -38,11 +38,6 @@ process NUMORPHRESAMPLE {
     path "results/NM_variables.mat"                                                     , emit: NM_variables    
     path "versions.yml"                                                                 , emit: versions
 
-
-    
-    
-    
-
     //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
 
 
@@ -57,12 +52,13 @@ process NUMORPHRESAMPLE {
     mkdir -p \$PWD/results/stitched/
     
     mv $stitch_directory \$PWD/results/stitched
-    mv $NM_variables \$PWD/results
+    
+    
 
     results="\$PWD/results"
 
 
-    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/results/stitched 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'resample'
+    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/results/stitched 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'resample' 'NM_variables' \$PWD/$NM_variables 'use_processed_images' 'stitched'
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

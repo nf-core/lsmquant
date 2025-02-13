@@ -54,11 +54,11 @@ process NUMORPHSTITCH {
     mv $thresholds_mat \$PWD/results/variables
     mv $adj_params_mat \$PWD/results/variables
     mv $path_table_mat \$PWD/results/variables
-    mv $NM_variables \$PWD/results
+    
 
     results="\$PWD/results"
 
-    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'stitch' 'NM_variables' $NM_variables
+    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'stitch' 'NM_variables' \$PWD/$NM_variables
 
 
     cat <<-END_VERSIONS > versions.yml
