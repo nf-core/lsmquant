@@ -31,30 +31,25 @@ include { LSMQUANT                      } from './workflows/lsmquant'
 //
 workflow NFCORE_LSMQUANT {
     take:
-    ch_input // the sample sheet 
-    
+    ch_input // the sample sheet
+
     main:
     Channel
         .fromPath(ch_input)
         .splitCsv(header: true)
-        .map { row -> 
+        .map { row ->
             def meta = [id: row.sample_id]
-            tuple(meta, file(row.img_directory), file(row.parameter_file))  
+            tuple(meta, file(row.img_directory), file(row.parameter_file))
         }
         .set { sample_data }
-        
-        
 
-
-    
     LSMQUANT(sample_data)
-    
-    
-
-    
 
 
-    
+
+
+
+
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,7 +74,7 @@ workflow {
 
     //
     // WORKFLOW: Run main workflow
-    
+    //
     NFCORE_LSMQUANT (
         params.input
     )
@@ -93,7 +88,6 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-       
     )
 }
 
