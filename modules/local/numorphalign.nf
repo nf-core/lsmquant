@@ -1,5 +1,3 @@
-
-
 process NUMORPHALIGN {
     tag "$meta.id"
     label 'process_single'
@@ -14,7 +12,7 @@ process NUMORPHALIGN {
     path thresholds_mat
     path NM_variables
 
-    
+
     output:
     path "results/samples/alignment/*"                    , emit: samples
     path "results/variables/path_table.mat"               , emit: path_table_mat
@@ -22,7 +20,7 @@ process NUMORPHALIGN {
     path "results/variables/z_displacement_align.mat"     , emit: z_displacement_align_mat
     path "results/NM_variables.mat"                       , emit: NM_variables
     path "versions.yml"                                   , emit: versions
-    
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,15 +28,13 @@ process NUMORPHALIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     echo "Task working directory: \$PWD"
-    
+
     mkdir -p \$PWD/results/samples/
     mkdir -p \$PWD/results/variables/
 
-    
-    
     mv $adj_params_mat \$PWD/results/variables
     mv $path_table_mat \$PWD/results/variables
     mv $thresholds_mat \$PWD/results/variables
@@ -47,15 +43,15 @@ process NUMORPHALIGN {
     echo \$results
 
 
-    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'align' 'NM_variables' \$PWD/$NM_variables 
-    
+    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'align' 'NM_variables' \$PWD/$NM_variables
+
     echo "my output files"
     ls -lha \$PWD
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         numorph: 1.0
-    END_VERSIONS    
+    END_VERSIONS
 
     """
 

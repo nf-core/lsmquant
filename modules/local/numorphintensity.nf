@@ -1,8 +1,7 @@
-
 process NUMORPHINTENSITY {
     tag "$meta.id"
     label 'process_low'
- 
+
     //container "quay.io/carolinschwitalla/numorph_preprocessing:latest"
     container "numorph_preprocessing:latest"
 
@@ -14,7 +13,7 @@ process NUMORPHINTENSITY {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
 
     tuple val(meta), path(img_directory), path(parameter_file)
-    
+
 
     output:
     path "results/samples/intensity_adjustment/*"            , emit: samples
@@ -23,7 +22,7 @@ process NUMORPHINTENSITY {
     path "results/variables/thresholds.mat"                  , emit: thresholds_mat
     path "results/NM_variables.mat"                          , emit: NM_variables
     path "versions.yml"                                      , emit: versions
-    
+
 
 
     when:
@@ -32,7 +31,7 @@ process NUMORPHINTENSITY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     echo "Task working directory: \$PWD"
     results="\$PWD/results"
@@ -40,12 +39,12 @@ process NUMORPHINTENSITY {
     echo \$results
 
     /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'intensity'
-    
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         numorph: 1.0
-    END_VERSIONS    
+    END_VERSIONS
 
     """
 

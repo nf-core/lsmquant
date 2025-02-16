@@ -27,18 +27,18 @@ workflow LSMQUANT {
 
     take:
     sample_data
-    
+
     main:
 
     ch_versions = Channel.empty()
-    
+
 
     if (params.stage == 'full') {
         NUMORPH_PREPROCESSING (sample_data)
 
         def stitched_data = NUMORPH_PREPROCESSING.out.stitched
-        def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables   
- 
+        def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables
+
 
         NUMORPHRESAMPLE (
             stitched_data,
@@ -57,20 +57,8 @@ workflow LSMQUANT {
     }
     if (params.stage == 'preprocessing') {
         NUMORPH_PREPROCESSING (sample_data)
-        
+
     }
-
-    
-
-    
-
-    
-
-
-
-        
-
-    
     //
     // Collate and save software versions
     //
@@ -82,9 +70,6 @@ workflow LSMQUANT {
             newLine: true
         ).set { ch_collated_versions }
 
-    
-
-    
 }
 
 
