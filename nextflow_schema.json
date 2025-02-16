@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://raw.githubusercontent.com/nf-core/lsmquant/master/nextflow_schema.json",
     "title": "nf-core/lsmquant pipeline parameters",
     "description": " A pipeline for preprocessing and analysis of large-scale light-sheet microscopy images based on the NuMorph toolbox",
