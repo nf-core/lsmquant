@@ -27,20 +27,6 @@
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
                 },
-                "parameter_file": {
-                    "type": "string",
-                    "format": "file-path",
-                    "exists": true,
-                    "description": "Path to the parameter file.",
-                    "help_text": "Path to the parameter file that contains the parameters for the pipeline. The parameter file is a CSV file.",
-                    "fa_icon": "far fa-file-code"
-                },
-                "sample_name": {
-                    "type": "string",
-                    "description": "Sample name.",
-                    "help_text": "The name of the sample that is processed and will be used in the output files.",
-                    "fa_icon": "fas fa-file-signature"
-                },
                 "stage": {
                     "type": "string",
                     "description": "The stage of the pipeline to run.",
