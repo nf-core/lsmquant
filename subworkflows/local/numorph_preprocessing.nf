@@ -15,9 +15,9 @@ workflow NUMORPH_PREPROCESSING {
     ch_versions = Channel.empty()
 
     NUMORPHINTENSITY (sample_data)
-    def intensity_out = NUMORPHINTENSITY.out 
+    def intensity_out = NUMORPHINTENSITY.out
 
-  
+
     NUMORPHALIGN (
         sample_data,
         intensity_out.adj_params_mat,
@@ -27,8 +27,7 @@ workflow NUMORPH_PREPROCESSING {
     )
     def align_out = NUMORPHALIGN.out
 
-        
-   
+
     NUMORPHSTITCH (
         sample_data,
         align_out.alignment_table_mat,
@@ -42,10 +41,9 @@ workflow NUMORPH_PREPROCESSING {
     def stitch_out = NUMORPHSTITCH.out
 
     emit:
-    
+
     stitched                  = stitch_out.stitched                    // channel: [ path(stitched_dir) ]
     intensity_thresholds      = intensity_out.thresholds_mat          // channel: [path(thresholds_mat) ]
     NM_variables              = stitch_out.NM_variables             // channel: [path(NM_variables) ]
     versions                  = ch_versions                           // channel: [ versions.yml ]
 }
-

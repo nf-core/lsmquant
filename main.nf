@@ -9,8 +9,6 @@
 ----------------------------------------------------------------------------------------
 */
 
-nextflow.enable.dsl = 2
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
@@ -33,30 +31,25 @@ include { LSMQUANT                      } from './workflows/lsmquant'
 //
 workflow NFCORE_LSMQUANT {
     take:
-    ch_input // the sample sheet 
-    
+    ch_input // the sample sheet
+
     main:
     Channel
         .fromPath(ch_input)
         .splitCsv(header: true)
-        .map { row -> 
+        .map { row ->
             def meta = [id: row.sample_id]
-            tuple(meta, file(row.img_directory), file(row.parameter_file))  
+            tuple(meta, file(row.img_directory), file(row.parameter_file))
         }
         .set { sample_data }
-        
-        
 
-
-    
     LSMQUANT(sample_data)
-    
-    
-
-    
 
 
-    
+
+
+
+
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,13 +60,11 @@ workflow NFCORE_LSMQUANT {
 workflow {
 
     main:
-
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
     PIPELINE_INITIALISATION (
         params.version,
-        params.help,
         params.validate_params,
         params.monochrome_logs,
         args,
@@ -83,11 +74,10 @@ workflow {
 
     //
     // WORKFLOW: Run main workflow
-    
+    //
     NFCORE_LSMQUANT (
         params.input
     )
-
     //
     // SUBWORKFLOW: Run completion tasks
     //
@@ -98,7 +88,6 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-       
     )
 }
 

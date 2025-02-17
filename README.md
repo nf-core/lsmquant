@@ -9,7 +9,7 @@
 [![GitHub Actions Linting Status](https://github.com/nf-core/lsmquant/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/lsmquant/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/lsmquant/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
 [![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A524.04.2-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
@@ -21,13 +21,9 @@
 
 **nf-core/lsmquant** is a bioinformatics pipeline that performs preprocessing and analysis of light-sheet microscopy images of tissue cleard samples. The pipeline takes 2D single-channel 16-bit `.tif` images as input. The preprocessing consists of intesity adjustment, channel alignemnt, and tile stitching to reconstruct the 3D image. For mousebrain samples it offers a regsitration to the Allen Mouse Brain Reference Atlas for precise region annotation. Analysis of images can include call quantification via segmentation by a 3D-Unet and celltype classification by SVMs.
 
-
-
 <div style="text-align: center;">
 <img src="docs/images/lsmquant-metromap.png" alt="lasmquant metromap">
 </div>
-
-
 
 ### Basic workflow
 
@@ -39,43 +35,39 @@
 
 ## Pipeline Summary
 
-The pipeline consists of three major stages, the `preprocessing`stage, the `registration`stage, and the `analysis` stage. 
+The pipeline consists of three major stages, the `preprocessing`stage, the `registration`stage, and the `analysis` stage.
 
 ### Preprocessing
 
-For raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope preprocessing can be performed to recostruct the 3D image in nifti (`.nii`) format for further analysis. The complete `preprocessing` workflow performs: 
+For raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope preprocessing can be performed to recostruct the 3D image in nifti (`.nii`) format for further analysis. The complete `preprocessing` workflow performs:
 
-- intensity adjustemnt of the images 
+- intensity adjustemnt of the images
 - image channel alignemnt for at least two different channels
 - image tile stitching to recustruct the full image for each channel and z-slice
 
 ### Registration
 
 Currently only available for whole mouse brain samples, recostructed images in `.nii`format can be registerd to the Allen Reference Atlas (ARA) for functional brain region annotation. The workflow performs:
+
 - downsampling of the high resolution `.nii`images
 - registration to the ARA
 
-### Analysis 
+### Analysis
 
 Analysis will include semantic segmentation of cell nuclei via 3D-Unet
 
 Work in progress..
-
-
-
-
 
 ## Usage
 
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-
-To run the pipeline you need to provide a parameter sheet (.csv file) that needs to have this specific structure: 
+To run the pipeline you need to provide a parameter sheet (.csv file) that needs to have this specific structure:
 Please get the basic tempalte file here ( include maybe link to template csv which can be found in the repo ?)
- `parametersheet.csv`
+`parametersheet.csv`
 
-Please specify which step you want to run with `--stage`. The following are valide options: 
+Please specify which step you want to run with `--stage`. The following are valide options:
 
 - 'intensity'
 - 'align'
@@ -83,7 +75,6 @@ Please specify which step you want to run with `--stage`. The following are vali
 - 'resample'
 - 'register'
 - 'process'
-
 
 Now, you can run the pipeline using:
 
@@ -96,12 +87,11 @@ nextflow run nf-core/lsmquant \
    --outdir <OUTDIR> \
    --parameter_file <filepath> \
    --sample_name <samplename> \
-   --stage <stage> 
+   --stage <stage>
 ```
 
 > [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
-> see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
+> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).
 
 For more details and further functionality, please refer to the [usage documentation](https://nf-co.re/lsmquant/usage) and the [parameter documentation](https://nf-co.re/lsmquant/parameters).
 
@@ -117,14 +107,11 @@ nf-core/lsmquant was originally written by Carolin Schwitalla.
 
 The pipeline is mainly based on the NuMorph (Nuclear-Based Morphometry) toolbox developed by Krupa et al., 2021.
 
->**NuMorph: Tools for cortical cellular phenotyping in tissue-cleared whole-brain images**
+> **NuMorph: Tools for cortical cellular phenotyping in tissue-cleared whole-brain images**
 >
->Krupa O, Fragola G, Hadden-Ford E, Mory JT, Liu T, Humphrey Z, Rees BW, Krishnamurthy A, Snider WD, Zylka MJ, Wu G, Xing L, Stein JL.
+> Krupa O, Fragola G, Hadden-Ford E, Mory JT, Liu T, Humphrey Z, Rees BW, Krishnamurthy A, Snider WD, Zylka MJ, Wu G, Xing L, Stein JL.
 >
->Cell Rep. 2021 Oct 12, doi: [10.1016/j.celrep.2021.109802](https://doi.org/10.1016%2Fj.celrep.2021.109802)
-
-
-
+> Cell Rep. 2021 Oct 12, doi: [10.1016/j.celrep.2021.109802](https://doi.org/10.1016%2Fj.celrep.2021.109802)
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 

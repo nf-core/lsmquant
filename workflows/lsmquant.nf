@@ -7,8 +7,7 @@ include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
 include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
 include { NUMORPH_PREPROCESSING  } from '../subworkflows/local/numorph_preprocessing'
-
-include { paramsSummaryMap       } from 'plugin/nf-validation'
+include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmquant_pipeline'
@@ -28,19 +27,18 @@ workflow LSMQUANT {
 
     take:
     sample_data
-    
 
     main:
 
     ch_versions = Channel.empty()
-    
+
 
     if (params.stage == 'full') {
         NUMORPH_PREPROCESSING (sample_data)
 
         def stitched_data = NUMORPH_PREPROCESSING.out.stitched
-        def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables   
- 
+        def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables
+
 
         NUMORPHRESAMPLE (
             stitched_data,
@@ -59,34 +57,19 @@ workflow LSMQUANT {
     }
     if (params.stage == 'preprocessing') {
         NUMORPH_PREPROCESSING (sample_data)
-        
+
     }
-
-    
-
-    
-
-    
-
-
-
-        
-
-    
     //
     // Collate and save software versions
     //
     softwareVersionsToYAML(ch_versions)
         .collectFile(
             storeDir: "${params.outdir}/pipeline_info",
-            name: 'nf_core_pipeline_software_mqc_versions.yml',
+            name: 'nf_core_'  +  'lsmquant_software_'  + 'mqc_'  + 'versions.yml',
             sort: true,
             newLine: true
         ).set { ch_collated_versions }
 
-    
-
-    
 }
 
 
