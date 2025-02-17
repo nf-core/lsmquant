@@ -2,7 +2,7 @@ process NUMORPHRESAMPLE {
     tag "$meta.id"
     label 'process_single'
 
-    container "numorph_analyze:latest"
+    container "carolinschwitalla/numorph_analyze:latest"
 
 
 

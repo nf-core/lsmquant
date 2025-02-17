@@ -10,16 +10,15 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["input", "outdir", "parameter_file", "sample_name", "stage"],
+            "required": ["input", "outdir"],
             "properties": {
                 "input": {
                     "type": "string",
-                    "format": "directory-path",
+                    "format": "file-path",
                     "exists": true,
-                    "description": "Path to raw / input image directory.",
-                    "help_text": " Path to the directory containing the raw images to be processed. The pipeline will search for images in this directory and its subdirectories. The pipeline expects the images to be in the OME-TIFF format.",
-                    "fa_icon": "fas fa-folder-open",
-                    "schema": false
+                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
+                    "help_text": " You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/testpipeline/usage#samplesheet-input).",
+                    "fa_icon": "fas fa-file-csv"
                 },
                 "outdir": {
                     "type": "string",
@@ -30,7 +29,7 @@
                 "stage": {
                     "type": "string",
                     "description": "The stage of the pipeline to run.",
-                    "help_text": "The stage of the pipeline to run. The pipeline has multiple stages that can be run separately or the complete pipeline can be run. Stages are: `intesity`, `align`, `stitch`, `resample`, `registartion`, `process`",
+                    "help_text": "The stage of the pipeline to run. The pipeline has multiple stages that can be run separately or the complete pipeline can be run. Stages are: `full`, `preprocess`",
                     "fa_icon": "fas fa-cogs"
                 },
                 "email": {

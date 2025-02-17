@@ -2,7 +2,7 @@ process NUMORPHREGISTER {
     tag "$meta.id"
     label 'process_single'
 
-    container "numorph_analyze:latest"
+    container "carolinschwitalla/numorph_analyze:latest"
 
     input:
     // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
