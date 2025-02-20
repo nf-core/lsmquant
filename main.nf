@@ -14,8 +14,6 @@
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
-//include { NUMORPH_PREPROCESSING } from './subworkflows/local/numorph_preprocessing'
 include { PIPELINE_INITIALISATION       } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
 include { PIPELINE_COMPLETION           } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
 include { LSMQUANT                      } from './workflows/lsmquant'
@@ -31,24 +29,11 @@ include { LSMQUANT                      } from './workflows/lsmquant'
 //
 workflow NFCORE_LSMQUANT {
     take:
-    ch_input // the sample sheet
+    samplesheet // channel: samplesheet read in from --input
 
     main:
-    Channel
-        .fromPath(ch_input)
-        .splitCsv(header: true)
-        .map { row ->
-            def meta = [id: row.sample_id]
-            tuple(meta, file(row.img_directory), file(row.parameter_file))
-        }
-        .set { sample_data }
 
-    LSMQUANT(sample_data)
-
-
-
-
-
+    LSMQUANT(samplesheet)
 
 }
 /*
@@ -76,7 +61,7 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_LSMQUANT (
-        params.input
+        PIPELINE_INITIALISATION.out.samplesheet
     )
     //
     // SUBWORKFLOW: Run completion tasks

@@ -1,25 +1,25 @@
 
 
 
-include { NUMORPHINTENSITY   } from '../../modules/local/numorphintensity.nf'
-include { NUMORPHALIGN       } from '../../modules/local/numorphalign.nf'
-include { NUMORPHSTITCH      } from '../../modules/local/numorphstitch.nf'
+include { NUMORPHINTENSITY   } from '../../modules/local/numorphintensity/'
+include { NUMORPHALIGN       } from '../../modules/local/numorphalign/'
+include { NUMORPHSTITCH      } from '../../modules/local/numorphstitch/'
 
 workflow NUMORPH_PREPROCESSING {
 
     take:
-    sample_data  // channel: [ val(meta), path(imf_directory), path(parameter_file) ]
+    samplesheet  // channel: [ val(meta), path(imf_directory), path(parameter_file) ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    NUMORPHINTENSITY (sample_data)
+    NUMORPHINTENSITY (samplesheet)
     def intensity_out = NUMORPHINTENSITY.out
 
 
     NUMORPHALIGN (
-        sample_data,
+        samplesheet,
         intensity_out.adj_params_mat,
         intensity_out.path_table_mat,
         intensity_out.thresholds_mat,
@@ -29,7 +29,7 @@ workflow NUMORPH_PREPROCESSING {
 
 
     NUMORPHSTITCH (
-        sample_data,
+        samplesheet,
         align_out.alignment_table_mat,
         align_out.z_displacement_align_mat,
         align_out.path_table_mat,

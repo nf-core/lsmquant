@@ -1,0 +1,22 @@
+nextflow_process {
+    name "Test Process Numorphresample"
+    script "../main.nf"
+    process "numorphresample"
+
+    test("Should run stub") {
+        options '-stub'
+
+        when {
+            process {
+
+            }
+        }
+        then {
+            asserts process.success
+            asserts process.out.path("results/resampled/*").exists()
+            asserts process.out.path("results/NM_variables.mat").exists()
+            asserts process.out.path("versions.yml").exists()
+            asserts process.out.versions.text.contains("numorphresample: 1.0")
+        }
+    }
+}

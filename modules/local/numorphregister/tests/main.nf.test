@@ -1,0 +1,24 @@
+nextflow_process {
+    name: "Test Process Numorphregister"
+    script: "../main.nf"
+    process: "numorphregister"
+
+    test("Should run stub") {
+        options '-stub'
+
+        when {
+            process {
+
+    }
+        }
+        then {
+            asserts process.success
+            asserts process.out.path("results/variables/reg_params.mat").exists()
+            asserts process.out.path("results/variables/*_mask.mat").exists()
+            asserts process.out.path("results/NM_variables.mat").exists()
+            asserts process.out.path("results/registered/*").exists()
+            asserts process.out.path("versions.yml").exists()
+            asserts process.out.versions.text.contains("numoprhregister: 1.0")
+        }
+    }
+}

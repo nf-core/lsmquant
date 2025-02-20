@@ -14,7 +14,7 @@ process NUMORPHSTITCH {
     path NM_variables
 
     output:
-    tuple val(meta),  path("results/stitched/*"), path(parameter_file)      , emit: stitched
+    tuple val(meta),  path("results/stitched/*")                            , emit: stitched
     path "results/variables/*"                                              , emit: variables
     path "results/NM_variables.mat"                                         , emit: NM_variables
     path "versions.yml"                                                     , emit: versions

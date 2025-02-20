@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process Numorphintensity"
+    script "../main.nf"
+    process "NUMORPHINTENSITY"
+
+    tag "lsmquant"
+    tag "stub"
+
+    test("Numorphintensity stub test") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromList([
+                    tuple([ id:'TEST1'],
+                    file('/home/schwitalla/Documents/test-datasets/test_data/images'),
+                    file('test-datasets/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
+                    ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+
+            )
+        }
+    }
+}

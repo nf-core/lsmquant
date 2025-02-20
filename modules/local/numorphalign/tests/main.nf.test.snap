@@ -1,0 +1,49 @@
+{
+    "Numorphalign stub test": {
+        "content": [
+            {
+                "0": [
+                    "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "1": [
+                    "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "2": [
+                    "alignment_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "3": [
+                    "z_displacement_align.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "4": [
+                    "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "5": [
+                    "versions.yml:md5,c413276640fb035336c7c5bc450abde3"
+                ],
+                "NM_variables": [
+                    "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "alignment_table_mat": [
+                    "alignment_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "path_table_mat": [
+                    "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "samples": [
+                    "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "versions": [
+                    "versions.yml:md5,c413276640fb035336c7c5bc450abde3"
+                ],
+                "z_displacement_align_mat": [
+                    "z_displacement_align.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-02-19T13:04:16.238937653"
+    }
+}
