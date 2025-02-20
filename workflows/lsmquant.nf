@@ -11,8 +11,8 @@ include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmquant_pipeline'
-include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample.nf'
-include { NUMORPHREGISTER        } from '../modules/local/numorphregister.nf'
+include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample/'
+include { NUMORPHREGISTER        } from '../modules/local/numorphregister/'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,7 +26,7 @@ include { NUMORPHREGISTER        } from '../modules/local/numorphregister.nf'
 workflow LSMQUANT {
 
     take:
-    sample_data
+    samplesheet // channel: samplesheet read in from --input
 
     main:
 
@@ -34,29 +34,42 @@ workflow LSMQUANT {
 
 
     if (params.stage == 'full') {
-        NUMORPH_PREPROCESSING (sample_data)
+        NUMORPH_PREPROCESSING (samplesheet)
 
-        def stitched_data = NUMORPH_PREPROCESSING.out.stitched
+        def stitched_output = NUMORPH_PREPROCESSING.out.stitched
         def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables
 
+        stitched_output
+            .join(samplesheet)
+            .map { meta, stitched, raw_img_directory, parameter_file ->
+                tuple(meta, stitched, parameter_file)
+            }
+            .set { stitched_data }
 
         NUMORPHRESAMPLE (
             stitched_data,
             NM_variables
         )
 
-        def resample_out = NUMORPHRESAMPLE.out
+        def resample_output = NUMORPHRESAMPLE.out.resampled
+
+        resample_output
+            .join(samplesheet)
+            .map { meta, resampled, raw_img_directory, parameter_file ->
+                tuple(meta, resampled, parameter_file)
+            }
+            .set { resample_data }
 
         NUMORPHREGISTER (
-            resample_out.resampled,
-            resample_out.NM_variables
+            resample_data,
+            NUMORPHRESAMPLE.out.NM_variables
         )
 
 
 
     }
     if (params.stage == 'preprocessing') {
-        NUMORPH_PREPROCESSING (sample_data)
+        NUMORPH_PREPROCESSING (samplesheet)
 
     }
     //
