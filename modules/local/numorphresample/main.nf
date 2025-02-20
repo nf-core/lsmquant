@@ -4,25 +4,15 @@ process NUMORPHRESAMPLE {
 
     container "carolinschwitalla/numorph_analyze:latest"
 
-
-
     input:
-    // TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-
     tuple val(meta), path(stitch_directory), path(parameter_file)
     path NM_variables
 
 
     output:
-    tuple val(meta), path("results/resampled/*"), path(parameter_file)                  , emit: resampled
-    path "results/NM_variables.mat"                                                     , emit: NM_variables
-    path "versions.yml"                                                                 , emit: versions
-
-    //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
-
+    tuple val(meta), path("results/resampled/*")                , emit: resampled
+    path "results/NM_variables.mat"                             , emit: NM_variables
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

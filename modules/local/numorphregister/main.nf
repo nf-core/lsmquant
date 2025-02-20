@@ -17,10 +17,6 @@ process NUMORPHREGISTER {
     path "versions.yml"                         , emit: versions
 
 
-
-            //errorStrategy { task.exitStatus == 249 ? 'ignore' : 'terminate' }
-
-
     when:
     task.ext.when == null || task.ext.when
 

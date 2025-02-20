@@ -51,11 +51,18 @@ workflow LSMQUANT {
             NM_variables
         )
 
-        def resample_out = NUMORPHRESAMPLE.out
+        def resample_output = NUMORPHRESAMPLE.out.resampled
+
+        resample_output
+            .join(samplesheet)
+            .map { meta, resampled, raw_img_directory, parameter_file ->
+                tuple(meta, resampled, parameter_file)
+            }
+            .set { resample_data }
 
         NUMORPHREGISTER (
-            resample_out.resampled,
-            resample_out.NM_variables
+            resample_data,
+            NUMORPHRESAMPLE.out.NM_variables
         )
 
 

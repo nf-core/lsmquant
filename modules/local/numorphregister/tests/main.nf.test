@@ -1,24 +1,42 @@
 nextflow_process {
-    name: "Test Process Numorphregister"
-    script: "../main.nf"
-    process: "numorphregister"
+    name "Test Process Numorphregister"
+    script "../main.nf"
+    process "NUMORPHREGISTER"
 
-    test("Should run stub") {
+    test("Numoprhregister stub test") {
         options '-stub'
-
+        setup {
+            run ("NUMORPHINTENSITY") {
+                script "../../numorphintensity/main.nf"
+                options '-stub'
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([ id:'TEST1'],
+                        file('/home/schwitalla/Documents/test-datasets/test_data/images'),
+                        file('test-datasets/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
+                    ])
+                    """
+                }
+            }
+        }
         when {
             process {
-
-    }
+                """
+                input[0] = Channel.fromList([
+                        tuple([ id:'TEST1'],
+                        file('/home/schwitalla/Documents/test-datasets/test_data/images'),
+                        file('test-datasets/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
+                    ])
+                input[1] = NUMORPHINTENSITY.out.NM_variables
+                """
+            }
         }
         then {
-            asserts process.success
-            asserts process.out.path("results/variables/reg_params.mat").exists()
-            asserts process.out.path("results/variables/*_mask.mat").exists()
-            asserts process.out.path("results/NM_variables.mat").exists()
-            asserts process.out.path("results/registered/*").exists()
-            asserts process.out.path("versions.yml").exists()
-            asserts process.out.versions.text.contains("numoprhregister: 1.0")
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
     }
 }
