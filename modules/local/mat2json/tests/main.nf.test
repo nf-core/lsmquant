@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process MAT2JSON"
+    script "../main.nf"
+    process "MAT2JSON"
+
+    tag "modules"
+    tag "modules_"
+    tag "mat2json"
+
+    test("matlab file conversion to json") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file('/mnt/ssd/numorph_testdata_s/module_testrun/output_nextflow/intensity/results/variables/thresholds.mat', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+
+            )
+        }
+
+    }
+
+    test("matlab file conversion to json - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file('/mnt/ssd/numorph_testdata_s/module_testrun/output_nextflow/intensity/results/variables/thresholds.mat', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

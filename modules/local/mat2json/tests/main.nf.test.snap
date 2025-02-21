@@ -1,0 +1,80 @@
+{
+    "matlab file conversion to json": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "thresholds.json:md5,88adeb36bb657798c80085b6a58ac58b",
+                            "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
+                        ]
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
+                ],
+                "converted_file": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "thresholds.json:md5,88adeb36bb657798c80085b6a58ac58b",
+                            "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-21T15:36:22.030027548"
+    },
+    "matlab file conversion to json - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.json:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
+                        ]
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
+                ],
+                "converted_file": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.json:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-21T15:36:26.450520824"
+    }
+}
