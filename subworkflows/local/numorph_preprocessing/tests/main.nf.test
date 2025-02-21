@@ -1,0 +1,39 @@
+nextflow_workflow {
+
+    name "Test Subworkflow NUMORPH_PREPROCESSING"
+    script "../main.nf"
+    workflow "NUMORPH_PREPROCESSING"
+
+    tag "subworkflows"
+    tag "subworkflows_"
+    tag "subworkflows/numorph_preprocessing"
+    tag "numorph"
+    tag "numorph preprocessing"
+    tag "numorph intensity"
+    tag "numorph align"
+    tag "numorph stitch"
+
+
+    test("Numorph Preprocessing") {
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.fromList([
+                    tuple([ id:'TEST1'],
+                    file('/home/schwitalla/Documents/test-datasets/test_data/images'),
+                    file('test-datasets/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}
