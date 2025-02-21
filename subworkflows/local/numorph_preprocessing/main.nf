@@ -1,9 +1,7 @@
 
-
-
-include { NUMORPHINTENSITY   } from '../../modules/local/numorphintensity/'
-include { NUMORPHALIGN       } from '../../modules/local/numorphalign/'
-include { NUMORPHSTITCH      } from '../../modules/local/numorphstitch/'
+include { NUMORPHINTENSITY   } from '../../../modules/local/numorphintensity/'
+include { NUMORPHALIGN       } from '../../../modules/local/numorphalign/'
+include { NUMORPHSTITCH      } from '../../../modules/local/numorphstitch/'
 
 workflow NUMORPH_PREPROCESSING {
 
