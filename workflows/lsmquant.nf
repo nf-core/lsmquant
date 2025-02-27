@@ -13,6 +13,7 @@ include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pi
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmquant_pipeline'
 include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample/'
 include { NUMORPHREGISTER        } from '../modules/local/numorphregister/'
+include { MAT2JSON               } from '../modules/local/mat2json'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

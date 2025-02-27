@@ -2,6 +2,7 @@
 include { NUMORPHINTENSITY   } from '../../../modules/local/numorphintensity/'
 include { NUMORPHALIGN       } from '../../../modules/local/numorphalign/'
 include { NUMORPHSTITCH      } from '../../../modules/local/numorphstitch/'
+include { MAT2JSON           } from '../../../modules/local/mat2json/'
 
 workflow NUMORPH_PREPROCESSING {
 
@@ -14,7 +15,20 @@ workflow NUMORPH_PREPROCESSING {
 
     NUMORPHINTENSITY (samplesheet)
     def intensity_out = NUMORPHINTENSITY.out
+    /*
+    intensity_out
+        .flatten()
+        .filter { file -> file.path.endsWith(".mat") }
+        .set { filtered_mat_files }
+    samplesheet
+        .combine(filtered_mat_files)
+        .map { meta, img_directory, parameter_file, matfile ->
+            tuple(meta, matfile)
+        }
+        .set { mat_files }
 
+    MAT2JSON (mat_files)
+    */
 
     NUMORPHALIGN (
         samplesheet,

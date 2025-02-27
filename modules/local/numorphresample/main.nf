@@ -1,6 +1,6 @@
 process NUMORPHRESAMPLE {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_high_long'
 
     container "carolinschwitalla/numorph_analyze:latest"
 
