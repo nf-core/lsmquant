@@ -14,6 +14,7 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmq
 include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample/'
 include { NUMORPHREGISTER        } from '../modules/local/numorphregister/'
 include { MAT2JSON               } from '../modules/local/mat2json'
+include { UNZIP                  } from '../modules/nf-core/unzip'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,6 +33,29 @@ workflow LSMQUANT {
     main:
 
     ch_versions = Channel.empty()
+
+
+    // if test profile
+    if ( workflow.profile.contains('test') ) {
+        params.stage = 'full'
+
+        samplesheet
+            .map { meta, img_directory, parameter_file ->
+                tuple(meta, img_directory)
+            }
+            .set { img_archive }
+
+        UNZIP (img_archive)
+
+        def unzipped_output = UNZIP.out.unzipped_archive
+
+        unzipped_output
+            .join(samplesheet)
+            .map { meta, unzipped, raw_img_directory, parameter_file ->
+                tuple(meta, unzipped, parameter_file)
+            }
+            .set { samplesheet }
+    }
 
 
     if (params.stage == 'full') {

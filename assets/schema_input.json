@@ -15,7 +15,8 @@
             },
             "img_directory": {
                 "type": "string",
-                "format": "directory-path",
+                "format": "directory-path, or zip archive for test profile",
+                "pattern": "^(https?://.*\\.zip|.*\\.zip|.*/)$",
                 "exists": true,
                 "errorMessage": "Image directory must be provided and must exist"
             },
