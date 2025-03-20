@@ -20,6 +20,7 @@ process NUMORPHRESAMPLE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def nm_variables = NM_variables ? "${NM_variables}" : ""
 
     """
     mkdir -p \$PWD/results/stitched/
@@ -28,7 +29,7 @@ process NUMORPHRESAMPLE {
 
     results="\$PWD/results"
 
-    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/results/stitched 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'resample' 'NM_variables' \$PWD/$NM_variables 'use_processed_images' 'stitched'
+    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/results/stitched 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'resample' 'NM_variables' \$PWD/$nm_variables 'use_processed_images' 'stitched'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

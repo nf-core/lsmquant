@@ -32,6 +32,12 @@
                     "help_text": "The stage of the pipeline to run. The pipeline has multiple stages that can be run separately or the complete pipeline can be run. Stages are: `full`, `preprocess`",
                     "fa_icon": "fas fa-cogs"
                 },
+                "ara_registration": {
+                    "type": "boolean",
+                    "description": "Performs Allen Reference Atlas registration of stitched images.",
+                    "help_text": "Performs Allen Reference Atlas registration of stitched images. This step is optional and can be skipped if the images are already registered.",
+                    "fa_icon": "fas fa-file-image"
+                },
                 "email": {
                     "type": "string",
                     "description": "Email address for completion summary.",

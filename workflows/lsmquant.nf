@@ -7,6 +7,7 @@ include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
 include { NUMORPHALIGN           } from '../modules/local/numorphalign'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
 include { NUMORPH_PREPROCESSING  } from '../subworkflows/local/numorph_preprocessing'
+include { ARAREGISTRATION        } from '../subworkflows/local/araregistration'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -35,7 +36,7 @@ workflow LSMQUANT {
     ch_versions = Channel.empty()
 
 
-    // if test profile
+    // if test profile then first data needs to be unzipped
     if ( workflow.profile.contains('test') ) {
         params.stage = 'full'
 
@@ -57,7 +58,7 @@ workflow LSMQUANT {
             .set { samplesheet }
     }
 
-
+    // the complete analysis workflow
     if (params.stage == 'full') {
         NUMORPH_PREPROCESSING (samplesheet)
 
@@ -71,33 +72,17 @@ workflow LSMQUANT {
             }
             .set { stitched_data }
 
-        NUMORPHRESAMPLE (
-            stitched_data,
-            NM_variables
-        )
-
-        def resample_output = NUMORPHRESAMPLE.out.resampled
-
-        resample_output
-            .join(samplesheet)
-            .map { meta, resampled, raw_img_directory, parameter_file ->
-                tuple(meta, resampled, parameter_file)
-            }
-            .set { resample_data }
-
-        NUMORPHREGISTER (
-            resample_data,
-            NUMORPHRESAMPLE.out.NM_variables
-        )
-
-
+        if (params.ara_registration) {
+            ARAREGISTRATION (stitched_data, NM_variables)
+        }
 
     }
+
     if (params.stage == 'preprocessing') {
         NUMORPH_PREPROCESSING (samplesheet)
 
     }
-    //
+
     // Collate and save software versions
     //
     softwareVersionsToYAML(ch_versions)
