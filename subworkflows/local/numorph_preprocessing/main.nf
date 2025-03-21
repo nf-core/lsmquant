@@ -1,8 +1,10 @@
 
-include { NUMORPHINTENSITY   } from '../../../modules/local/numorphintensity/'
-include { NUMORPHALIGN       } from '../../../modules/local/numorphalign/'
-include { NUMORPHSTITCH      } from '../../../modules/local/numorphstitch/'
-include { MAT2JSON           } from '../../../modules/local/mat2json/'
+include { NUMORPHINTENSITY                     } from '../../../modules/local/numorphintensity/'
+include { NUMORPHALIGN                         } from '../../../modules/local/numorphalign/'
+include { NUMORPHSTITCH                        } from '../../../modules/local/numorphstitch/'
+include { MAT2JSON as MAT2JSON_INT             } from '../../../modules/local/mat2json/'
+include { MAT2JSON as MAT2JSON_ALIGN           } from '../../../modules/local/mat2json/'
+include { MAT2JSON as MAT2JSON_STITCH          } from '../../../modules/local/mat2json/'
 
 workflow NUMORPH_PREPROCESSING {
 
@@ -12,23 +14,20 @@ workflow NUMORPH_PREPROCESSING {
     main:
 
     ch_versions = Channel.empty()
+    sample_meta = samplesheet.first().map { meta, img_dir, params -> meta }
+
 
     NUMORPHINTENSITY (samplesheet)
     def intensity_out = NUMORPHINTENSITY.out
-    /*
-    intensity_out
-        .flatten()
-        .filter { file -> file.path.endsWith(".mat") }
-        .set { filtered_mat_files }
-    samplesheet
-        .combine(filtered_mat_files)
-        .map { meta, img_directory, parameter_file, matfile ->
-            tuple(meta, matfile)
-        }
-        .set { mat_files }
 
-    MAT2JSON (mat_files)
-    */
+    // Create a tuple channel with all mat files and appropriate meta
+    sample_meta.combine(NUMORPHINTENSITY.out.adj_params_mat)
+    .mix(
+        sample_meta.combine(NUMORPHINTENSITY.out.path_table_mat),
+        sample_meta.combine(NUMORPHINTENSITY.out.thresholds_mat),
+        sample_meta.combine(NUMORPHINTENSITY.out.NM_variables)
+    )
+    .set { mat_files_ch }
 
     NUMORPHALIGN (
         samplesheet,
@@ -38,6 +37,14 @@ workflow NUMORPH_PREPROCESSING {
         intensity_out.NM_variables
     )
     def align_out = NUMORPHALIGN.out
+
+    sample_meta.combine(NUMORPHALIGN.out.alignment_table_mat)
+    .mix(
+        sample_meta.combine(NUMORPHALIGN.out.path_table_mat),
+        sample_meta.combine(NUMORPHALIGN.out.z_displacement_align_mat),
+        sample_meta.combine(NUMORPHALIGN.out.NM_variables)
+    )
+    .set { mat_files_align }
 
 
     NUMORPHSTITCH (
@@ -51,6 +58,18 @@ workflow NUMORPH_PREPROCESSING {
         )
 
     def stitch_out = NUMORPHSTITCH.out
+
+    stitch_out.variables
+        .flatten()
+        .filter { file -> file.toString().endsWith('.mat') }
+        .combine(sample_meta)
+        .map {file, meta -> tuple(meta, file) }
+        .set { mat_files_stitch }
+
+
+    MAT2JSON_INT (mat_files_ch, "intensity" )
+    MAT2JSON_ALIGN (mat_files_align, "align" )
+    MAT2JSON_STITCH (mat_files_stitch, "stitch" )
 
     emit:
 
