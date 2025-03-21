@@ -7,9 +7,10 @@ process MAT2JSON {
 
     input:
     tuple val(meta), path(matfile)
+    val process
 
     output:
-    tuple val(meta), path("*.*"),     emit: converted_file
+    tuple val(meta), path("${process}/*.*"),     emit: converted_file
     path "versions.yml"              ,     emit: versions
 
     when:
@@ -20,7 +21,12 @@ process MAT2JSON {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mkdir -p ${process}
+
     /usr/bin/mlrtapp/mat2json $matfile
+
+    mv -f *.json ${process}/ 2>/dev/null || true
+    mv -f *.csv ${process}/ 2>/dev/null || true
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

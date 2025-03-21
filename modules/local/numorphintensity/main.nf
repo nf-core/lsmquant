@@ -1,6 +1,6 @@
 process NUMORPHINTENSITY {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high_long'
 
 
     container "carolinschwitalla/numorph_preprocessing:latest"

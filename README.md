@@ -35,46 +35,44 @@
 
 ## Pipeline Summary
 
-The pipeline consists of three major stages, the `preprocessing`stage, the `registration`stage, and the `analysis` stage.
+The pipeline consists of two major stages, the `preprocessing`stage and the `analysis`stage.
 
 ### Preprocessing
 
-For raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope preprocessing can be performed to recostruct the 3D image in nifti (`.nii`) format for further analysis. The complete `preprocessing` workflow performs:
+Preprocessing is performed on raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope. Three individual steps are perfomed :
 
-- intensity adjustemnt of the images
-- image channel alignemnt for at least two different channels
-- image tile stitching to recustruct the full image for each channel and z-slice
-
-### Registration
-
-Currently only available for whole mouse brain samples, recostructed images in `.nii`format can be registerd to the Allen Reference Atlas (ARA) for functional brain region annotation. The workflow performs:
-
-- downsampling of the high resolution `.nii`images
-- registration to the ARA
+- Measuring and adjustemnts for intensities
+- Image channel alignemnt for at least two different channels
+- Image tile stitching to recustruct the full image for each channel and z-slice
 
 ### Analysis
 
-Analysis will include semantic segmentation of cell nuclei via 3D-Unet
+Analysis is performed using a 3D-Unet to qunatify the amount of cell-nuclei in the given sample. The quantification is performed on the nuclear channel only, assuming that the corresponding image file names contain the pattern `C1`.
 
-Work in progress..
+Optionally registration to the Allen Refernce Atlas (ARA) for functional brain region annotation can be perfomed before segmentation.
+This includes the following two steps:
+
+- Downsampling of the high resolution stitched images
+- Registration to the ARA
 
 ## Usage
 
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-To run the pipeline you need to provide a parameter sheet (.csv file) that needs to have this specific structure:
+To run the pipeline you need to provide a samplesheet with your data in the following structure:
+
+`samplesheet.csv`
+
+```bash
+sample_id,img_directory,parameter_file
+TEST1,path/to/image-files,path/to/parameter/file.csv
+```
+
+The parameter csv file includes sample specific parameters that are used for processing the given data.It needs to follow a specific structure.
+
 Please get the basic tempalte file here ( include maybe link to template csv which can be found in the repo ?)
 `parametersheet.csv`
-
-Please specify which step you want to run with `--stage`. The following are valide options:
-
-- 'intensity'
-- 'align'
-- 'stitch'
-- 'resample'
-- 'register'
-- 'process'
 
 Now, you can run the pipeline using:
 
@@ -83,10 +81,8 @@ Now, you can run the pipeline using:
 ```bash
 nextflow run nf-core/lsmquant \
    -profile <docker/singularity/.../institute> \
-   --input <path/to/image/folder> \
+   --input <samplesheet.csv> \
    --outdir <OUTDIR> \
-   --parameter_file <filepath> \
-   --sample_name <samplename> \
    --stage <stage>
 ```
 

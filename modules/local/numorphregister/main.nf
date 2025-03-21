@@ -1,6 +1,6 @@
 process NUMORPHREGISTER {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_high_long'
 
     container "carolinschwitalla/numorph_analyze:latest"
 
@@ -23,6 +23,7 @@ process NUMORPHREGISTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def nm_variables = NM_variables ? "${NM_variables}" : ""
 
     """
     mkdir -p \$PWD/results/variables/
@@ -33,7 +34,7 @@ process NUMORPHREGISTER {
 
     results="\$PWD/results"
 
-    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/$resampled_directory 'output_dir' \$PWD/results/ 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'register' 'NM_variables' \$PWD/$NM_variables 'use_processed_images' 'resampled'
+    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/$resampled_directory 'output_dir' \$PWD/results/ 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'register' 'NM_variables' \$PWD/$nm_variables 'use_processed_images' 'resampled'
 
 
     cat <<-END_VERSIONS > versions.yml
