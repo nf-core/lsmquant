@@ -19,19 +19,24 @@
 
 ## Introduction
 
-**nf-core/lsmquant** is a bioinformatics pipeline that performs preprocessing and analysis of light-sheet microscopy images of tissue cleard samples. The pipeline takes 2D single-channel 16-bit `.tif` images as input. The preprocessing consists of intesity adjustment, channel alignemnt, and tile stitching to reconstruct the 3D image. For mousebrain samples it offers a regsitration to the Allen Mouse Brain Reference Atlas for precise region annotation. Analysis of images can include call quantification via segmentation by a 3D-Unet and celltype classification by SVMs.
+**nf-core/lsmquant** is a bioinformatics pipeline that performs preprocessing and analysis of light-sheet microscopy images of tissue cleard samples. The pipeline takes 2D single-channel 16-bit `.tif` images as input. The preprocessing consists of intesity adjustment, channel alignemnt, and tile stitching to reconstruct the 3D image. For mousebrain samples it offers a regsitration to the Allen Mouse Brain Reference Atlas for precise region annotation. Cell nuclei quantification is perfomed on the nuclear channel by a 3D-Unet.
 
 <div style="text-align: center;">
-<img src="docs/images/lsmquant-metromap.png" alt="lasmquant metromap">
+<img src="docs/images/lsmquant_metromap.png" alt="lasmquant metromap">
 </div>
 
 ### Basic workflow
 
+**Preprocessing**
+
 1. Intensity Adjustment
 2. Channel Alignment
 3. Iterative Stitching
-4. Resampling (not added)
-5. Allen Referece Atlas Registration (not added)
+
+**Analysis**
+
+4. ARA Registration subworkflow (optional)
+5. Cell Nuclei Quantification
 
 ## Pipeline Summary
 
