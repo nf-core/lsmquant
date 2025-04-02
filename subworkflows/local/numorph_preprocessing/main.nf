@@ -27,6 +27,7 @@ workflow NUMORPH_PREPROCESSING {
         sample_meta.combine(NUMORPHINTENSITY.out.thresholds_mat),
         sample_meta.combine(NUMORPHINTENSITY.out.NM_variables)
     )
+    .groupTuple(by: 0)
     .set { mat_files_ch }
 
     NUMORPHALIGN (
@@ -44,6 +45,7 @@ workflow NUMORPH_PREPROCESSING {
         sample_meta.combine(NUMORPHALIGN.out.z_displacement_align_mat),
         sample_meta.combine(NUMORPHALIGN.out.NM_variables)
     )
+    .groupTuple(by: 0)
     .set { mat_files_align }
 
 
@@ -64,6 +66,7 @@ workflow NUMORPH_PREPROCESSING {
         .filter { file -> file.toString().endsWith('.mat') }
         .combine(sample_meta)
         .map {file, meta -> tuple(meta, file) }
+        .groupTuple()
         .set { mat_files_stitch }
 
 

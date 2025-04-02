@@ -16,48 +16,49 @@ You will need to create a samplesheet with information about the samples you wou
 --input '[path to samplesheet file]'
 ```
 
-### Multiple runs of the same sample
-
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
+Samplesheet header:
 
 ```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
+sample_id,img_directory,parameter_file
 ```
 
-### Full samplesheet
+| Column           | Description                                                     |
+| ---------------- | --------------------------------------------------------------- |
+| `sample_id`      | Custom sample name.                                             |
+| `img_directory`  | Full path to the image directory for the sample.                |
+| `parameter_file` | Full path to the corresponding parameter_file for the analysis. |
 
-The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below.
+### Single or Multiple samples
 
-A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice.
+The pipline always takes the samplesheet as input. For processing only one sample, you would only specify one sample in the samplesheet. The samplesheet below shows an example for processing multiple samples with the pipeline.
 
 ```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz
-CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,
-TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,
+sample_id,img_directory,parameter_file
+TEST1,/path/to/TEST1/,/path/to/params_TEST1.csv
+TEST2,/path/to/TEST2/,/path/to/params_TEST2.csv
+TEST3,/path/to/TEST3/,/path/to/params_TEST3.csv
 ```
 
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `fastq_1` | Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-| `fastq_2` | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
+If different samples should be processed with the same parameter set specified in the `params.csv`, you can use the same `params.csv` for different samples.
 
-An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+### Parameter file
+
+In the `parameter.csv` file you should specify processing parameters for your data and pipeline run. The `CSV` contains specific fields that are needed for the processes to run and only the value column should be modifyed. You can download a template parameter file [here](../assets/params_template_lsmquant.csv).
+An example row is displayed below:
+
+```csv title="params.csv"
+Parameter,Value
+z_window,5
+```
+
+The individual parameters are explained [here](#parameterexplanation)
 
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core/lsmquant --input ./samplesheet.csv --outdir ./results --genome GRCh37 -profile docker
+nextflow run nf-core/lsmquant --input ./samplesheet.csv --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.

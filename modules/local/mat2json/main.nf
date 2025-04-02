@@ -6,7 +6,7 @@ process MAT2JSON {
     container 'carolinschwitalla/mat2json:latest'
 
     input:
-    tuple val(meta), path(matfile)
+    tuple val(meta), path(matfiles)
     val process
 
     output:
@@ -22,8 +22,9 @@ process MAT2JSON {
 
     """
     mkdir -p ${process}
-
-    /usr/bin/mlrtapp/mat2json $matfile
+    for matfile in ${matfiles.join(' ')}; do
+        /usr/bin/mlrtapp/mat2json \$matfile
+    done
 
     mv -f *.json ${process}/ 2>/dev/null || true
     mv -f *.csv ${process}/ 2>/dev/null || true
