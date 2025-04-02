@@ -26,8 +26,12 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <summary>Output files</summary>
 
 - `Sample_id/intesnity/results`
+  - `NM_variables.mat`: Contains input and calculated parameters
   - `samples/`
-    - `mimi`
+    - `[channel]_x_y_z.tif`: Image comparing raw and adjusted image tiles for respective channel. Example for each tile of the middel z slice
+    - `flatfield_*.png`: Flatfield correction heatmap for each channel
+    - `tile_adj_*.png`: Heatmap of tile positions displaying illumination correction factor for each tile
+    - `y_adj_*.png`: Intensity correction factors along the Y-axis(using intensity profiles specifically for the LaVision Ultramicroscope II)
   - `variables/`
     - `adj_params.mat`: Correction parameters
     - `thresholds.mat`: Intensity thresholds per channel
@@ -35,7 +39,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 </details>
 
-NumorphIntensity.
+**NumorphIntensity** calculates intensity thresholds and performs intensity adjustments in the y dimension and between image tile stacks on raw images. The process includes the MATLAB implementation of [BaSiC](https://github.com/marrlab/BaSiC) for shading correction.
 
 ### NumorphAlign
 
@@ -43,8 +47,9 @@ NumorphIntensity.
 <summary>Output files</summary>
 
 - `Sample_id/alignment/results`
+  - `NM_variables.mat`: Contains input and calculated parameters
   - `samples/`
-    - `mimi`
+    - `Sample_id_*_full.tif`: Aligned image for each channel
   - `variables/`
     - `alignment_table.mat`: Alignment table
     - `z_displacement_align.mat`: Z displacement matrix for given channels to the reference
@@ -52,12 +57,15 @@ NumorphIntensity.
 
 </details>
 
+**NumorphAlign** performs rigid or non-rigind alignemnt of channels to a reference (nuclei) channel and determines z displacement per tile for each channel.
+
 ### NumorphStitch
 
 <details markdown="1">
 <summary>Output files</summary>
 
 - `Sample_id/stitching/results`
+  - `NM_variables.mat`: Contains input and calculated parameters
   - `stitched/`
     - `Sample_id_*_stitched.tif`: Stitched images per z slice
   - `variables/`
@@ -71,18 +79,30 @@ NumorphIntensity.
 
 </details>
 
+**NumorphStitch** performs 2D iterative stitching.
+
 ### NumorphResample
 
 <details markdown="1">
 <summary>Output files</summary>
 
+- `Sample_id/resampled/results`
+  - `NM_variables.mat`: Contains input and calculated parameters
+  - `Sample_id_*.nii`: Downsampled image
+
 </details>
+
+**NumorphResample** downsamples the image resolition to macht the Allen Reference Atlas resolution befor registration.
 
 ### NumorphRegister
 
 <details markdown="1">
 <summary>Output files</summary>
+
+- `Sample_id/results` - `NM_variables.mat`: Contains input and calculated parameters - `registered/*_MOV_*.nii`: Moving image from registration - `registered/*_REF_*.nii`: Reference imgae from registration - `variables/reg_params.mat`: Registration parameters
 </details>
+
+**NumorphRegister** performs image registration to the Allen Reference Atlas.
 
 ### Mat2JSON
 
@@ -90,8 +110,11 @@ NumorphIntensity.
 <summary>Output files</summary>
 
 - `process/`
+
   - `*.json/*.csv`: Converted mat file
   </details>
+
+  **Mat2JSON** converts a given `.mat`file into a `CSV` if the data is stored as a table datastructure or a `JSON` for other nested datastructures.
 
 ### Pipeline information
 
