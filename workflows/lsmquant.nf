@@ -16,6 +16,7 @@ include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample/'
 include { NUMORPHREGISTER        } from '../modules/local/numorphregister/'
 include { MAT2JSON               } from '../modules/local/mat2json'
 include { UNZIP                  } from '../modules/nf-core/unzip'
+include { NUMORPH3DUNET         } from '../modules/local/numorph3dunet'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,6 +77,10 @@ workflow LSMQUANT {
             ARAREGISTRATION (stitched_data, NM_variables)
         }
 
+        n_channels = channel.of(1)
+        model = channel.fromPath("/home/schwitalla/Documents/numorph_3dunet/src/numorph_3dunet/models/075_121_model.h5")
+
+        NUMORPH3DUNET (stitched_data, model, n_channels)
     }
 
     if (params.stage == 'preprocessing') {
