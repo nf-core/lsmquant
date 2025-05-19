@@ -1,5 +1,6 @@
 process NUMORPH3DUNET {
     tag "$meta.id"
+    label 'process_medium'
     label 'gpu'
 
 
@@ -38,12 +39,12 @@ process NUMORPH3DUNET {
         -o \$results \
         --model ${model} \
         --n_channels ${n_channels} \
-        --sample_name ${prefix} \
+        --sample_id ${prefix} \
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        numorph3dunet: \$(samtools --version |& sed '1!d ; s/samtools //')
+        numorph3dunet: 1.0
     END_VERSIONS
     """
 
