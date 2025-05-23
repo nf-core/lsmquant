@@ -19,6 +19,7 @@ workflow NUMORPH_PREPROCESSING {
 
     NUMORPHINTENSITY (samplesheet)
     def intensity_out = NUMORPHINTENSITY.out
+    ch_versions = ch_versions.mix(intensity_out.versions)
 
     // Create a tuple channel with all mat files and appropriate meta
     sample_meta.combine(NUMORPHINTENSITY.out.adj_params_mat)
@@ -38,6 +39,7 @@ workflow NUMORPH_PREPROCESSING {
         intensity_out.NM_variables
     )
     def align_out = NUMORPHALIGN.out
+    ch_versions = ch_versions.mix(align_out.versions)
 
     sample_meta.combine(NUMORPHALIGN.out.alignment_table_mat)
     .mix(
@@ -60,6 +62,7 @@ workflow NUMORPH_PREPROCESSING {
         )
 
     def stitch_out = NUMORPHSTITCH.out
+    ch_versions = ch_versions.mix(stitch_out.versions)
 
     stitch_out.variables
         .flatten()
@@ -73,6 +76,7 @@ workflow NUMORPH_PREPROCESSING {
     MAT2JSON_INT (mat_files_ch, "intensity" )
     MAT2JSON_ALIGN (mat_files_align, "align" )
     MAT2JSON_STITCH (mat_files_stitch, "stitch" )
+    ch_versions = ch_versions.mix(MAT2JSON_INT.out.versions)
 
     emit:
 
