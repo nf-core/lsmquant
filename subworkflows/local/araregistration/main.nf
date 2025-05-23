@@ -21,6 +21,7 @@ workflow ARAREGISTRATION {
         )
 
     def resample_output = NUMORPHRESAMPLE.out.resampled
+    ch_versions = ch_versions.mix(NUMORPHRESAMPLE.out.versions)
 
     resample_output
         .join(stitched_data)
@@ -33,6 +34,8 @@ workflow ARAREGISTRATION {
         resample_data,
         NUMORPHRESAMPLE.out.NM_variables
     )
+
+    ch_versions = ch_versions.mix(NUMORPHREGISTER.out.versions)
 
     emit:
 

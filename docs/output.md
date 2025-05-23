@@ -17,6 +17,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 - [NumorphStitch](#numoprhstitch) - Performs 2D iterative stitching of image tiles
 - [NumorphResample](#numorphresample) - Generate downsamppled images
 - [NumorphRegister](#numorphregister) - Performs registartion to the Allen Reference Atlas (ARA)
+- [Numorph3DUnet](#numorph3dunet) - Perfomrs cell-nuclei segmentation and quantification
 - [Mat2JSON] (#mat3json) - Converts `.mat`files to JSON
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
@@ -103,6 +104,19 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 </details>
 
 **NumorphRegister** performs image registration to the Allen Reference Atlas.
+
+### Numorph3DUnet
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `Sample_id/3DUnet/`
+  - `Sample_id_counts.csv`
+  - `Sample_id.csv`
+
+</details>
+
+**Numorph3DUnet** performs cell-nuclei segmentation and quantification from the nuclear channel.
 
 ### Mat2JSON
 

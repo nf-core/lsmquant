@@ -16,6 +16,7 @@ include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample/'
 include { NUMORPHREGISTER        } from '../modules/local/numorphregister/'
 include { MAT2JSON               } from '../modules/local/mat2json'
 include { UNZIP                  } from '../modules/nf-core/unzip'
+include { NUMORPH3DUNET         } from '../modules/local/numorph3dunet'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,7 +39,7 @@ workflow LSMQUANT {
 
     // if test profile then first data needs to be unzipped
     if ( workflow.profile.contains('test') ) {
-        params.stage = 'full'
+        params.stage = 'preprocessing'
 
         samplesheet
             .map { meta, img_directory, parameter_file ->
@@ -47,6 +48,7 @@ workflow LSMQUANT {
             .set { img_archive }
 
         UNZIP (img_archive)
+        ch_versions = ch_versions.mix(UNZIP.out.versions)
 
         def unzipped_output = UNZIP.out.unzipped_archive
 
@@ -64,6 +66,7 @@ workflow LSMQUANT {
 
         def stitched_output = NUMORPH_PREPROCESSING.out.stitched
         def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables
+        ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
 
         stitched_output
             .join(samplesheet)
@@ -74,8 +77,14 @@ workflow LSMQUANT {
 
         if (params.ara_registration) {
             ARAREGISTRATION (stitched_data, NM_variables)
+            ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
         }
 
+        n_channels = channel.of(1)
+        model = channel.fromPath("/home/schwitalla/Documents/numorph_3dunet/src/numorph_3dunet/models/075_121_model.h5")
+
+        NUMORPH3DUNET (stitched_data, model, n_channels)
+        ch_versions = ch_versions.mix(NUMORPH3DUNET.out.versions)
     }
 
     if (params.stage == 'preprocessing') {
