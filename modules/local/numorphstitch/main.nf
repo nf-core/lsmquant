@@ -41,7 +41,7 @@ process NUMORPHSTITCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        numorph: 1.0
+        numorphstitch: 1.0
     END_VERSIONS
     """
 

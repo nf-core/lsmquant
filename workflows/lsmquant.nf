@@ -89,6 +89,7 @@ workflow LSMQUANT {
 
     if (params.stage == 'preprocessing') {
         NUMORPH_PREPROCESSING (samplesheet)
+        ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
 
     }
 
