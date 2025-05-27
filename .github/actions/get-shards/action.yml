@@ -30,7 +30,7 @@ runs:
       run: |
         # Run nf-test with dynamic parameter
         nftest_output=$(nf-test test \
-          --profile +docker \
+          --profile docker \
           --tag ${{ inputs.tags }} \
           --dry-run \
           --ci \
