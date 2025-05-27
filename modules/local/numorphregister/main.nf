@@ -39,7 +39,7 @@ process NUMORPHREGISTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        numoprhregister: 1.0
+        numorphregister: 1.0
     END_VERSIONS
     """
 
@@ -58,7 +58,7 @@ process NUMORPHREGISTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        numoprhregister: 1.0
+        numorphregister: 1.0
     END_VERSIONS
     """
 }
