@@ -28,7 +28,7 @@ process NUMORPHINTENSITY {
     echo "Task working directory: \$PWD"
     mkdir -p results
 
-    ./usr/bin/mlrtapp/numorph_preprocessing 'input_dir' $img_directory 'output_dir' results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'intensity'
+    usr/bin/mlrtapp/numorph_preprocessing 'input_dir' $img_directory 'output_dir' results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'intensity'
 
 
     cat <<-END_VERSIONS > versions.yml
