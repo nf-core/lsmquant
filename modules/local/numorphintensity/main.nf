@@ -7,7 +7,7 @@ process NUMORPHINTENSITY {
 
 
     input:
-    tuple val(meta), path(img_directory, stageAs: 'img_directory'), path(parameter_file, stageAs: 'parameter_file')
+    tuple val(meta), path(img_directory, stageAs: 'img_directory/*'), path(parameter_file, stageAs: 'parameter_file')
 
     output:
     path "results/samples/intensity_adjustment/*"            , emit: samples
@@ -26,7 +26,7 @@ process NUMORPHINTENSITY {
 
     """
 
-    numorph_preprocessing 'input_dir' 'img_directory' 'output_dir' ./results 'parameter_file' 'parameter_file' 'sample_name' $meta.id 'stage' 'intensity'
+    numorph_preprocessing 'input_dir' img_directory 'output_dir' ./results 'parameter_file' parameter_file 'sample_name' $meta.id 'stage' 'intensity'
 
 
     cat <<-END_VERSIONS > versions.yml
