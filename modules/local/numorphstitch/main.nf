@@ -27,17 +27,20 @@ process NUMORPHSTITCH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
-    mkdir -p \$PWD/results/variables/
+    mkdir -p results/variables/
 
-    mv $alignment_table_mat \$PWD/results/variables
-    mv $z_displacement_align_mat \$PWD/results/variables
-    mv $thresholds_mat \$PWD/results/variables
-    mv $adj_params_mat \$PWD/results/variables
-    mv $path_table_mat \$PWD/results/variables
+    mv $alignment_table_mat results/variables
+    mv $z_displacement_align_mat results/variables
+    mv $thresholds_mat results/variables
+    mv $adj_params_mat results/variables
+    mv $path_table_mat results/variables
 
-    results="\$PWD/results"
+    # Resolve symlinks to get actual paths
+    REAL_IMG_DIR=\$(readlink -f ${img_directory})
+    REAL_PARAM_FILE=\$(readlink -f ${parameter_file})
+    REAL_OUTPUT_DIR=\$(readlink -f ./results)
 
-    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'stitch' 'NM_variables' \$PWD/$NM_variables
+    numorph_preprocessing 'input_dir' \$REAL_IMG_DIR 'output_dir' \$REAL_OUTPUT_DIR 'parameter_file' \$REAL_PARAM_FILE 'sample_name' $meta.id 'stage' 'stitch' 'NM_variables' \$PWD/$NM_variables
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

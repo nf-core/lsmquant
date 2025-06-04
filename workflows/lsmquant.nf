@@ -55,7 +55,8 @@ workflow LSMQUANT {
         unzipped_output
             .join(samplesheet)
             .map { meta, unzipped, raw_img_directory, parameter_file ->
-                tuple(meta, unzipped, parameter_file)
+                def img_files = file("${unzipped}")
+                tuple(meta, img_files, parameter_file)
             }
             .set { samplesheet }
     }

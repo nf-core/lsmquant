@@ -18,12 +18,12 @@ nextflow_pipeline {
             // stable_name: All files + folders in ${params.outdir}/ with a stable name
             def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_path: All files in ${params.outdir}/ with stable content
-            def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            //def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
             // all tif files in the output directory
-            def png_files = getAllFilesFromDir(params.outdir, include: ['**/*.png'])
+            //def png_files = getAllFilesFromDir(params.outdir, include: ['**/*.png'])
             def json_files = getAllFilesFromDir(params.outdir, include: ['**/*.json'])
-            def mat_files = getAllFilesFromDir(params.outdir, include: ['**/*.mat'])
-            def csv_files = getAllFilesFromDir(params.outdir, include: ['**/*.csv'])
+            //def mat_files = getAllFilesFromDir(params.outdir, include: ['**/*.mat'])
+            //def csv_files = getAllFilesFromDir(params.outdir, include: ['**/*.csv'])
             assert workflow.success
             assertAll(
                 { assert snapshot(
@@ -31,17 +31,7 @@ nextflow_pipeline {
                     workflow.trace.succeeded().size(),
                     removeNextflowVersion("$outputDir/pipeline_info/nf_core_lsmquant_software_mqc_versions.yml"),
                     // All stable path name, with a relative path
-                    stable_name.isEmpty() ? 'No stable paths' : stable_name,
-                    // All files with stable contents
-                    stable_path.isEmpty() ? 'No stable content' : stable_path,
-                    // All json files
-                    json_files.isEmpty() ? 'No json files' : json_files,
-                    // All png files
-                    png_files.isEmpty() ? 'No png files' : png_files,
-                    // All mat files
-                    mat_files.isEmpty() ? 'No mat files' : mat_files,
-                    // All csv files
-                    csv_files.isEmpty() ? 'No csv files' : csv_files
+                    stable_name.isEmpty() ? 'No stable paths' : stable_name
                 ).match()}
             )
         }

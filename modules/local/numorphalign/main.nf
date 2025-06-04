@@ -30,23 +30,20 @@ process NUMORPHALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo "Task working directory: \$PWD"
+    mkdir -p results/samples/
+    mkdir -p results/variables/
 
-    mkdir -p \$PWD/results/samples/
-    mkdir -p \$PWD/results/variables/
+    mv $adj_params_mat results/variables
+    mv $path_table_mat results/variables
+    mv $thresholds_mat results/variables
 
-    mv $adj_params_mat \$PWD/results/variables
-    mv $path_table_mat \$PWD/results/variables
-    mv $thresholds_mat \$PWD/results/variables
+    # Resolve symlinks to get actual paths
+    REAL_IMG_DIR=\$(readlink -f ${img_directory})
+    REAL_PARAM_FILE=\$(readlink -f ${parameter_file})
+    REAL_OUTPUT_DIR=\$(readlink -f ./results)
 
-    results="\$PWD/results"
-    echo \$results
+    numorph_preprocessing 'input_dir' \$REAL_IMG_DIR 'output_dir' \$REAL_OUTPUT_DIR 'parameter_file' \$REAL_PARAM_FILE 'sample_name' $meta.id 'stage' 'align' 'NM_variables' \$PWD/$NM_variables
 
-
-    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'align' 'NM_variables' \$PWD/$NM_variables
-
-    echo "my output files"
-    ls -lha \$PWD
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

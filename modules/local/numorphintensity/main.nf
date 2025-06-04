@@ -7,10 +7,10 @@ process NUMORPHINTENSITY {
 
 
     input:
-    tuple val(meta), path(img_directory, stageAs: 'img_directory/*'), path(parameter_file, stageAs: 'parameter_file')
+    tuple val(meta), path(img_directory), path(parameter_file)
 
     output:
-    path "results/samples/intensity_adjustment/*"            , emit: samples
+    path "results/samples/intensity_adjustment/"             , emit: samples
     path "results/variables/adj_params.mat"                  , emit: adj_params_mat
     path "results/variables/path_table.mat"                  , emit: path_table_mat
     path "results/variables/thresholds.mat"                  , emit: thresholds_mat
@@ -25,9 +25,14 @@ process NUMORPHINTENSITY {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mkdir -p results
 
-    numorph_preprocessing 'input_dir' img_directory 'output_dir' ./results 'parameter_file' parameter_file 'sample_name' $meta.id 'stage' 'intensity'
+    # Resolve symlinks to get actual paths
+    REAL_IMG_DIR=\$(readlink -f ${img_directory})
+    REAL_PARAM_FILE=\$(readlink -f ${parameter_file})
+    REAL_OUTPUT_DIR=\$(readlink -f ./results)
 
+    numorph_preprocessing 'input_dir' \$REAL_IMG_DIR 'output_dir' \$REAL_OUTPUT_DIR 'parameter_file' \$REAL_PARAM_FILE 'sample_name' $meta.id 'stage' 'intensity'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
