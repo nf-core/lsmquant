@@ -3,7 +3,7 @@ process NUMORPHINTENSITY {
     label 'process_high_long'
 
 
-    container "carolinschwitalla/numorph_preprocessing:latest"
+    container "carolinschwitalla/numorph_preprocessing_v2:latest"
 
 
     input:
@@ -21,18 +21,14 @@ process NUMORPHINTENSITY {
     task.ext.when == null || task.ext.when
 
     script:
+    def is_test_profile = workflow.profile.contains('test')
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir -p results
 
-    # Resolve symlinks to get actual paths
-    REAL_IMG_DIR=\$(readlink -f ${img_directory})
-    REAL_PARAM_FILE=\$(readlink -f ${parameter_file})
-    REAL_OUTPUT_DIR=\$(readlink -f ./results)
-
-    numorph_preprocessing 'input_dir' \$REAL_IMG_DIR 'output_dir' \$REAL_OUTPUT_DIR 'parameter_file' \$REAL_PARAM_FILE 'sample_name' $meta.id 'stage' 'intensity'
+    numorph_preprocessing_v2 'input_dir' ${img_directory} 'output_dir' ./results 'parameter_file' ${parameter_file} 'sample_name' $meta.id 'stage' 'intensity'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
