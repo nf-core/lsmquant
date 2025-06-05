@@ -10,12 +10,12 @@ process NUMORPHINTENSITY {
     tuple val(meta), path(img_directory), path(parameter_file)
 
     output:
-    path "results/samples/intensity_adjustment/"             , emit: samples
-    path "results/variables/adj_params.mat"                  , emit: adj_params_mat
-    path "results/variables/path_table.mat"                  , emit: path_table_mat
-    path "results/variables/thresholds.mat"                  , emit: thresholds_mat
-    path "results/NM_variables.mat"                          , emit: NM_variables
-    path "versions.yml"                                      , emit: versions
+    path "./results/samples/intensity_adjustment/"             , emit: samples
+    path "./results/variables/adj_params.mat"                  , emit: adj_params_mat
+    path "./results/variables/path_table.mat"                  , emit: path_table_mat
+    path "./results/variables/thresholds.mat"                  , emit: thresholds_mat
+    path "./results/NM_variables.mat"                          , emit: NM_variables
+    path "./versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
