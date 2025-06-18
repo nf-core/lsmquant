@@ -1,11 +1,12 @@
 nextflow_pipeline {
 
-    name "Test Workflow main.nf"
+    name "Test preprocess workflow stub"
     script "../main.nf"
-    tag "cpu"
-    tag "pipeline_lsmquant"
+    tag "stub"
 
-    test("-profile test, docker") {
+    test("-profile test, stub") {
+
+        options "-stub"
 
         when {
             params {
@@ -15,15 +16,8 @@ nextflow_pipeline {
         }
 
         then {
-            // stable_name: All files + folders in ${params.outdir}/ with a stable name
             def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
-            // stable_path: All files in ${params.outdir}/ with stable content
-            //def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
-            // all tif files in the output directory
-            //def png_files = getAllFilesFromDir(params.outdir, include: ['**/*.png'])
             def json_files = getAllFilesFromDir(params.outdir, include: ['**/*.json'])
-            //def mat_files = getAllFilesFromDir(params.outdir, include: ['**/*.mat'])
-            //def csv_files = getAllFilesFromDir(params.outdir, include: ['**/*.csv'])
             assert workflow.success
             assertAll(
                 { assert snapshot(

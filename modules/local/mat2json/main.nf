@@ -40,7 +40,10 @@ process MAT2JSON {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mkdir -p ${process}
     touch ${prefix}.json
+    mv -f *.json ${process}/ 2>/dev/null || true
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
