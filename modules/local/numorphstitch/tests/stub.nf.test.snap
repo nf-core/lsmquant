@@ -1,0 +1,57 @@
+{
+    "Numorphstitch stub test": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "TEST1"
+                        },
+                        "TEST1_stitched.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "adjusted_z.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "stitch_tforms.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "z_dips_matrix.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "3": [
+                    "versions.yml:md5,078a96bac91c7c12facb9f321644c34d"
+                ],
+                "NM_variables": [
+                    "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "stitched": [
+                    [
+                        {
+                            "id": "TEST1"
+                        },
+                        "TEST1_stitched.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "variables": [
+                    [
+                        "adjusted_z.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "stitch_tforms.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "z_dips_matrix.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,078a96bac91c7c12facb9f321644c34d"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.4"
+        },
+        "timestamp": "2025-06-20T17:24:22.715949045"
+    }
+}
