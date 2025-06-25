@@ -5,7 +5,6 @@ nextflow_pipeline {
     tag "stub"
 
     test("-profile test, stub") {
-
         options "-stub"
 
         when {
