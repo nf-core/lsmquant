@@ -2,7 +2,7 @@ process NUMORPHSTITCH {
     tag "$meta.id"
     label 'process_high_long'
 
-    container "carolinschwitalla/numorph_preprocessing:latest"
+    container "carolinschwitalla/numorph_preprocessing:0.9.0"
 
     input:
     tuple val(meta), path(img_directory), path(parameter_file)
@@ -27,21 +27,26 @@ process NUMORPHSTITCH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
-    mkdir -p \$PWD/results/variables/
+    mkdir -p results/variables/
 
-    mv $alignment_table_mat \$PWD/results/variables
-    mv $z_displacement_align_mat \$PWD/results/variables
-    mv $thresholds_mat \$PWD/results/variables
-    mv $adj_params_mat \$PWD/results/variables
-    mv $path_table_mat \$PWD/results/variables
+    mv ${alignment_table_mat} results/variables
+    mv ${z_displacement_align_mat} results/variables
+    mv ${thresholds_mat} results/variables
+    mv ${adj_params_mat} results/variables
+    mv ${path_table_mat} results/variables
 
-    results="\$PWD/results"
+    # resolve symlinks and paths
+    img_directory=\$(readlink -f ${img_directory})
+    parameter_file=\$(readlink -f ${parameter_file})
+    results_dir=\$(readlink -f ./results)
+    NM_variables=\$(readlink -f ${NM_variables})
 
-    /usr/bin/mlrtapp/numorph_preprocessing 'input_dir' \$PWD/$img_directory 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'stitch' 'NM_variables' \$PWD/$NM_variables
+    numorph_preprocessing 'input_dir' \$img_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'stitch' 'NM_variables' \$NM_variables
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        numorph: 1.0
+        numorphstitch: 1.0
     END_VERSIONS
     """
 
