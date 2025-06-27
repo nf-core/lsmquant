@@ -1,0 +1,31 @@
+{
+    "Numorph3DUnet stub test - tif": {
+        "content": [
+            {
+                "0": [
+                    [
+                        "TEST1.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "TEST1_counts.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,a48272c66a933f2bbbaa710df8129f03"
+                ],
+                "cellcounts": [
+                    [
+                        "TEST1.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "TEST1_counts.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,a48272c66a933f2bbbaa710df8129f03"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.4"
+        },
+        "timestamp": "2025-06-27T09:48:59.418625441"
+    }
+}
