@@ -55,7 +55,7 @@ process NUMORPH3DUNET {
     """
     mkdir -p \$PWD/results
     touch results/${prefix}.csv
-    touch results/${prefix}'_counts.csv
+    touch results/${prefix}_counts.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
