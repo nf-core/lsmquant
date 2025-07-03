@@ -5,6 +5,7 @@ process NUMORPH3DUNET {
 
 
     container "carolinschwitalla/numorph-3dunet:latest"
+    containerOptions '--gpus all'
 
     input:
     tuple val(meta), path(input_dir), path(parameter_file)
