@@ -45,7 +45,7 @@ jobs:
 
       - name: run nf-test-shard action
         id: set-shards
-        uses: ./.github/actions//get-shards
+        uses: ./.github/actions/get-shards
         env:
           NFT_VER: ${{ env.NFT_VER }}
         with:
@@ -60,7 +60,7 @@ jobs:
 
   nf-test-gpu:
     needs: [get-shards]
-    runs-on: "gpu"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
     name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }} | ${{ matrix.NXF_VER }} | ${{ matrix.filters }}"
     env:
       NXF_VER: ${{ matrix.NXF_VER }}
@@ -98,7 +98,9 @@ jobs:
           tags: "gpu"
 
   confirm-pass:
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass
+      - runner=2cpu-linux-x64
     needs: [nf-test-gpu]
     if: always()
     steps:
