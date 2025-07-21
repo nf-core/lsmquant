@@ -30,7 +30,9 @@ env:
 
 jobs:
   get-shards:
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-test-get-shards-gpu
+      - runner=2cpu-linux-x64
     name: "Get Shards"
     outputs:
       shard: ${{ steps.set-shards.outputs.shard }}
@@ -43,7 +45,7 @@ jobs:
 
       - name: run nf-test-shard action
         id: set-shards
-        uses: ./.github/actions/nf-test-shard
+        uses: ./.github/actions//get-shards
         env:
           NFT_VER: ${{ env.NFT_VER }}
         with:
