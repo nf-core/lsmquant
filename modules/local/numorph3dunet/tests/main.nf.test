@@ -84,8 +84,7 @@ nextflow_process {
                     stitched,
                     file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
                 }
-                input[1] = Channel.fromPath('/home/schwitalla/Documents/numorph_3dunet/src/numorph_3dunet/models/075_121_model.h5')
-                input[2] = Channel.from(1) // number of channels
+                input[1] = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
                 """
             }
         }

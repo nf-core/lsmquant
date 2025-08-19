@@ -81,10 +81,8 @@ workflow LSMQUANT {
             ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
         }
 
-        n_channels = channel.of(1)
-        model = channel.fromPath("/home/schwitalla/Documents/numorph_3dunet/src/numorph_3dunet/models/075_121_model.h5")
-
-        NUMORPH3DUNET (stitched_data, model, n_channels)
+        model_file = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
+        NUMORPH3DUNET (stitched_data, model_file)
         ch_versions = ch_versions.mix(NUMORPH3DUNET.out.versions)
     }
 
