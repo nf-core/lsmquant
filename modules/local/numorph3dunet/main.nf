@@ -1,11 +1,11 @@
 process NUMORPH3DUNET {
     tag "$meta.id"
-    label 'process_medium'
-    label 'gpu'
+    //label 'process_medium'
+    label 'process_gpu'
 
 
     container "carolinschwitalla/numorph-3dunet:latest"
-    containerOptions '--gpus all'
+
 
     input:
     tuple val(meta), path(img_directory), path(parameter_file)
