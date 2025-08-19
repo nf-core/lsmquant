@@ -38,6 +38,12 @@
                     "help_text": "Performs Allen Reference Atlas registration of stitched images. This step is optional and can be skipped if the images are already registered.",
                     "fa_icon": "fas fa-file-image"
                 },
+                "model_file": {
+                    "type": "string",
+                    "description": "Path to the pre-trained model file.",
+                    "help_text": "Path to the pre-trained model file for cell nuclei segmentation. It can be a local file path or the default is the URL to the model stored at Zenodo.",
+                    "fa_icon": "fas fa-file-image"
+                },
                 "email": {
                     "type": "string",
                     "description": "Email address for completion summary.",
