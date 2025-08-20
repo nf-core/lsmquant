@@ -39,6 +39,7 @@ process NUMORPH3DUNET {
     numorph_3dunet.predict \
         -i images \
         -o results \
+        -g 1 \
         --model_file ${model_file} \
         --sample_id ${prefix} \
         $args
