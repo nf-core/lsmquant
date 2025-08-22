@@ -1,0 +1,40 @@
+{
+    "Numorph3DUnet test - tif": {
+        "content": [
+            2,
+            [
+                "TEST1",
+                "TEST1/segmentation",
+                "TEST1/segmentation/TEST1.csv",
+                "TEST1/segmentation/TEST1_counts.csv",
+                "pipeline_info",
+                "unzipfiles",
+                "unzipfiles/TEST1",
+                "unzipfiles/TEST1/unet_test_img",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0001_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0002_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0003_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0004_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0005_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0006_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0007_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0008_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0009_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0010_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0011_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0012_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0013_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0014_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0015_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0016_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0017_C1_topro_stitched_cropped.tif",
+                "unzipfiles/TEST1/unet_test_img/TEST1_0018_C1_topro_stitched_cropped.tif"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.4"
+        },
+        "timestamp": "2025-08-22T14:38:25.745842362"
+    }
+}

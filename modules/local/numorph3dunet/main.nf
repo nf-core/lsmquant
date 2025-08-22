@@ -1,16 +1,15 @@
 process NUMORPH3DUNET {
     tag "$meta.id"
-    label 'process_medium'
-    label 'gpu'
+    //label 'process_medium'
+    label 'process_gpu'
 
 
     container "carolinschwitalla/numorph-3dunet:latest"
 
-    input:
-    tuple val(meta), path(input_dir), path(parameter_file)
-    path(model)
-    val n_channels
 
+    input:
+    tuple val(meta), path(img_directory), path(parameter_file)
+    path(model_file)
 
     output:
     path "results/*"              , emit: cellcounts
@@ -27,19 +26,17 @@ process NUMORPH3DUNET {
     source /opt/conda/etc/profile.d/conda.sh
     conda activate 3dunet
 
-    mkdir -p \$PWD/results
-    results="\$PWD/results"
+    mkdir -p ./results
+    mkdir -p ./images
 
-    mkdir -p \$PWD/input_dir
-    mv $input_dir \$PWD/input_dir
-    input_dir="\$PWD/input_dir"
+    # move images to images directory
+    mv ${img_directory} ./images/
 
-    numorph_3dunet.predict \
-        -i \$input_dir \
-        -o \$results \
-        --model ${model} \
-        --n_channels ${n_channels} \
-        --sample_id ${prefix} \
+    numorph_3dunet.predict \\
+        -i images/ \\
+        -o results \\
+        --model_file ${model_file} \\
+        --sample_id ${prefix} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
