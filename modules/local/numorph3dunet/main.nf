@@ -28,20 +28,15 @@ process NUMORPH3DUNET {
 
     mkdir -p ./results
     mkdir -p ./images
-    mv ${img_directory} ./images
 
+    # move images to images directory
+    mv ${img_directory} ./images/
 
-    # resolve symlinks and paths
-    # results_dir=\$(readlink -f ./results)
-    # img_directory=\$(readlink -f ${img_directory})
-    # parameter_file=\$(readlink -f ${parameter_file})
-
-    numorph_3dunet.predict \
-        -i images \
-        -o results \
-        -g 1 \
-        --model_file ${model_file} \
-        --sample_id ${prefix} \
+    numorph_3dunet.predict \\
+        -i images/ \\
+        -o results \\
+        --model_file ${model_file} \\
+        --sample_id ${prefix} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

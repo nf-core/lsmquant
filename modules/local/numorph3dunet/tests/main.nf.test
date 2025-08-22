@@ -8,81 +8,36 @@ nextflow_process {
     tag "modules_"
     tag "numorph3dunet"
     tag "gpu"
-    profile "test,gpu"
+    profile "docker,gpu"
+
+    config './nextflow.config'
 
     test("Numorph3DUnet test - tif") {
+
         setup {
-            run ("UNZIP") {
-                script "../../../nf-core/unzip/main.nf"
+            run ("UNZIPFILES") {
+                script "../../../nf-core/unzipfiles/main.nf"
                 process {
                     """
                     input[0] = Channel.fromList([
                         tuple([ id:'TEST1'],
-                        file('https://zenodo.org/records/14916478/files/ctip2_topro.zip'))
+                        file(params.pipelines_testdata_base_path + '/test_data/unet_test_images.zip'))
                     ])
                 """
                 }
             }
-            run ("NUMORPHINTENSITY") {
-                script "../../numorphintensity/main.nf"
-                process {
-                    """
-                    input[0] = UNZIP.out.unzipped_archive.map { meta, unzipped_archive ->
-                        tuple(
-                        meta,
-                        unzipped_archive,
-                        file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
-                    }
-                    """
-                }
-            }
-            run ("NUMORPHALIGN") {
-                script "../../numorphalign/main.nf"
-                process {
-                    """
-                    input[0] = UNZIP.out.unzipped_archive.map { meta, unzipped_archive ->
-                        tuple(
-                        meta,
-                        unzipped_archive,
-                        file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
-                    } //
-                    input[1] = NUMORPHINTENSITY.out.adj_params_mat
-                    input[2] = NUMORPHINTENSITY.out.path_table_mat
-                    input[3] = NUMORPHINTENSITY.out.thresholds_mat
-                    input[4] = NUMORPHINTENSITY.out.NM_variables
-                    """
-                }
-            }
-            run ("NUMORPHSTITCH") {
-                script "../../numorphstitch/main.nf"
-                process {
-                    """
-                    input[0] = UNZIP.out.unzipped_archive.map { meta, unzipped_archive ->
-                        tuple(
-                        meta,
-                        unzipped_archive,
-                        file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
-                    }
-                    input[1] = NUMORPHALIGN.out.alignment_table_mat
-                    input[2] = NUMORPHALIGN.out.z_displacement_align_mat
-                    input[3] = NUMORPHALIGN.out.path_table_mat
-                    input[4] = NUMORPHINTENSITY.out.thresholds_mat
-                    input[5] = NUMORPHINTENSITY.out.adj_params_mat
-                    input[6] = NUMORPHALIGN.out.NM_variables
-                    """
-                }
-            }
         }
+
         when {
             params {
                 outdir = "$workDir/output"
             }
             process {
                 """
-                input[0] = NUMORPHSTITCH.out.stitched.map { meta, stitched ->
+                input[0] = UNZIPFILES.out.files.map { meta, unzipped ->
                     tuple(
                     meta,
-                    stitched,
+                    unzipped,
                     file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
                 }
                 input[1] = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
