@@ -124,7 +124,6 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <summary>Output files</summary>
 
 - `process/`
-
   - `*.json/*.csv`: Converted mat file
   </details>
 
