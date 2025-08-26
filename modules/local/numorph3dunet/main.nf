@@ -1,6 +1,5 @@
 process NUMORPH3DUNET {
     tag "$meta.id"
-    //label 'process_medium'
     label 'process_gpu'
 
 
