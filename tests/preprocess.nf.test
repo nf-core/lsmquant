@@ -4,8 +4,9 @@ nextflow_pipeline {
     script "../main.nf"
     tag "cpu"
     tag "pipeline_lsmquant"
+    profile "test"
 
-    test("-profile test") {
+    test("-profile test preprocess") {
 
         when {
             params {

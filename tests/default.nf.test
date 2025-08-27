@@ -3,8 +3,10 @@ nextflow_pipeline {
     name "Test pipeline"
     script "../main.nf"
     tag "pipeline"
+    tag "gpu"
+    profile "docker,test_gpu"
 
-    test("-profile test") {
+    test("-profile test_gpu") {
 
         when {
             params {
