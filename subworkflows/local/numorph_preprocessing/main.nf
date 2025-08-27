@@ -9,7 +9,7 @@ include { MAT2JSON as MAT2JSON_STITCH          } from '../../../modules/local/ma
 workflow NUMORPH_PREPROCESSING {
 
     take:
-    samplesheet  // channel: [ val(meta), path(imf_directory), path(parameter_file) ]
+    samplesheet  // channel: [ val(meta), path(img_directory), path(parameter_file) ]
 
     main:
 
