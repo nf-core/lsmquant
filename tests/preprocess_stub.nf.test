@@ -3,7 +3,8 @@ nextflow_pipeline {
     name "Test preprocess workflow stub"
     script "../main.nf"
     tag "stub"
-    profile "docker"
+
+
 
     test("-profile test, stub") {
         options "-stub"

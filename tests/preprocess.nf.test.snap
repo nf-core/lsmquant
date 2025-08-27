@@ -1,5 +1,5 @@
 {
-    "-profile test": {
+    "-profile test preprocess": {
         "content": [
             7,
             {
@@ -305,8 +305,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-06-17T10:34:04.048462839"
+        "timestamp": "2025-08-27T15:18:36.331336339"
     }
 }
