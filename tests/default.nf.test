@@ -6,7 +6,7 @@ nextflow_pipeline {
     tag "gpu"
     profile "docker,test_gpu"
 
-    test("-profile test_gpu") {
+    test("default test gpu") {
 
         when {
             params {
