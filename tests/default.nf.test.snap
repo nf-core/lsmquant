@@ -306,28 +306,18 @@
             ],
             [
                 "z_displacement_align.json:md5,0eb5dab0b44ab3c5ceaa8b053ec250e0",
-                "stitch_tforms.json:md5,b5cc9b439f94631bee62e3f8315dd9aa",
                 "z_disp_matrix.json:md5,575020a27eee808b03c615e0a80ca506",
                 "z_displacement_align.json:md5,0eb5dab0b44ab3c5ceaa8b053ec250e0",
-                "TEST1.csv:md5,03ade2aa5a38d978f6b1dd34d741844a",
-                "TEST1_counts.csv:md5,466295dc5cb794e773520be014ee38ee",
                 "TEST1_ctip2_full.tif:md5,fb17be9f66140c674dad1c0eba3b7a2e",
                 "TEST1_topro_full.tif:md5,5e6784fc7062215bc6538ccccc49a5f4",
-                "z_displacement_align.mat:md5,39474b8b4f1f246e06f8fb0939989141",
                 "ctip2_1_1_11.tif:md5,fccec39adaa86a092dd7fca25b480234",
                 "ctip2_1_2_11.tif:md5,f7eb54ccc7add77d02d5463ff7898356",
                 "ctip2_2_1_11.tif:md5,684a579cc8df0800a11d2ff892c3938d",
                 "ctip2_2_2_11.tif:md5,5f4305e1581ccd4651fd750669e3b69a",
-                "flatfield_1.png:md5,d7bb0f7029a40b5a01836a1d76fcc4fe",
-                "flatfield_2.png:md5,aefc71f6dfef5a51abcfae55547a38b7",
-                "tile_adj_1.png:md5,2fb1fde009afe7d387d18af329cb5bc8",
-                "tile_adj_2.png:md5,e7aca3a27fd8df54327192d75e090ed6",
                 "topro_1_1_11.tif:md5,733e3e7bc32916dfcbc73c9c77404d69",
                 "topro_1_2_11.tif:md5,4652de23e14b9b3546c462d18a70e542",
                 "topro_2_1_11.tif:md5,918562924baffc0b99976837ef4b5121",
                 "topro_2_2_11.tif:md5,9f6a1c2b631a11cd675e96fd6e29c1b4",
-                "y_adj_1.png:md5,4658273b8bd4cd6f8ed8ef86c8b16cf7",
-                "y_adj_2.png:md5,3426316c88c10efc987d14df902218a8",
                 "TEST1_0001_C1_topro_stitched.tif:md5,317719086b501e2ff598b6378b5000bc",
                 "TEST1_0001_C2_ctip2_stitched.tif:md5,1425cb6fb2329192c34dabc4cdeb608b",
                 "TEST1_0002_C1_topro_stitched.tif:md5,acd2b0c07253e62a51a2211835ee8af3",
@@ -338,8 +328,6 @@
                 "TEST1_0004_C2_ctip2_stitched.tif:md5,42231c67bff5d7051ad9db89deeb0b81",
                 "TEST1_0005_C1_topro_stitched.tif:md5,808ba7185dbfe7acfccf390c64a68df3",
                 "TEST1_0005_C2_ctip2_stitched.tif:md5,529c88a62de7cb8a294c61ee38e43701",
-                "TEST1_0006_C1_topro_stitched.tif:md5,97b1952d5ae7ab10196a1fe02211db52",
-                "TEST1_0006_C2_ctip2_stitched.tif:md5,1e18a59e46c87ceec5e6b3e560bbfe59",
                 "TEST1_0007_C1_topro_stitched.tif:md5,7b0f423cdf9bc72519672ddf1a8c9ed2",
                 "TEST1_0007_C2_ctip2_stitched.tif:md5,28cb58d3ded0f479f71de60aee69108b",
                 "TEST1_0008_C1_topro_stitched.tif:md5,fc7b2560cc5f1ba4c335f8a1d7bbad07",
@@ -538,6 +526,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-08-28T18:17:22.248739072"
+        "timestamp": "2025-08-29T15:05:32.27113918"
     }
 }
