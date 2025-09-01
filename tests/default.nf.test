@@ -4,7 +4,6 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
     tag "gpu"
-    profile "docker,test_gpu"
 
     test("default test gpu") {
 
