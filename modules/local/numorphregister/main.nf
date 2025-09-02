@@ -34,7 +34,7 @@ process NUMORPHREGISTER {
 
     results="\$PWD/results"
 
-    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/$resampled_directory 'output_dir' \$PWD/results/ 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'register' 'NM_variables' \$PWD/$nm_variables 'use_processed_images' 'resampled'
+    numorph_analyze 'input_dir' \$PWD/$resampled_directory 'output_dir' \$PWD/results/ 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'register' 'NM_variables' \$PWD/$nm_variables 'use_processed_images' 'resampled'
 
 
     cat <<-END_VERSIONS > versions.yml

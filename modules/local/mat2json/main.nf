@@ -23,7 +23,7 @@ process MAT2JSON {
     """
     mkdir -p ${process}
     for matfile in ${matfiles.join(' ')}; do
-        /usr/bin/mlrtapp/mat2json \$matfile
+        mat2json \$matfile
     done
 
     mv -f *.json ${process}/ 2>/dev/null || true
