@@ -5,6 +5,7 @@ include { NUMORPHSTITCH                        } from '../../../modules/local/nu
 include { MAT2JSON as MAT2JSON_INT             } from '../../../modules/local/mat2json/'
 include { MAT2JSON as MAT2JSON_ALIGN           } from '../../../modules/local/mat2json/'
 include { MAT2JSON as MAT2JSON_STITCH          } from '../../../modules/local/mat2json/'
+include { softwareVersionsToYAML               } from '../../../subworkflows/nf-core/utils_nfcore_pipeline/'
 
 workflow NUMORPH_PREPROCESSING {
 
@@ -78,10 +79,20 @@ workflow NUMORPH_PREPROCESSING {
     MAT2JSON_STITCH (mat_files_stitch, "stitch" )
     ch_versions = ch_versions.mix(MAT2JSON_INT.out.versions)
 
+    // Collate and save software versions
+    //
+    softwareVersionsToYAML(ch_versions)
+        .collectFile(
+            storeDir: "${params.outdir}/pipeline_info",
+            name: 'nf_core_'  +  'lsmquant_software_'  + 'mqc_'  + 'versions.yml',
+            sort: true,
+            newLine: true
+        ).set { ch_collated_versions }
+
     emit:
 
     stitched                  = stitch_out.stitched                    // channel: [ path(stitched_dir) ]
-    intensity_thresholds      = intensity_out.thresholds_mat          // channel: [path(thresholds_mat) ]
-    NM_variables              = stitch_out.NM_variables             // channel: [path(NM_variables) ]
-    versions                  = ch_versions                           // channel: [ versions.yml ]
+    intensity_thresholds      = intensity_out.thresholds_mat           // channel: [path(thresholds_mat) ]
+    NM_variables              = stitch_out.NM_variables                // channel: [path(NM_variables) ]
+    versions                  = ch_collated_versions                   // channel: [ versions.yml ]
 }

@@ -2,7 +2,23 @@
     "Numorph Preprocessing": {
         "content": [
             7,
-            null,
+            {
+                "MAT2JSON_INT": {
+                    "mat2json": 1.0
+                },
+                "NUMORPHALIGN": {
+                    "numorphalign": 1.0
+                },
+                "NUMORPHINTENSITY": {
+                    "numorphintensity": 1.0
+                },
+                "NUMORPHSTITCH": {
+                    "numorphstitch": 1.0
+                },
+                "Workflow": {
+                    "nf-core/lsmquant": "v1.0dev"
+                }
+            },
             [
                 "mat2json",
                 "mat2json/align",
@@ -105,6 +121,7 @@
                 "numorphstitch/TEST1/variables/z_disp_matrix.mat",
                 "numorphstitch/TEST1/variables/z_displacement_align.mat",
                 "pipeline_info",
+                "pipeline_info/nf_core_lsmquant_software_mqc_versions.yml",
                 "unzip",
                 "unzip/TEST1",
                 "unzip/TEST1/ctip2_topro",
@@ -284,57 +301,21 @@
                 "z_displacement_align.json:md5,0eb5dab0b44ab3c5ceaa8b053ec250e0",
                 "TEST1_ctip2_full.tif:md5,fb17be9f66140c674dad1c0eba3b7a2e",
                 "TEST1_topro_full.tif:md5,5e6784fc7062215bc6538ccccc49a5f4",
-                "z_displacement_align.mat:md5,3c5408fc956ac909d9f05897ae81c891",
+                "z_displacement_align.mat:md5,f45d3b73e985017dbfb7c7562bfe5fa4",
                 "ctip2_1_1_11.tif:md5,fccec39adaa86a092dd7fca25b480234",
                 "ctip2_1_2_11.tif:md5,f7eb54ccc7add77d02d5463ff7898356",
                 "ctip2_2_1_11.tif:md5,684a579cc8df0800a11d2ff892c3938d",
                 "ctip2_2_2_11.tif:md5,5f4305e1581ccd4651fd750669e3b69a",
-                "flatfield_1.png:md5,cabebe657f8d47f1f0268ed2b878e536",
-                "flatfield_2.png:md5,7946f0e6721852ae88e2a97031bef965",
-                "tile_adj_1.png:md5,fe7845aaa92cdf1d701096b78de93f8a",
-                "tile_adj_2.png:md5,06a3cb1c09c6a6dddd23fc536b5cc0af",
+                "flatfield_1.png:md5,97404fc8aac033969c1911224bf01c20",
+                "flatfield_2.png:md5,b21b01116bc523cf597915836bf2c42d",
+                "tile_adj_1.png:md5,b9e6c24c999f7ad9a0b012602b3f1b54",
+                "tile_adj_2.png:md5,8da66e606f181adf526ab8f1e6e87c50",
                 "topro_1_1_11.tif:md5,733e3e7bc32916dfcbc73c9c77404d69",
                 "topro_1_2_11.tif:md5,4652de23e14b9b3546c462d18a70e542",
                 "topro_2_1_11.tif:md5,918562924baffc0b99976837ef4b5121",
                 "topro_2_2_11.tif:md5,9f6a1c2b631a11cd675e96fd6e29c1b4",
-                "y_adj_1.png:md5,86a6d9eda5b531b7c064ce49fbf93e66",
-                "y_adj_2.png:md5,acd862baaf892f48a985dc95ee2bb9f8",
-                "TEST1_0001_C1_topro_stitched.tif:md5,317719086b501e2ff598b6378b5000bc",
-                "TEST1_0001_C2_ctip2_stitched.tif:md5,1425cb6fb2329192c34dabc4cdeb608b",
-                "TEST1_0002_C1_topro_stitched.tif:md5,acd2b0c07253e62a51a2211835ee8af3",
-                "TEST1_0002_C2_ctip2_stitched.tif:md5,b7836b5a8128d5624370dcff2d856150",
-                "TEST1_0003_C1_topro_stitched.tif:md5,6933ba04253290df92563ca7325fb5bb",
-                "TEST1_0003_C2_ctip2_stitched.tif:md5,da0da4d07b03c84ab954b49c4452a43c",
-                "TEST1_0004_C1_topro_stitched.tif:md5,17380c9c3bd67ea205a8ad69d696f6c6",
-                "TEST1_0004_C2_ctip2_stitched.tif:md5,42231c67bff5d7051ad9db89deeb0b81",
-                "TEST1_0005_C1_topro_stitched.tif:md5,808ba7185dbfe7acfccf390c64a68df3",
-                "TEST1_0005_C2_ctip2_stitched.tif:md5,529c88a62de7cb8a294c61ee38e43701",
-                "TEST1_0006_C1_topro_stitched.tif:md5,97b1952d5ae7ab10196a1fe02211db52",
-                "TEST1_0006_C2_ctip2_stitched.tif:md5,1e18a59e46c87ceec5e6b3e560bbfe59",
-                "TEST1_0007_C1_topro_stitched.tif:md5,7b0f423cdf9bc72519672ddf1a8c9ed2",
-                "TEST1_0007_C2_ctip2_stitched.tif:md5,28cb58d3ded0f479f71de60aee69108b",
-                "TEST1_0008_C1_topro_stitched.tif:md5,fc7b2560cc5f1ba4c335f8a1d7bbad07",
-                "TEST1_0008_C2_ctip2_stitched.tif:md5,f83338d7cc9ad0edf821740a3e099551",
-                "TEST1_0009_C1_topro_stitched.tif:md5,8577e1c25565d821454a649af56f26a5",
-                "TEST1_0009_C2_ctip2_stitched.tif:md5,732e3383f5fa11e268b8c06383962cd7",
-                "TEST1_0010_C1_topro_stitched.tif:md5,1d74b4614291da7c113ca8ccfc401d4f",
-                "TEST1_0010_C2_ctip2_stitched.tif:md5,4b221f6bdbea74f19a25a7d538706b22",
-                "TEST1_0011_C1_topro_stitched.tif:md5,878c9f781913909444e9b8c41b1b0d35",
-                "TEST1_0011_C2_ctip2_stitched.tif:md5,957f0006cdf0ae6042f48ff96f4047b8",
-                "TEST1_0012_C1_topro_stitched.tif:md5,d4b1f55d2d49d202073914104ca1c6a1",
-                "TEST1_0012_C2_ctip2_stitched.tif:md5,f822aef32fa1db9adbbfd77874e0677c",
-                "TEST1_0013_C1_topro_stitched.tif:md5,23f0b137845b4ab97bcadcc8e79a919f",
-                "TEST1_0013_C2_ctip2_stitched.tif:md5,80ff9f38cf9234528001774382f4517d",
-                "TEST1_0014_C1_topro_stitched.tif:md5,b9dee935166a2c5b397e26bfc2e1e84a",
-                "TEST1_0014_C2_ctip2_stitched.tif:md5,13e3b82bb65c1cd731624d523f2eef19",
-                "TEST1_0015_C1_topro_stitched.tif:md5,92f9c0faa413b03af76aa7927799b66f",
-                "TEST1_0015_C2_ctip2_stitched.tif:md5,609280edb271acc6820f0deefa0576f7",
-                "TEST1_0016_C1_topro_stitched.tif:md5,26e73500b59443cb94aa73c0c45f87c6",
-                "TEST1_0016_C2_ctip2_stitched.tif:md5,ae48a90a29a518e3cd121c91b8e4955c",
-                "TEST1_0017_C1_topro_stitched.tif:md5,6d9aa1739003ecb59900dad867a094b0",
-                "TEST1_0017_C2_ctip2_stitched.tif:md5,fb252141f1e9c3344c44acb97bf6b9f6",
-                "TEST1_0018_C1_topro_stitched.tif:md5,685c86092c751a15c7bc692af8ea9202",
-                "TEST1_0018_C2_ctip2_stitched.tif:md5,2c559e7593d692e1b399a9de4f83e250",
+                "y_adj_1.png:md5,d41cf27eb6e3206923ce86957d98802b",
+                "y_adj_2.png:md5,0d357328a855187c2dce2034834d61bd",
                 "16-35-34_WT7R_ctip2_topro_2-5x_0-085NA_4z_UltraII[02 x 02]_C00_xyz-Table Z0600.ome.tif:md5,5bceac0b61030e08808592c7bf3e8db0",
                 "16-35-34_WT7R_ctip2_topro_2-5x_0-085NA_4z_UltraII[02 x 02]_C00_xyz-Table Z0601.ome.tif:md5,da76c202e5baea80914bb2c0fb357aa3",
                 "16-35-34_WT7R_ctip2_topro_2-5x_0-085NA_4z_UltraII[02 x 02]_C00_xyz-Table Z0602.ome.tif:md5,f940ea6590a93301006d990bb1149c49",
@@ -509,6 +490,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-08-29T10:47:01.7906535"
+        "timestamp": "2025-09-03T11:10:04.792746217"
     }
 }

@@ -6,9 +6,6 @@
                 "MAT2JSON_INT": {
                     "mat2json": 1.0
                 },
-                "NUMORPH3DUNET": {
-                    "numorph3dunet": 1.0
-                },
                 "NUMORPHALIGN": {
                     "numorphalign": 1.0
                 },
@@ -17,6 +14,9 @@
                 },
                 "NUMORPHSTITCH": {
                     "numorphstitch": 1.0
+                },
+                "NUMORPH3DUNET": {
+                    "numorph3dunet": 1.0
                 },
                 "UNZIP": {
                     "7za": 16.02
@@ -73,15 +73,14 @@
                 "TEST1.json:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "TEST1.json:md5,d41d8cd98f00b204e9800998ecf8427e",
                 "TEST1.json:md5,d41d8cd98f00b204e9800998ecf8427e",
-                "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e",
-                "TEST1_stitched.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-01T13:52:09.520222007"
+        "timestamp": "2025-09-03T11:41:32.289727712"
     },
     "default test gpu": {
         "content": [
@@ -89,9 +88,6 @@
             {
                 "MAT2JSON_INT": {
                     "mat2json": 1.0
-                },
-                "NUMORPH3DUNET": {
-                    "numorph3dunet": 1.0
                 },
                 "NUMORPHALIGN": {
                     "numorphalign": 1.0
@@ -101,6 +97,9 @@
                 },
                 "NUMORPHSTITCH": {
                     "numorphstitch": 1.0
+                },
+                "NUMORPH3DUNET": {
+                    "numorph3dunet": 1.0
                 },
                 "UNZIP": {
                     "7za": 16.02
@@ -402,40 +401,6 @@
                 "topro_1_2_11.tif:md5,4652de23e14b9b3546c462d18a70e542",
                 "topro_2_1_11.tif:md5,918562924baffc0b99976837ef4b5121",
                 "topro_2_2_11.tif:md5,9f6a1c2b631a11cd675e96fd6e29c1b4",
-                "TEST1_0001_C1_topro_stitched.tif:md5,317719086b501e2ff598b6378b5000bc",
-                "TEST1_0001_C2_ctip2_stitched.tif:md5,1425cb6fb2329192c34dabc4cdeb608b",
-                "TEST1_0002_C1_topro_stitched.tif:md5,acd2b0c07253e62a51a2211835ee8af3",
-                "TEST1_0002_C2_ctip2_stitched.tif:md5,b7836b5a8128d5624370dcff2d856150",
-                "TEST1_0003_C1_topro_stitched.tif:md5,6933ba04253290df92563ca7325fb5bb",
-                "TEST1_0003_C2_ctip2_stitched.tif:md5,da0da4d07b03c84ab954b49c4452a43c",
-                "TEST1_0004_C1_topro_stitched.tif:md5,17380c9c3bd67ea205a8ad69d696f6c6",
-                "TEST1_0004_C2_ctip2_stitched.tif:md5,42231c67bff5d7051ad9db89deeb0b81",
-                "TEST1_0005_C1_topro_stitched.tif:md5,808ba7185dbfe7acfccf390c64a68df3",
-                "TEST1_0005_C2_ctip2_stitched.tif:md5,529c88a62de7cb8a294c61ee38e43701",
-                "TEST1_0007_C1_topro_stitched.tif:md5,7b0f423cdf9bc72519672ddf1a8c9ed2",
-                "TEST1_0007_C2_ctip2_stitched.tif:md5,28cb58d3ded0f479f71de60aee69108b",
-                "TEST1_0008_C1_topro_stitched.tif:md5,fc7b2560cc5f1ba4c335f8a1d7bbad07",
-                "TEST1_0008_C2_ctip2_stitched.tif:md5,f83338d7cc9ad0edf821740a3e099551",
-                "TEST1_0009_C1_topro_stitched.tif:md5,8577e1c25565d821454a649af56f26a5",
-                "TEST1_0009_C2_ctip2_stitched.tif:md5,732e3383f5fa11e268b8c06383962cd7",
-                "TEST1_0010_C1_topro_stitched.tif:md5,1d74b4614291da7c113ca8ccfc401d4f",
-                "TEST1_0010_C2_ctip2_stitched.tif:md5,4b221f6bdbea74f19a25a7d538706b22",
-                "TEST1_0011_C1_topro_stitched.tif:md5,878c9f781913909444e9b8c41b1b0d35",
-                "TEST1_0011_C2_ctip2_stitched.tif:md5,957f0006cdf0ae6042f48ff96f4047b8",
-                "TEST1_0012_C1_topro_stitched.tif:md5,d4b1f55d2d49d202073914104ca1c6a1",
-                "TEST1_0012_C2_ctip2_stitched.tif:md5,f822aef32fa1db9adbbfd77874e0677c",
-                "TEST1_0013_C1_topro_stitched.tif:md5,23f0b137845b4ab97bcadcc8e79a919f",
-                "TEST1_0013_C2_ctip2_stitched.tif:md5,80ff9f38cf9234528001774382f4517d",
-                "TEST1_0014_C1_topro_stitched.tif:md5,b9dee935166a2c5b397e26bfc2e1e84a",
-                "TEST1_0014_C2_ctip2_stitched.tif:md5,13e3b82bb65c1cd731624d523f2eef19",
-                "TEST1_0015_C1_topro_stitched.tif:md5,92f9c0faa413b03af76aa7927799b66f",
-                "TEST1_0015_C2_ctip2_stitched.tif:md5,609280edb271acc6820f0deefa0576f7",
-                "TEST1_0016_C1_topro_stitched.tif:md5,26e73500b59443cb94aa73c0c45f87c6",
-                "TEST1_0016_C2_ctip2_stitched.tif:md5,ae48a90a29a518e3cd121c91b8e4955c",
-                "TEST1_0017_C1_topro_stitched.tif:md5,6d9aa1739003ecb59900dad867a094b0",
-                "TEST1_0017_C2_ctip2_stitched.tif:md5,fb252141f1e9c3344c44acb97bf6b9f6",
-                "TEST1_0018_C1_topro_stitched.tif:md5,685c86092c751a15c7bc692af8ea9202",
-                "TEST1_0018_C2_ctip2_stitched.tif:md5,2c559e7593d692e1b399a9de4f83e250",
                 "16-35-34_WT7R_ctip2_topro_2-5x_0-085NA_4z_UltraII[02 x 02]_C00_xyz-Table Z0600.ome.tif:md5,5bceac0b61030e08808592c7bf3e8db0",
                 "16-35-34_WT7R_ctip2_topro_2-5x_0-085NA_4z_UltraII[02 x 02]_C00_xyz-Table Z0601.ome.tif:md5,da76c202e5baea80914bb2c0fb357aa3",
                 "16-35-34_WT7R_ctip2_topro_2-5x_0-085NA_4z_UltraII[02 x 02]_C00_xyz-Table Z0602.ome.tif:md5,f940ea6590a93301006d990bb1149c49",
@@ -610,6 +575,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-08-29T15:05:32.27113918"
+        "timestamp": "2025-09-03T11:39:01.448246884"
     }
 }
