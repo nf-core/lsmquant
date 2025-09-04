@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules_"
     tag "numorph3dunet"
     tag "gpu"
-    //profile "docker,gpu"
+    profile "gpu"
 
     config './nextflow.config'
 
