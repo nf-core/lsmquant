@@ -27,7 +27,7 @@ process NUMORPH3DUNET {
 
     echo "GPU devices:"
     ls -lha /dev/nvidia* || echo "No nvidia devices found"
-    echo "CUDA_VISIBLE_DEVICES: \$CUDA_VISIBLE_DEVICES"
+
     echo "Checking GPU access:"
     nvidia-smi || echo "No nvidia-smi found"
 
