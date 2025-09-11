@@ -88,6 +88,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Test CUDA
+        run: |
+          nvidia-smi -L
+
+      - name: Enable Nextflow debug logging
+        run: echo "NXF_DEBUG=2" >> $GITHUB_ENV
+
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test
         with:
@@ -96,6 +103,10 @@ jobs:
           total_shards: ${{ needs.get-shards.outputs.total_shards }}
           filters: ${{ matrix.filters }}
           tags: "gpu"
+
+      - name: Show Singularity run commands
+        run: |
+          grep "singularity exec" .nextflow.log || echo "No singularity exec found"
 
   confirm-pass:
     runs-on:
