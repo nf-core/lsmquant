@@ -106,7 +106,7 @@ jobs:
 
       - name: Show Singularity run commands
         run: |
-          grep "singularity exec" .nextflow.log || echo "No singularity exec found"
+          find . -name ".nextflow.log" -exec grep "singularity exec" {} + || echo "No singularity exec found"
 
   confirm-pass:
     runs-on:
