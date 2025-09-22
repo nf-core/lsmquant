@@ -32,9 +32,13 @@ process NUMORPHREGISTER {
 
     mv $resampled_directory \$PWD/results/resampled
 
-    results="\$PWD/results"
+    #resolve symlinks and paths
+    resampled_directory=\$(readlink -f ./results/resampled/)
+    parameter_file=\$(readlink -f ${parameter_file})
+    NM_variables=\$(readlink -f ${NM_variables})
+    results_dir=\$(readlink -f ./results)
 
-    numorph_analyze 'input_dir' \$PWD/$resampled_directory 'output_dir' \$PWD/results/ 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'register' 'NM_variables' \$PWD/$nm_variables 'use_processed_images' 'resampled'
+    numorph_analyze 'input_dir' \$resampled_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'register' 'NM_variables' \$NM_variables 'use_processed_images' 'resampled'
 
 
     cat <<-END_VERSIONS > versions.yml
