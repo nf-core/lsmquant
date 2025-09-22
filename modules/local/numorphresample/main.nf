@@ -23,13 +23,17 @@ process NUMORPHRESAMPLE {
     def nm_variables = NM_variables ? "${NM_variables}" : ""
 
     """
-    mkdir -p \$PWD/results/stitched/
+    mkdir -p results/stitched/
 
-    mv $stitch_directory \$PWD/results/stitched
+    mv $stitch_directory results/stitched
 
-    results="\$PWD/results"
+    # resolve symlinks and paths
+    stitch_directory=\$(readlink -f ./results/stitched/)
+    parameter_file=\$(readlink -f ${parameter_file})
+    NM_variables=\$(readlink -f ${NM_variables})
+    results_dir=\$(readlink -f ./results)
 
-    /usr/bin/mlrtapp/numorph_analyze 'input_dir' \$PWD/results/stitched 'output_dir' \$results 'parameter_file' $parameter_file 'sample_name' $meta.id 'stage' 'resample' 'NM_variables' \$PWD/$nm_variables 'use_processed_images' 'stitched'
+    numorph_analyze 'input_dir' \$stitch_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'resample' 'NM_variables' \$NM_variables 'use_processed_images' 'stitched'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

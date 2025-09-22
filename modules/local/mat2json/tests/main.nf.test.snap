@@ -1,80 +1,72 @@
 {
     "matlab file conversion to json": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "thresholds.json:md5,88adeb36bb657798c80085b6a58ac58b",
-                            "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
-                        ]
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
-                ],
-                "converted_file": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "thresholds.json:md5,88adeb36bb657798c80085b6a58ac58b",
-                            "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
-                        ]
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
-                ]
-            }
+            1,
+            [
+                "",
+                "3d",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/.command.begin",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/.command.err",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/.command.log",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/.command.out",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/.command.run",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/.command.sh",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/.command.trace",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/.exitcode",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/test_process",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/test_process/thresholds.json",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/thresholds.mat",
+                "3d/41b9380a1e0f7ff0bfe8bbc9571e65/versions.yml",
+                "mat2json",
+                "mat2json/test_process",
+                "mat2json/test_process/thresholds.json",
+                "pipeline_info",
+                "stage-aeeb1410-b6dd-43cf-8830-583e4cc9920c",
+                "stage-aeeb1410-b6dd-43cf-8830-583e4cc9920c/e5",
+                "stage-aeeb1410-b6dd-43cf-8830-583e4cc9920c/e5/ce02fa3d717d9eef7cc5e1c8f28c2b",
+                "stage-aeeb1410-b6dd-43cf-8830-583e4cc9920c/e5/ce02fa3d717d9eef7cc5e1c8f28c2b/thresholds.mat"
+            ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-02-21T15:36:22.030027548"
+        "timestamp": "2025-08-29T13:47:16.889254142"
     },
     "matlab file conversion to json - stub": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test.json:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
-                        ]
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
-                ],
-                "converted_file": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test.json:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
-                        ]
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,d8fdb19b7f6440f3644b923cf0bf7eee"
-                ]
-            }
+            1,
+            [
+                "",
+                "a1",
+                "a1/d780b4e65514c605e3114f89afd3c3",
+                "a1/d780b4e65514c605e3114f89afd3c3/.command.begin",
+                "a1/d780b4e65514c605e3114f89afd3c3/.command.err",
+                "a1/d780b4e65514c605e3114f89afd3c3/.command.log",
+                "a1/d780b4e65514c605e3114f89afd3c3/.command.out",
+                "a1/d780b4e65514c605e3114f89afd3c3/.command.run",
+                "a1/d780b4e65514c605e3114f89afd3c3/.command.sh",
+                "a1/d780b4e65514c605e3114f89afd3c3/.command.trace",
+                "a1/d780b4e65514c605e3114f89afd3c3/.exitcode",
+                "a1/d780b4e65514c605e3114f89afd3c3/test_process",
+                "a1/d780b4e65514c605e3114f89afd3c3/test_process/test.json",
+                "a1/d780b4e65514c605e3114f89afd3c3/thresholds.mat",
+                "a1/d780b4e65514c605e3114f89afd3c3/versions.yml",
+                "mat2json",
+                "mat2json/test_process",
+                "mat2json/test_process/test.json",
+                "pipeline_info",
+                "stage-2314e94b-b9f6-47fa-bd5f-6f79870c5ff9",
+                "stage-2314e94b-b9f6-47fa-bd5f-6f79870c5ff9/2d",
+                "stage-2314e94b-b9f6-47fa-bd5f-6f79870c5ff9/2d/4d62c64425c45ecf74be0192f5dc0f",
+                "stage-2314e94b-b9f6-47fa-bd5f-6f79870c5ff9/2d/4d62c64425c45ecf74be0192f5dc0f/thresholds.mat"
+            ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-02-21T15:36:26.450520824"
+        "timestamp": "2025-08-29T13:47:21.509083297"
     }
 }

@@ -25,6 +25,12 @@ process NUMORPH3DUNET {
     source /opt/conda/etc/profile.d/conda.sh
     conda activate 3dunet
 
+    echo "GPU devices:"
+    ls -lha /dev/nvidia* || echo "No nvidia devices found"
+
+    echo "Checking GPU access:"
+    nvidia-smi || echo "No nvidia-smi found"
+
     mkdir -p ./results
     mkdir -p ./images
 

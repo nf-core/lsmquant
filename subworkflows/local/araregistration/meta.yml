@@ -1,44 +1,47 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "araregistration"
 ## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: Image registration of 2D stitched images to the Allan reference atlas
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - registration
+  - mouse brain
+  - atlas
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - numorphresample
+  - numorphregister
+  - mat2json
 input:
-  - ch_bam:
-      type: file
+  - stitched_data:
+      type: path
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        The input channel containing the stitched TIFF files and the parameter file
+        Structure: [ val(meta), path(stitched),  path(parameters) ]
+      pattern: "*.tif/tiff/csv"
+  - NM_variables:
+      type: path
+      description: |
+        The input channel containing the numorph processing parameter file (MAT)
+        Structure: [ val(meta), path(NM_variables) ]
+      pattern: "*.mat"
 output:
-  - bam:
+  - reg_mask:
       type: file
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
+        Channel containing registration mask file
+        Structure: path(mat)
+      pattern: "*.mat"
+  - registered:
+      type: path
+      description: |
+        Channel containing path to registered image files
+        Structure:  path(nii)
+      pattern: "*.nii"
+  - NM_variables:
       type: file
       description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        Channel containing numorph processing parameter file (MAT)
+        Structure:  path(NM_variables.mat)
+      pattern: "*.mat"
   - versions:
       type: file
       description: |
