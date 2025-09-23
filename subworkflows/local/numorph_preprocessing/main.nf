@@ -15,6 +15,7 @@ workflow NUMORPH_PREPROCESSING {
     main:
 
     ch_versions = Channel.empty()
+    // das funktioniert hier glaub ich auch nicht mit mehreren samples
     sample_meta = samplesheet.first().map { meta, img_dir, params -> meta }
 
 
@@ -29,8 +30,7 @@ workflow NUMORPH_PREPROCESSING {
         sample_meta.combine(NUMORPHINTENSITY.out.thresholds_mat),
         sample_meta.combine(NUMORPHINTENSITY.out.NM_variables)
     )
-    .groupTuple(by: 0)
-    .set { mat_files_ch }
+    .set { mat_files_int}
 
     NUMORPHALIGN (
         samplesheet,
@@ -48,7 +48,6 @@ workflow NUMORPH_PREPROCESSING {
         sample_meta.combine(NUMORPHALIGN.out.z_displacement_align_mat),
         sample_meta.combine(NUMORPHALIGN.out.NM_variables)
     )
-    .groupTuple(by: 0)
     .set { mat_files_align }
 
 
@@ -70,11 +69,10 @@ workflow NUMORPH_PREPROCESSING {
         .filter { file -> file.toString().endsWith('.mat') }
         .combine(sample_meta)
         .map {file, meta -> tuple(meta, file) }
-        .groupTuple()
         .set { mat_files_stitch }
 
 
-    MAT2JSON_INT (mat_files_ch, "intensity" )
+    MAT2JSON_INT (mat_files_int, "intensity" )
     MAT2JSON_ALIGN (mat_files_align, "align" )
     MAT2JSON_STITCH (mat_files_stitch, "stitch" )
     ch_versions = ch_versions.mix(MAT2JSON_INT.out.versions)

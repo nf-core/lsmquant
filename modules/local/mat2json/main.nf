@@ -1,16 +1,16 @@
 
 process MAT2JSON {
-    tag "$meta.id"
+    tag "$meta.id - $matfile.baseName"
     label 'process_single'
 
     container 'carolinschwitalla/mat2json:latest'
 
     input:
-    tuple val(meta), path(matfiles)
+    tuple val(meta), path(matfile)
     val process
 
     output:
-    tuple val(meta), path("${process}/*.*"),     emit: converted_file
+    tuple val(meta), path("${process}/*/*.*"),     emit: converted_file
     path "versions.yml"              ,     emit: versions
 
     when:
@@ -21,13 +21,16 @@ process MAT2JSON {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p ${process}
-    for matfile in ${matfiles.join(' ')}; do
-        mat2json \$matfile
-    done
+    mkdir -p ${process}/${prefix}
 
-    mv -f *.json ${process}/ 2>/dev/null || true
-    mv -f *.csv ${process}/ 2>/dev/null || true
+    results_dir=${process}/${prefix}
+
+    # conversion
+    mat2json ${matfile}
+
+
+    mv -f *.json \$results_dir 2>/dev/null || true
+    mv -f *.csv \$results_dir 2>/dev/null || true
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,9 +43,12 @@ process MAT2JSON {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p ${process}
-    touch ${prefix}.json
-    mv -f *.json ${process}/ 2>/dev/null || true
+    mkdir -p ${process}/${prefix}
+
+    results_dir=${process}/${prefix}
+
+    touch \$results_dir/${prefix}.json
+
 
 
     cat <<-END_VERSIONS > versions.yml
