@@ -3,74 +3,34 @@
         "content": [
             1,
             [
-                "",
-                "92",
-                "92/485a623daf4f522c514512c1de5942",
-                "92/485a623daf4f522c514512c1de5942/.command.begin",
-                "92/485a623daf4f522c514512c1de5942/.command.err",
-                "92/485a623daf4f522c514512c1de5942/.command.log",
-                "92/485a623daf4f522c514512c1de5942/.command.out",
-                "92/485a623daf4f522c514512c1de5942/.command.run",
-                "92/485a623daf4f522c514512c1de5942/.command.sh",
-                "92/485a623daf4f522c514512c1de5942/.command.trace",
-                "92/485a623daf4f522c514512c1de5942/.exitcode",
-                "92/485a623daf4f522c514512c1de5942/test_process",
-                "92/485a623daf4f522c514512c1de5942/test_process/test",
-                "92/485a623daf4f522c514512c1de5942/test_process/test/thresholds.json",
-                "92/485a623daf4f522c514512c1de5942/thresholds.mat",
-                "92/485a623daf4f522c514512c1de5942/versions.yml",
                 "mat2json",
                 "mat2json/test_process",
                 "mat2json/test_process/test",
                 "mat2json/test_process/test/thresholds.json",
-                "pipeline_info",
-                "stage-24e9b167-7884-4a2b-9b72-669cfedddc90",
-                "stage-24e9b167-7884-4a2b-9b72-669cfedddc90/23",
-                "stage-24e9b167-7884-4a2b-9b72-669cfedddc90/23/ebabaac1dbb6f3f029d118c4188297",
-                "stage-24e9b167-7884-4a2b-9b72-669cfedddc90/23/ebabaac1dbb6f3f029d118c4188297/thresholds.mat"
+                "pipeline_info"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-23T13:34:28.234924316"
+        "timestamp": "2025-09-24T14:54:05.637491491"
     },
     "matlab file conversion to json - stub": {
         "content": [
             1,
             [
-                "",
-                "8f",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/.command.begin",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/.command.err",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/.command.log",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/.command.out",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/.command.run",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/.command.sh",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/.command.trace",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/.exitcode",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/test_process",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/test_process/test",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/test_process/test/test.json",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/thresholds.mat",
-                "8f/0a1411da05d15e1f4f9a31cd6afd44/versions.yml",
                 "mat2json",
                 "mat2json/test_process",
                 "mat2json/test_process/test",
                 "mat2json/test_process/test/test.json",
-                "pipeline_info",
-                "stage-ad5abc3e-7e61-40dc-8c22-7145fcdc027c",
-                "stage-ad5abc3e-7e61-40dc-8c22-7145fcdc027c/28",
-                "stage-ad5abc3e-7e61-40dc-8c22-7145fcdc027c/28/59dcc854fbaa6d3bf01b89c1b6d59b",
-                "stage-ad5abc3e-7e61-40dc-8c22-7145fcdc027c/28/59dcc854fbaa6d3bf01b89c1b6d59b/thresholds.mat"
+                "pipeline_info"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-23T13:34:32.731882516"
+        "timestamp": "2025-09-24T14:55:37.550675649"
     }
 }
