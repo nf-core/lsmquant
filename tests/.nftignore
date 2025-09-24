@@ -17,6 +17,6 @@ numorphintensity/*/variables/*.mat
 numorphintensity/*/samples/*/*.png
 numorphstitch/*/variables/*.mat
 numorph3dunet/*/*
-mat2json/*/{NM_variables,alignment_table,path_table,adj_params,thresholds,stitch_tforms}.json
-mat2json/*/*.csv
+mat2json/*/*/{NM_variables,alignment_table,path_table,adj_params,thresholds,stitch_tforms}.json
+mat2json/*/*/*.csv
 numorphstitch/*/stitched/*.{tif,tiff}

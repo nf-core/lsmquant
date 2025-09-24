@@ -12,7 +12,7 @@ nextflow_process {
 
         when {
             params {
-                outdir = "$workDir"
+                outdir = "$outputDir"
             }
             process {
                 """
@@ -46,7 +46,7 @@ nextflow_process {
 
         when {
             params {
-                outdir = "$workDir"
+                outdir = "$outputDir"
             }
             process {
                 """

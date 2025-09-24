@@ -1,7 +1,7 @@
 {
     "default test gpu -stub": {
         "content": [
-            8,
+            17,
             {
                 "MAT2JSON_INT": {
                     "mat2json": 1.0
@@ -28,11 +28,14 @@
             [
                 "mat2json",
                 "mat2json/align",
-                "mat2json/align/TEST1.json",
+                "mat2json/align/TEST1",
+                "mat2json/align/TEST1/TEST1.json",
                 "mat2json/intensity",
-                "mat2json/intensity/TEST1.json",
+                "mat2json/intensity/TEST1",
+                "mat2json/intensity/TEST1/TEST1.json",
                 "mat2json/stitch",
-                "mat2json/stitch/TEST1.json",
+                "mat2json/stitch/TEST1",
+                "mat2json/stitch/TEST1/TEST1.json",
                 "numorph3dunet",
                 "numorph3dunet/TEST1",
                 "numorph3dunet/TEST1/TEST1.csv",
@@ -80,11 +83,11 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-03T11:41:32.289727712"
+        "timestamp": "2025-09-24T20:43:39.152536272"
     },
     "default test gpu": {
         "content": [
-            8,
+            21,
             {
                 "MAT2JSON_INT": {
                     "mat2json": 1.0
@@ -111,24 +114,27 @@
             [
                 "mat2json",
                 "mat2json/align",
-                "mat2json/align/NM_variables.json",
-                "mat2json/align/alignment_table.json",
-                "mat2json/align/path_table.json",
-                "mat2json/align/z_displacement_align.json",
+                "mat2json/align/TEST1",
+                "mat2json/align/TEST1/NM_variables.json",
+                "mat2json/align/TEST1/alignment_table.json",
+                "mat2json/align/TEST1/path_table.json",
+                "mat2json/align/TEST1/z_displacement_align.json",
                 "mat2json/intensity",
-                "mat2json/intensity/NM_variables.json",
-                "mat2json/intensity/adj_params.json",
-                "mat2json/intensity/path_table.json",
-                "mat2json/intensity/thresholds.json",
+                "mat2json/intensity/TEST1",
+                "mat2json/intensity/TEST1/NM_variables.json",
+                "mat2json/intensity/TEST1/adj_params.json",
+                "mat2json/intensity/TEST1/path_table.json",
+                "mat2json/intensity/TEST1/thresholds.json",
                 "mat2json/stitch",
-                "mat2json/stitch/adj_params.json",
-                "mat2json/stitch/adjusted_z.csv",
-                "mat2json/stitch/alignment_table.json",
-                "mat2json/stitch/path_table.json",
-                "mat2json/stitch/stitch_tforms.json",
-                "mat2json/stitch/thresholds.json",
-                "mat2json/stitch/z_disp_matrix.json",
-                "mat2json/stitch/z_displacement_align.json",
+                "mat2json/stitch/TEST1",
+                "mat2json/stitch/TEST1/adj_params.json",
+                "mat2json/stitch/TEST1/adjusted_z.csv",
+                "mat2json/stitch/TEST1/alignment_table.json",
+                "mat2json/stitch/TEST1/path_table.json",
+                "mat2json/stitch/TEST1/stitch_tforms.json",
+                "mat2json/stitch/TEST1/thresholds.json",
+                "mat2json/stitch/TEST1/z_disp_matrix.json",
+                "mat2json/stitch/TEST1/z_displacement_align.json",
                 "numorph3dunet",
                 "numorph3dunet/TEST1",
                 "numorph3dunet/TEST1/TEST1.csv",
@@ -575,6 +581,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-03T11:39:01.448246884"
+        "timestamp": "2025-09-24T17:34:33.965082839"
     }
 }

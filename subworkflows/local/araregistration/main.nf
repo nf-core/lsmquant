@@ -37,8 +37,13 @@ workflow ARAREGISTRATION {
 
     ch_versions = ch_versions.mix(NUMORPHREGISTER.out.versions)
 
+    def reg_output = NUMORPHREGISTER.out
+    //sampel_id = resample_data.first().get(0).i
+
+
     emit:
 
+    reg_params   = NUMORPHREGISTER.out.reg_params_mat  // channel: reg_params_mat
     reg_mask     = NUMORPHREGISTER.out.reg_mask     // channel: reg_mask
     registered   = NUMORPHREGISTER.out.registered   // channel: registered
     NM_variables = NUMORPHREGISTER.out.NM_variables // channel: NM_variables
