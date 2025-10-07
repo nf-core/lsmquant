@@ -3,7 +3,7 @@ process NUMORPHINTENSITY {
     label 'process_high_long'
 
 
-    container "carolinschwitalla/numorph_preprocessing:0.9.0"
+    container "nf-core/numorph_preprocessing:1.0.0"
 
 
     input:

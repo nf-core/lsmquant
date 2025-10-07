@@ -3,7 +3,7 @@ process MAT2JSON {
     tag "$meta.id - $matfile.baseName"
     label 'process_single'
 
-    container 'carolinschwitalla/mat2json:latest'
+    container 'quay.io/carolinschwitalla/mat2json:1.0.0'
 
     input:
     tuple val(meta), path(matfile)

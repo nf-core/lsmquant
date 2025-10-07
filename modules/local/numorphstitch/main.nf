@@ -2,7 +2,7 @@ process NUMORPHSTITCH {
     tag "$meta.id"
     label 'process_high_long'
 
-    container "carolinschwitalla/numorph_preprocessing:0.9.0"
+    container "nf-core/numorph_preprocessing:1.0.0"
 
     input:
     tuple val(meta), path(img_directory), path(parameter_file)
@@ -29,11 +29,11 @@ process NUMORPHSTITCH {
 
     mkdir -p results/variables/
 
-    mv ${alignment_table_mat} results/variables
-    mv ${z_displacement_align_mat} results/variables
-    mv ${thresholds_mat} results/variables
-    mv ${adj_params_mat} results/variables
-    mv ${path_table_mat} results/variables
+    ln -sr ${alignment_table_mat} results/variables
+    ln -sr ${z_displacement_align_mat} results/variables
+    ln -sr ${thresholds_mat} results/variables
+    ln -sr ${adj_params_mat} results/variables
+    ln -sr ${path_table_mat} results/variables
 
     # resolve symlinks and paths
     img_directory=\$(readlink -f ${img_directory})
