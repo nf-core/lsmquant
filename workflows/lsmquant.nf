@@ -3,19 +3,13 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
-include { NUMORPHALIGN           } from '../modules/local/numorphalign'
-include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
 include { NUMORPH_PREPROCESSING  } from '../subworkflows/local/numorph_preprocessing'
 include { ARAREGISTRATION        } from '../subworkflows/local/araregistration'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmquant_pipeline'
-include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample/'
-include { NUMORPHREGISTER        } from '../modules/local/numorphregister/'
 include { MAT2JSON               } from '../modules/local/mat2json'
-include { UNZIP                  } from '../modules/nf-core/unzip'
 include { NUMORPH3DUNET          } from '../modules/local/numorph3dunet'
 include { UNZIPFILES             } from '../modules/nf-core/unzipfiles'
 include { STAGEFILES             } from '../modules/local/stagefiles'
