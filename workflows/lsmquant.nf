@@ -18,6 +18,7 @@ include { MAT2JSON               } from '../modules/local/mat2json'
 include { UNZIP                  } from '../modules/nf-core/unzip'
 include { NUMORPH3DUNET          } from '../modules/local/numorph3dunet'
 include { UNZIPFILES             } from '../modules/nf-core/unzipfiles'
+include { STAGEFILES             } from '../modules/local/stagefiles'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,7 +38,7 @@ workflow LSMQUANT {
 
     ch_versions = Channel.empty()
 
-
+    // stage input files into the working directory
     // if test profile then first data needs to be unzipped
     if ( workflow.profile.contains('test') ) {
         params.stage = 'preprocessing'
@@ -48,7 +49,6 @@ workflow LSMQUANT {
             }
             .set { img_archive }
 
-        //UNZIP (img_archive)
         UNZIPFILES (img_archive)
         ch_versions = ch_versions.mix(UNZIPFILES.out.versions)
 
@@ -57,15 +57,34 @@ workflow LSMQUANT {
         unzipped_output
             .join(samplesheet)
             .map { meta, unzipped, raw_img_directory, parameter_file ->
-                //def img_files = file("${unzipped}")
                 tuple(meta, unzipped, parameter_file)
             }
-            .set { samplesheet }
+            .set { ch_samplesheet }
+    }
+    else {
+        samplesheet
+            .map { meta, img_directory, parameter_file ->
+                tuple(meta, img_directory)
+            }
+            .set { img_dir }
+
+        STAGEFILES (img_dir)
+
+        ch_versions = ch_versions.mix(STAGEFILES.out.versions)
+        def staged_images = STAGEFILES.out.raw_files
+
+        staged_images
+            .join(samplesheet)
+            .map { meta, staged, raw_img_directory, parameter_file ->
+                tuple(meta, staged, parameter_file)
+            }
+            .set { ch_samplesheet }
     }
 
+    // run different workflows according to parameter setting
     // the complete analysis workflow with the option of ara registration
     if (params.stage == 'full') {
-        NUMORPH_PREPROCESSING (samplesheet)
+        NUMORPH_PREPROCESSING (ch_samplesheet)
 
         def stitched_output = NUMORPH_PREPROCESSING.out.stitched
         def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables
@@ -92,7 +111,7 @@ workflow LSMQUANT {
 
     // run preprocessing workflow with the option to run ara registration
     if (params.stage == 'preprocessing') {
-        NUMORPH_PREPROCESSING (samplesheet)
+        NUMORPH_PREPROCESSING (ch_samplesheet)
         ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
 
         def stitched_output = NUMORPH_PREPROCESSING.out.stitched
