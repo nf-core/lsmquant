@@ -16,7 +16,8 @@ include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample/'
 include { NUMORPHREGISTER        } from '../modules/local/numorphregister/'
 include { MAT2JSON               } from '../modules/local/mat2json'
 include { UNZIP                  } from '../modules/nf-core/unzip'
-include { NUMORPH3DUNET         } from '../modules/local/numorph3dunet'
+include { NUMORPH3DUNET          } from '../modules/local/numorph3dunet'
+include { UNZIPFILES             } from '../modules/nf-core/unzipfiles'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,21 +48,22 @@ workflow LSMQUANT {
             }
             .set { img_archive }
 
-        UNZIP (img_archive)
-        ch_versions = ch_versions.mix(UNZIP.out.versions)
+        //UNZIP (img_archive)
+        UNZIPFILES (img_archive)
+        ch_versions = ch_versions.mix(UNZIPFILES.out.versions)
 
-        def unzipped_output = UNZIP.out.unzipped_archive
+        def unzipped_output = UNZIPFILES.out.files
 
         unzipped_output
             .join(samplesheet)
             .map { meta, unzipped, raw_img_directory, parameter_file ->
-                def img_files = file("${unzipped}")
-                tuple(meta, img_files, parameter_file)
+                //def img_files = file("${unzipped}")
+                tuple(meta, unzipped, parameter_file)
             }
             .set { samplesheet }
     }
 
-    // the complete analysis workflow
+    // the complete analysis workflow with the option of ara registration
     if (params.stage == 'full') {
         NUMORPH_PREPROCESSING (samplesheet)
 
@@ -77,7 +79,7 @@ workflow LSMQUANT {
             .set { stitched_data }
 
         if (params.ara_registration) {
-            ARAREGISTRATION (stitched_data, NM_variables)
+            ARAREGISTRATION (stitched_data)
             ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
         }
 
@@ -86,11 +88,34 @@ workflow LSMQUANT {
         ch_versions = ch_versions.mix(NUMORPH3DUNET.out.versions)
     }
 
+
+
+    // run preprocessing workflow with the option to run ara registration
     if (params.stage == 'preprocessing') {
         NUMORPH_PREPROCESSING (samplesheet)
         ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
 
+        def stitched_output = NUMORPH_PREPROCESSING.out.stitched
+
+        stitched_output
+            .join(samplesheet)
+            .map { meta, stitched, raw_img_directory, parameter_file ->
+                tuple(meta, stitched, parameter_file)
+            }
+            .set { stitched_data }
+
+        if (params.ara_registration) {
+            ARAREGISTRATION (stitched_data)
+            ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
+        }
+
     }
+    // run ara registration
+    if (params.ara_registration) {
+
+            ARAREGISTRATION (samplesheet)
+            ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
+        }
 
     // Collate and save software versions
     //
