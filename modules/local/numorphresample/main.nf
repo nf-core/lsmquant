@@ -2,7 +2,7 @@ process NUMORPHRESAMPLE {
     tag "$meta.id"
     label 'process_high_long'
 
-    container "numorph_analyze:latest"
+    container "nf-core/numorph_analyze:1.0.1"
 
     input:
     tuple val(meta), path(stitch_directory), path(parameter_file)
