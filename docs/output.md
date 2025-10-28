@@ -19,6 +19,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 - [NumorphRegister](#numorphregister) - Performs registartion to the Allen Reference Atlas (ARA)
 - [Numorph3DUnet](#numorph3dunet) - Perfomrs cell-nuclei segmentation and quantification
 - [Mat2JSON] (#mat3json) - Converts `.mat`files to JSON
+- [MultiQC](#MultiQC) Aggregate report describing workflow run and tools used from the whole pipeline.
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
 ### NumorphIntensity
@@ -128,6 +129,19 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
   </details>
 
   **Mat2JSON** converts a given `.mat`file into a `CSV` if the data is stored as a table datastructure or a `JSON` for other nested datastructures.
+
+### MultiQC
+
+<details markdown="1">
+<summary>Output files</summary>
+
+- `multiqc/`
+  - `multiqc_report.html`: a standalone HTML file that can be viewed in your web browser.
+  - `multiqc_data/`: directory containing parsed statistics from the different tools used in the pipeline.
+
+</details>
+
+**MultiQC** collate pipeline QC from supported tools e.g. FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <http://multiqc.info>.
 
 ### Pipeline information
 

@@ -51,12 +51,11 @@ The individual parameters are explained [here](###Analysisspecificparameters)
 
 ### Analysis specific parameters
 
-This section descripbes every parameter that can be set in the `parameter.csv`. In order that the pipeline runs correctly all named parameters need to be present in the parameter file and its recommended to use the provided parameter file (link). Every parameter has a default value that will be set if not otherwise defined in the `parameter.csv`.
+This section descripbes every parameter that can be set in the `parameter.csv`. In order for the pipeline to run correctly all named parameters need to be present in the parameter file and its recommended to use the provided parameter file (link). Every parameter has a default value that will be set if not otherwise defined in the `parameter.csv`.
 
 | Parameter                   | Description                                                                                                                                                                                                                                     |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `darkfield_intensity`       | 1xn_channels; Constant darkfield intensity value (i.e. average intensity of image with nothing present). **Default: 101**                                                                                                                       |
-| `img_directory`             |                                                                                                                                                                                                                                                 |
 | `single_sheet`              | true, false; Whether a single sheet was used for acquisition                                                                                                                                                                                    |
 | `ls_width`                  | 1xn_channels interger. Light sheet width setting for UltraMicroscope II as percentage. **Default: 50**                                                                                                                                          |
 | `laser_y_displacement`      | [-0.5,0.5]; Displacement of light-sheet along y axis. Value of 0.5 means light-sheet center is positioned at the top of the image. **Default: 0**                                                                                               |
@@ -164,7 +163,7 @@ This section descripbes every parameter that can be set in the `parameter.csv`. 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core/lsmquant --input ./samplesheet.csv --outdir ./results -profile docker
+nextflow run nf-core/lsmquant --input ./samplesheet.csv --outdir ./results -profile docker -work-dir ./work
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -177,6 +176,8 @@ work                # Directory containing the nextflow working files
 .nextflow_log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
+
+For this pipeline it is recommended to specify the location of the work directory as well with `-work-dir`. The directory will contain any nextflow working files which includes all in- and output files. The work directory will be larger than the input sample size. If you don't specify a location, the work directory will be created in the location from where the pipeline got started.
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 
