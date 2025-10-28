@@ -35,26 +35,33 @@
 2. Channel Alignment
 3. Iterative Stitching
 
-**Analysis**
+**ARA Registration**
 
 4. ARA Registration subworkflow (optional)
 5. Cell Nuclei Quantification
 
+**Full**
+
+1. Preprocessing
+2. Nuclei quantification
+
 ## Pipeline Summary
 
-The pipeline consists of two major stages, the `preprocessing`stage and the `analysis`stage.
+The pipeline consists of two major workflows `preprocessing` and the `full` workflow. The `ara-regsitration` is an optional subworkflow that works only for whole mouse brain samples.
 
 ### Preprocessing
 
 Preprocessing is performed on raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope. Three individual steps are perfomed :
 
-- Measuring and adjustemnts for intensities
-- Image channel alignemnt for at least two different channels
-- Image tile stitching to recustruct the full image for each channel and z-slice
+- **Intensity adjustments** to correct for the Gaussian shape of the lightsheet and intensity differences between adjacent tiles
+- **Image channel alignment** using a 2D rigid approach or a nonlinear 3D approach using Elastix.
+- **Image tile stitching** via an iterative 2D stitching approach by calculating z displacements and xy translations using phase correlation and SIFT.
 
-### Analysis
+### Full
 
-Analysis is performed using a 3D-Unet to qunatify the amount of cell-nuclei in the given sample. The quantification is performed on the nuclear channel only, assuming that the corresponding image file names contain the pattern `C1`.
+Quantification of cell-nuclei is performed using a 3D-Unet. It is performed on the nuclear channel only, assuming that the corresponding image file names contain the pattern `C1`.
+
+### ARA Registration
 
 Optionally registration to the Allen Refernce Atlas (ARA) for functional brain region annotation can be perfomed before segmentation.
 This includes the following two steps:
