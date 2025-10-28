@@ -35,6 +35,9 @@ workflow NFCORE_LSMQUANT {
 
     LSMQUANT(samplesheet)
 
+    emit:
+    multiqc_report = LSMQUANT.out.multiqc_report
+
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,6 +76,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
+        NFCORE_LSMQUANT.out.multiqc_report,
     )
 }
 

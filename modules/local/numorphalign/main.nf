@@ -3,7 +3,7 @@ process NUMORPHALIGN {
     label 'process_high_long'
 
 
-    container "carolinschwitalla/numorph_preprocessing:0.9.0"
+    container "nf-core/numorph_preprocessing:1.0.0"
 
     input:
     tuple val(meta), path(img_directory),  path(parameter_file)
@@ -32,18 +32,20 @@ process NUMORPHALIGN {
     """
     mkdir -p results/samples/
     mkdir -p results/variables/
+    mkdir -p ./images
 
-    mv ${adj_params_mat} results/variables
-    mv ${path_table_mat} results/variables
-    mv ${thresholds_mat} results/variables
+    ln -sr ${img_directory} ./images
+    ln -sr ${adj_params_mat} results/variables
+    ln -sr ${path_table_mat} results/variables
+    ln -sr ${thresholds_mat} results/variables
 
     # resolve symlinks and paths
-    img_directory=\$(readlink -f ${img_directory})
+    img_dir=\$(readlink -f ./images)
     parameter_file=\$(readlink -f ${parameter_file})
     results_dir=\$(readlink -f ./results)
     NM_variables=\$(readlink -f ${NM_variables})
 
-    numorph_preprocessing 'input_dir' \$img_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'align' 'NM_variables' \$NM_variables
+    numorph_preprocessing 'input_dir' \$img_dir 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'align' 'NM_variables' \$NM_variables
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

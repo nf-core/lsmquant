@@ -3,20 +3,17 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { NUMORPHINTENSITY       } from '../modules/local/numorphintensity'
-include { NUMORPHALIGN           } from '../modules/local/numorphalign'
-include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
 include { NUMORPH_PREPROCESSING  } from '../subworkflows/local/numorph_preprocessing'
 include { ARAREGISTRATION        } from '../subworkflows/local/araregistration'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmquant_pipeline'
-include { NUMORPHRESAMPLE        } from '../modules/local/numorphresample/'
-include { NUMORPHREGISTER        } from '../modules/local/numorphregister/'
 include { MAT2JSON               } from '../modules/local/mat2json'
-include { UNZIP                  } from '../modules/nf-core/unzip'
-include { NUMORPH3DUNET         } from '../modules/local/numorph3dunet'
+include { NUMORPH3DUNET          } from '../modules/local/numorph3dunet'
+include { UNZIPFILES             } from '../modules/nf-core/unzipfiles'
+include { STAGEFILES             } from '../modules/local/stagefiles'
+include { MULTIQC                } from '../modules/nf-core/multiqc'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,8 +32,9 @@ workflow LSMQUANT {
     main:
 
     ch_versions = Channel.empty()
+    ch_multiqc_files = Channel.empty()
 
-
+    // stage input files into the working directory
     // if test profile then first data needs to be unzipped
     if ( workflow.profile.contains('test') ) {
         params.stage = 'preprocessing'
@@ -47,23 +45,42 @@ workflow LSMQUANT {
             }
             .set { img_archive }
 
-        UNZIP (img_archive)
-        ch_versions = ch_versions.mix(UNZIP.out.versions)
+        UNZIPFILES (img_archive)
+        ch_versions = ch_versions.mix(UNZIPFILES.out.versions)
 
-        def unzipped_output = UNZIP.out.unzipped_archive
+        def unzipped_output = UNZIPFILES.out.files
 
         unzipped_output
             .join(samplesheet)
             .map { meta, unzipped, raw_img_directory, parameter_file ->
-                def img_files = file("${unzipped}")
-                tuple(meta, img_files, parameter_file)
+                tuple(meta, unzipped, parameter_file)
             }
-            .set { samplesheet }
+            .set { ch_samplesheet }
+    }
+    else {
+        samplesheet
+            .map { meta, img_directory, parameter_file ->
+                tuple(meta, img_directory)
+            }
+            .set { img_dir }
+
+        STAGEFILES (img_dir)
+
+        ch_versions = ch_versions.mix(STAGEFILES.out.versions)
+        def staged_images = STAGEFILES.out.raw_files
+
+        staged_images
+            .join(samplesheet)
+            .map { meta, staged, raw_img_directory, parameter_file ->
+                tuple(meta, staged, parameter_file)
+            }
+            .set { ch_samplesheet }
     }
 
-    // the complete analysis workflow
+    // run different workflows according to parameter setting
+    // the complete analysis workflow with the option of ara registration
     if (params.stage == 'full') {
-        NUMORPH_PREPROCESSING (samplesheet)
+        NUMORPH_PREPROCESSING (ch_samplesheet)
 
         def stitched_output = NUMORPH_PREPROCESSING.out.stitched
         def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables
@@ -77,7 +94,7 @@ workflow LSMQUANT {
             .set { stitched_data }
 
         if (params.ara_registration) {
-            ARAREGISTRATION (stitched_data, NM_variables)
+            ARAREGISTRATION (stitched_data)
             ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
         }
 
@@ -86,11 +103,29 @@ workflow LSMQUANT {
         ch_versions = ch_versions.mix(NUMORPH3DUNET.out.versions)
     }
 
+
+
+    // run preprocessing workflow with the option to run ara registration
     if (params.stage == 'preprocessing') {
-        NUMORPH_PREPROCESSING (samplesheet)
+        NUMORPH_PREPROCESSING (ch_samplesheet)
         ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
 
+        def stitched_output = NUMORPH_PREPROCESSING.out.stitched
+
+        stitched_output
+            .join(samplesheet)
+            .map { meta, stitched, raw_img_directory, parameter_file ->
+                tuple(meta, stitched, parameter_file)
+            }
+            .set { stitched_data }
+
+        if (params.ara_registration) {
+            ARAREGISTRATION (stitched_data)
+            ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
+        }
+
     }
+
 
     // Collate and save software versions
     //
@@ -101,6 +136,51 @@ workflow LSMQUANT {
             sort: true,
             newLine: true
         ).set { ch_collated_versions }
+
+     //
+    // MODULE: MultiQC
+    //
+    ch_multiqc_config        = Channel.fromPath(
+        "$projectDir/assets/multiqc_config.yml", checkIfExists: true)
+    ch_multiqc_custom_config = params.multiqc_config ?
+        Channel.fromPath(params.multiqc_config, checkIfExists: true) :
+        Channel.empty()
+    ch_multiqc_logo          = params.multiqc_logo ?
+        Channel.fromPath(params.multiqc_logo, checkIfExists: true) :
+        Channel.empty()
+
+    summary_params      = paramsSummaryMap(
+        workflow, parameters_schema: "nextflow_schema.json")
+    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(summary_params))
+    ch_multiqc_files = ch_multiqc_files.mix(
+        ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+    ch_multiqc_custom_methods_description = params.multiqc_methods_description ?
+        file(params.multiqc_methods_description, checkIfExists: true) :
+        file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
+    ch_methods_description                = Channel.value(
+        methodsDescriptionText(ch_multiqc_custom_methods_description))
+
+    ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
+    ch_multiqc_files = ch_multiqc_files.mix(
+        ch_methods_description.collectFile(
+            name: 'methods_description_mqc.yaml',
+            sort: true
+        )
+    )
+
+    MULTIQC (
+        ch_multiqc_files.collect(),
+        ch_multiqc_config.toList(),
+        ch_multiqc_custom_config.toList(),
+        ch_multiqc_logo.toList(),
+        [],
+        []
+    )
+    multiqc_report = MULTIQC.out.report.toList()
+
+    emit:
+    multiqc_report          // channel: final MultiQC report
+    ch_collated_versions    // channel: collated software versions in YAML file
 
 }
 

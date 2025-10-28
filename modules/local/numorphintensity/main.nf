@@ -3,7 +3,7 @@ process NUMORPHINTENSITY {
     label 'process_high_long'
 
 
-    container "carolinschwitalla/numorph_preprocessing:0.9.0"
+    container "nf-core/numorph_preprocessing:1.0.0"
 
 
     input:
@@ -26,14 +26,17 @@ process NUMORPHINTENSITY {
 
     """
     mkdir -p ./results
+    mkdir -p ./images
+
+    ln -sr ${img_directory} ./images
 
     # resolve symlinks and paths
-    img_directory=\$(readlink -f ${img_directory})
+    img_dir=\$(readlink -f ./images)
     parameter_file=\$(readlink -f ${parameter_file})
     results_dir=\$(readlink -f ./results)
 
 
-    numorph_preprocessing 'input_dir' \$img_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'intensity'
+    numorph_preprocessing 'input_dir' \$img_dir 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'intensity'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

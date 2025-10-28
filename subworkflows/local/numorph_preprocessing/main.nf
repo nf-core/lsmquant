@@ -15,8 +15,8 @@ workflow NUMORPH_PREPROCESSING {
     main:
 
     ch_versions = Channel.empty()
-    // das funktioniert hier glaub ich auch nicht mit mehreren samples
-    sample_meta = samplesheet.first().map { meta, img_dir, params -> meta }
+
+    sample_meta = samplesheet.map { meta, img_dir, params -> meta }
 
 
     NUMORPHINTENSITY (samplesheet)

@@ -2,16 +2,13 @@ process NUMORPHRESAMPLE {
     tag "$meta.id"
     label 'process_high_long'
 
-    container "carolinschwitalla/numorph_analyze:latest"
+    container "nf-core/numorph_analyze:1.0.1"
 
     input:
     tuple val(meta), path(stitch_directory), path(parameter_file)
-    path NM_variables
-
 
     output:
     tuple val(meta), path("results/resampled/*")                , emit: resampled
-    path "results/NM_variables.mat"                             , emit: NM_variables
     path "versions.yml"                                         , emit: versions
 
     when:
@@ -20,20 +17,18 @@ process NUMORPHRESAMPLE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def nm_variables = NM_variables ? "${NM_variables}" : ""
 
     """
     mkdir -p results/stitched/
 
-    mv $stitch_directory results/stitched
+    ln -sr ${stitch_directory}/* results/stitched
 
     # resolve symlinks and paths
     stitch_directory=\$(readlink -f ./results/stitched/)
     parameter_file=\$(readlink -f ${parameter_file})
-    NM_variables=\$(readlink -f ${NM_variables})
     results_dir=\$(readlink -f ./results)
 
-    numorph_analyze 'input_dir' \$stitch_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'resample' 'NM_variables' \$NM_variables 'use_processed_images' 'stitched'
+    numorph_analyze 'input_dir' \$stitch_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'resample' 'NM_variables' '' 'use_processed_images' 'stitched'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -48,9 +43,7 @@ process NUMORPHRESAMPLE {
     """
     mkdir -p results/resampled
 
-    touch results/resampled/${meta.id}_resampled.tif
-    touch results/NM_variables.mat
-
+    touch results/resampled/${prefix}_resampled.tif
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         numorphresample: 1.0

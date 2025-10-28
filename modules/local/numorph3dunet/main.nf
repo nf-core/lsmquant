@@ -3,7 +3,7 @@ process NUMORPH3DUNET {
     label 'process_gpu'
 
 
-    container "carolinschwitalla/numorph-3dunet:latest"
+    container "nf-core/numorph-3dunet:1.0.0"
 
 
     input:
@@ -35,7 +35,7 @@ process NUMORPH3DUNET {
     mkdir -p ./images
 
     # move images to images directory
-    mv ${img_directory} ./images/
+    ln -sr ${img_directory} ./images/
 
     numorph_3dunet.predict \\
         -i images/ \\
