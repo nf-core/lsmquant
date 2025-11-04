@@ -22,7 +22,7 @@
                     "7za": 16.02
                 },
                 "Workflow": {
-                    "nf-core/lsmquant": "v1.0dev"
+                    "nf-core/lsmquant": "v1.0.0"
                 }
             },
             [
@@ -89,7 +89,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-10-17T13:54:59.801290514"
+        "timestamp": "2025-10-29T13:26:00.512399326"
     },
     "default test gpu": {
         "content": [
@@ -114,7 +114,7 @@
                     "7za": 16.02
                 },
                 "Workflow": {
-                    "nf-core/lsmquant": "v1.0dev"
+                    "nf-core/lsmquant": "v1.0.0"
                 }
             },
             [
@@ -143,9 +143,9 @@
                 "mat2json/stitch/TEST1/z_displacement_align.json",
                 "multiqc",
                 "multiqc/multiqc_data",
-                "multiqc/multiqc_data/BETA-multiqc.parquet",
                 "multiqc/multiqc_data/llms-full.txt",
                 "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
                 "multiqc/multiqc_data/multiqc_citations.txt",
                 "multiqc/multiqc_data/multiqc_data.json",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
@@ -598,6 +598,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-10-23T11:12:49.792530189"
+        "timestamp": "2025-10-29T15:24:54.292797711"
     }
 }
