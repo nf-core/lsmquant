@@ -92,9 +92,6 @@ jobs:
         run: |
           nvidia-smi -L
 
-      - name: Enable Nextflow debug logging
-        run: echo "NXF_DEBUG=2" >> $GITHUB_ENV
-
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test
         with:
