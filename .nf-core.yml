@@ -1,4 +1,4 @@
-nf_core_version: 3.4.1
+nf_core_version: 3.5.1
 repository_type: pipeline
 template:
   author: Carolin Schwitalla
@@ -9,4 +9,4 @@ template:
   name: lsmquant
   org: nf-core
   outdir: .
-  version: 1.0dev
+  version: 1.0.0
