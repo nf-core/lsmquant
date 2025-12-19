@@ -27,7 +27,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <details markdown="1">
 <summary>Output files</summary>
 
-- `Sample_id/intesnity/results`
+- `Sample_id/intensity/results`
   - `NM_variables.mat`: Contains input and calculated parameters
   - `samples/`
     - `[channel]_x_y_z.tif`: Image comparing raw and adjusted image tiles for respective channel. Example for each tile of the middel z slice

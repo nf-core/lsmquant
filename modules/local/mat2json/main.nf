@@ -49,8 +49,6 @@ process MAT2JSON {
 
     touch \$results_dir/${prefix}.json
 
-
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mat2json: 1.0

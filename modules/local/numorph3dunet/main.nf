@@ -2,9 +2,7 @@ process NUMORPH3DUNET {
     tag "$meta.id"
     label 'process_gpu'
 
-
     container "nf-core/numorph-3dunet:1.0.0"
-
 
     input:
     tuple val(meta), path(img_directory), path(parameter_file)

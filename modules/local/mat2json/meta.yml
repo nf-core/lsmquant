@@ -8,7 +8,7 @@ keywords:
   - csv
 tools:
   - "mat2json":
-      description: "converst matlab .mat files into json or csv files."
+      description: "Converts matlab .mat files into json or csv files."
       homepage: ""
       documentation: ""
       tool_dev_url: ""
