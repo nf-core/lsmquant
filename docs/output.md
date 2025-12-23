@@ -12,6 +12,7 @@ The directories listed below will be created in the results directory after the 
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
+- [StageFiles](#stagefiles) - Stageing images from the input directory into the workdirectory.
 - [NumorphIntensity](#numorphintensity) - Measures intensity parameters for illumination correction
 - [NumorphAlign](#numorphalign) - Performs 2D rigid or 3D non-linear channel alignment
 - [NumorphStitch](#numoprhstitch) - Performs 2D iterative stitching of image tiles
@@ -21,6 +22,10 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 - [Mat2JSON](#mat2json) - Converts `.mat`files to JSON
 - [MultiQC](#MultiQC) Aggregate report describing workflow run and tools used from the whole pipeline.
 - [Pipeline information](#pipeline-information) - Reports the metrics generated during the workflow execution
+
+### StageFiles
+
+This process stages the image files from the input directory to the pipeline's work directory. This step is necessary to avoid duplication of input data in the work directory, as the processes **NumorphIntensity**, **NumorphAlign**, and **NumorphStitch** require the same input data.
 
 ### NumorphIntensity
 
@@ -94,15 +99,19 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 </details>
 
-**NumorphResample** downsamples the image resolition to macht the Allen Reference Atlas resolution befor registration.
+**NumorphResample** downsamples the image resolution to macht the Allen Reference Atlas resolution befor registration.
 
 ### NumorphRegister
 
 <details markdown="1">
 <summary>Output files</summary>
 
-- `Sample_id/results` - `NM_variables.mat`: Contains input and calculated parameters - `registered/*_MOV_*.nii`: Moving image from registration - `registered/*_REF_*.nii`: Reference imgae from registration - `variables/reg_params.mat`: Registration parameters
-</details>
+- `Sample_id/results`:
+  - `NM_variables.mat`: Contains input and calculated parameters
+  - `registered/*_MOV_*.nii`: Moving image from registration
+  - `registered/*_REF_*.nii`: Reference image from registration
+  - `variables/reg_params.mat`: Registration parameters
+  </details>
 
 **NumorphRegister** performs image registration to the Allen Reference Atlas.
 
@@ -128,7 +137,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
   - `*.json/*.csv`: Converted mat file
   </details>
 
-  **Mat2JSON** converts a given `.mat`file into a `CSV` if the data is stored as a table datastructure or a `JSON` for other nested datastructures.
+  **Mat2JSON** converts a given `.mat`file into a `CSV` if the data is stored as a table data structure or a `JSON` for other nested data structures.
 
 ### MultiQC
 
