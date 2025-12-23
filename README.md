@@ -51,7 +51,7 @@ The pipeline consists of two major workflows `preprocessing` and the `full` work
 
 ### Preprocessing
 
-Preprocessing is performed on raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope. Three individual steps are perfomed :
+Preprocessing is performed on raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope. Three individual steps are performed:
 
 - **Intensity adjustments** to correct for the Gaussian shape of the lightsheet and intensity differences between adjacent tiles
 - **Image channel alignment** using a 2D rigid approach or a nonlinear 3D approach using Elastix.
@@ -63,7 +63,7 @@ Quantification of cell-nuclei is performed using a 3D-Unet. It is performed on t
 
 ### ARA Registration
 
-Optionally registration to the Allen Refernce Atlas (ARA) for functional brain region annotation can be perfomed before segmentation.
+Optional registration to the Allen Reference Atlas (ARA) for functional brain region annotation can be perfomed before segmentation.
 This includes the following two steps:
 
 - Downsampling of the high resolution stitched images
@@ -78,14 +78,14 @@ To run the pipeline you need to provide a samplesheet with your data in the foll
 
 `samplesheet.csv`
 
-```bash
+```csv
 sample_id,img_directory,parameter_file
 TEST1,path/to/image-files,path/to/parameter/file.csv
 ```
 
-The parameter csv file includes sample specific parameters that are used for processing the given data.It needs to follow a specific structure.
+The parameter csv file includes sample specific parameters that are used for processing the given data. It needs to follow a specific structure.
 
-Please get the basic tempalte file here ( include maybe link to template csv which can be found in the repo ?)
+Please get the basic template file [here](../assets/params_template_lsmquant.csv).
 `parametersheet.csv`
 
 Now, you can run the pipeline using:

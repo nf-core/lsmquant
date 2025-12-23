@@ -12,15 +12,15 @@ The directories listed below will be created in the results directory after the 
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-- [NumorphIntensity](#numorphintensity) - Mesures intensity parameters for illumination correction
+- [NumorphIntensity](#numorphintensity) - Measures intensity parameters for illumination correction
 - [NumorphAlign](#numorphalign) - Performs 2D rigid or 3D non-linear channel alignment
 - [NumorphStitch](#numoprhstitch) - Performs 2D iterative stitching of image tiles
 - [NumorphResample](#numorphresample) - Generate downsamppled images
-- [NumorphRegister](#numorphregister) - Performs registartion to the Allen Reference Atlas (ARA)
-- [Numorph3DUnet](#numorph3dunet) - Perfomrs cell-nuclei segmentation and quantification
-- [Mat2JSON] (#mat3json) - Converts `.mat`files to JSON
+- [NumorphRegister](#numorphregister) - Performs registration to the Allen Reference Atlas (ARA)
+- [Numorph3DUnet](#numorph3dunet) - Performs cell-nuclei segmentation and quantification
+- [Mat2JSON](#mat2json) - Converts `.mat`files to JSON
 - [MultiQC](#MultiQC) Aggregate report describing workflow run and tools used from the whole pipeline.
-- [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
+- [Pipeline information](#pipeline-information) - Reports the metrics generated during the workflow execution
 
 ### NumorphIntensity
 
@@ -30,7 +30,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 - `Sample_id/intensity/results`
   - `NM_variables.mat`: Contains input and calculated parameters
   - `samples/`
-    - `[channel]_x_y_z.tif`: Image comparing raw and adjusted image tiles for respective channel. Example for each tile of the middel z slice
+    - `[channel]_x_y_z.tif`: Image comparing raw and adjusted image tiles for respective channel. Example for each tile of the middle z slice
     - `flatfield_*.png`: Flatfield correction heatmap for each channel
     - `tile_adj_*.png`: Heatmap of tile positions displaying illumination correction factor for each tile
     - `y_adj_*.png`: Intensity correction factors along the Y-axis(using intensity profiles specifically for the LaVision Ultramicroscope II)

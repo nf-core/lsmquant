@@ -9,4 +9,7 @@ template:
   name: lsmquant
   org: nf-core
   outdir: .
+  skip_features:
+  	- fastqc
+  	- igenomes
   version: 1.0.0
