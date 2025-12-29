@@ -43,6 +43,6 @@ local subworkflows:
 
 ### `Dependencies`
 
-Custom numorph container `numorphpreprocessing`, `numorphanalyze`, `mat2json`, and `numorph3dunet`are on the nf-core quay io repository. Compiled matlab application [numorph_preprocessing](https://github.com/CaroAMN/numorph_preprocessing), [mat2json](https://github.com/CaroAMN/mat2json) and the source code for the [3Dunet](https://github.com/CaroAMN/numorph_3dunet) python package are public repositories. The source code of the tools are found here [NuMoprh_dev](https://github.com/CaroAMN/Numorph_dev/tree/main)
+Custom numorph container `numorphpreprocessing`, `numorphanalyze`, `mat2json`, and `numorph3dunet`are on the nf-core quay io repository. Compiled matlab application [numorph_preprocessing](https://github.com/CaroAMN/numorph_preprocessing), [mat2json](https://github.com/CaroAMN/mat2json) and the source code for the [3Dunet](https://github.com/CaroAMN/numorph_3dunet) python package are public repositories. The source code of the tools are found here [NuMorph_dev](https://github.com/CaroAMN/Numorph_dev/tree/main)
 
 ### `Deprecated`
