@@ -29,7 +29,7 @@ process STAGEFILES {
     # This process will stage the data into the workdir and then it will be symlinked
 
     mkdir -p ${prefix}_raw
-    ln -sr ${file_directory}/* ${prefix}_raw/
+    ln -sr ${file_directory} ${prefix}_raw/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
