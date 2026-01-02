@@ -101,10 +101,6 @@ jobs:
           filters: ${{ matrix.filters }}
           tags: "gpu"
 
-      - name: Show Singularity run commands
-        run: |
-          find . -name ".nextflow.log" -exec grep "singularity exec" {} + || echo "No singularity exec found"
-
   confirm-pass:
     runs-on:
       - runs-on=${{ github.run_id }}-confirm-pass
