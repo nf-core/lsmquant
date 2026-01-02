@@ -2,7 +2,7 @@
 name: "stagefiles"
 description: A helper module to stage files from a directory into the work directory
 keywords:
-  - stageing
+  - staging
   - empty module
   - files
   - helper

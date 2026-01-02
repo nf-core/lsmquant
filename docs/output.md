@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarises results at the end of the pipeline.
+This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarizes results at the end of the pipeline.
 
 The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
@@ -12,11 +12,11 @@ The directories listed below will be created in the results directory after the 
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-- [StageFiles](#stagefiles) - Stageing images from the input directory into the workdirectory.
+- [StageFiles](#stagefiles) - Stageing images from the input directory into the work directory.
 - [NumorphIntensity](#numorphintensity) - Measures intensity parameters for illumination correction
 - [NumorphAlign](#numorphalign) - Performs 2D rigid or 3D non-linear channel alignment
 - [NumorphStitch](#numoprhstitch) - Performs 2D iterative stitching of image tiles
-- [NumorphResample](#numorphresample) - Generate downsamppled images
+- [NumorphResample](#numorphresample) - Generate downsampled images
 - [NumorphRegister](#numorphregister) - Performs registration to the Allen Reference Atlas (ARA)
 - [Numorph3DUnet](#numorph3dunet) - Performs cell-nuclei segmentation and quantification
 - [Mat2JSON](#mat2json) - Converts `.mat`files to JSON
@@ -64,7 +64,7 @@ This process stages the image files from the input directory to the pipeline's w
 
 </details>
 
-**NumorphAlign** performs rigid or non-rigind alignemnt of channels to a reference (nuclei) channel and determines z displacement per tile for each channel.
+**NumorphAlign** performs rigid or non-rigid alignment of channels to a reference (nuclei) channel and determines z displacement per tile for each channel.
 
 ### NumorphStitch
 
@@ -81,7 +81,7 @@ This process stages the image files from the input directory to the pipeline's w
     - `path_table.mat`: Image information table
     - `stitch_tforms.mat`: Stitching information
     - `adjusted_z.mat`: Adjusted z positions for each tile
-    - `z_disp_matrix.mat`: Z displacement for adjecent tiles
+    - `z_disp_matrix.mat`: Z displacement for adjacent tiles
     - `z_displacement_align.mat`: Z displacement matrix for given channels to the reference
 
 </details>
@@ -99,7 +99,7 @@ This process stages the image files from the input directory to the pipeline's w
 
 </details>
 
-**NumorphResample** downsamples the image resolution to macht the Allen Reference Atlas resolution befor registration.
+**NumorphResample** downsamples the image resolution to match the Allen Reference Atlas resolution before registration.
 
 ### NumorphRegister
 
