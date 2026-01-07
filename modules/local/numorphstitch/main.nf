@@ -28,9 +28,7 @@ process NUMORPHSTITCH {
     """
 
     mkdir -p results/variables/
-    mkdir -p ./images
 
-    ln -sr ${img_directory} ./images
     ln -sr ${alignment_table_mat} results/variables
     ln -sr ${z_displacement_align_mat} results/variables
     ln -sr ${thresholds_mat} results/variables
@@ -38,7 +36,7 @@ process NUMORPHSTITCH {
     ln -sr ${path_table_mat} results/variables
 
     # resolve symlinks and paths
-    img_dir=\$(readlink -f ./images)
+    img_dir=\$(readlink -f ${img_directory})
     parameter_file=\$(readlink -f ${parameter_file})
     results_dir=\$(readlink -f ./results)
     NM_variables=\$(readlink -f ${NM_variables})

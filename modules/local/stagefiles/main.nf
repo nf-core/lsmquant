@@ -10,7 +10,7 @@ process STAGEFILES {
     tuple val(meta), path(file_directory) // directory containing files
 
     output:
-    tuple val(meta), path("${meta.id}_raw/**")  , emit: raw_files
+    tuple val(meta), path("${meta.id}_raw/*")  , emit: raw_files
     path "versions.yml"                        , emit: versions
 
     when:
