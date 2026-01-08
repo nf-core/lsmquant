@@ -38,7 +38,6 @@ workflow LSMQUANT {
     // if test profile then first data needs to be unzipped
     if ( workflow.profile.contains('test') ) {
         params.stage = 'preprocessing'
-
         samplesheet
             .map { meta, img_directory, parameter_file ->
                 tuple(meta, img_directory)
