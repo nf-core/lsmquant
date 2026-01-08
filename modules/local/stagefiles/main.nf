@@ -10,7 +10,7 @@ process STAGEFILES {
     tuple val(meta), path(file_directory) // directory containing files
 
     output:
-    tuple val(meta), path("${meta.id}_raw/**")  , emit: raw_files
+    tuple val(meta), path("${meta.id}_raw/*")  , emit: raw_files
     path "versions.yml"                        , emit: versions
 
     when:
@@ -29,7 +29,7 @@ process STAGEFILES {
     # This process will stage the data into the workdir and then it will be symlinked
 
     mkdir -p ${prefix}_raw
-    ln -sr ${file_directory}/* ${prefix}_raw/
+    ln -sr ${file_directory} ${prefix}_raw/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

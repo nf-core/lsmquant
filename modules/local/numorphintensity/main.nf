@@ -26,12 +26,9 @@ process NUMORPHINTENSITY {
 
     """
     mkdir -p ./results
-    mkdir -p ./images
-
-    ln -sr ${img_directory} ./images
 
     # resolve symlinks and paths
-    img_dir=\$(readlink -f ./images)
+    img_dir=\$(readlink -f ${img_directory})
     parameter_file=\$(readlink -f ${parameter_file})
     results_dir=\$(readlink -f ./results)
 

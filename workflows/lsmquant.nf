@@ -12,6 +12,7 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmq
 include { MAT2JSON               } from '../modules/local/mat2json'
 include { NUMORPH3DUNET          } from '../modules/local/numorph3dunet'
 include { UNZIPFILES             } from '../modules/nf-core/unzipfiles'
+include { UNZIP                  } from '../modules/nf-core/unzip'
 include { STAGEFILES             } from '../modules/local/stagefiles'
 include { MULTIQC                } from '../modules/nf-core/multiqc'
 
@@ -37,17 +38,16 @@ workflow LSMQUANT {
     // if test profile then first data needs to be unzipped
     if ( workflow.profile.contains('test') ) {
         params.stage = 'preprocessing'
-
         samplesheet
             .map { meta, img_directory, parameter_file ->
                 tuple(meta, img_directory)
             }
             .set { img_archive }
 
-        UNZIPFILES (img_archive)
-        ch_versions = ch_versions.mix(UNZIPFILES.out.versions)
+        UNZIP (img_archive)
+        ch_versions = ch_versions.mix(UNZIP.out.versions)
 
-        def unzipped_output = UNZIPFILES.out.files
+        def unzipped_output = UNZIP.out.unzipped_archive
 
         unzipped_output
             .join(samplesheet)
