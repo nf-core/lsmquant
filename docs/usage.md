@@ -57,7 +57,7 @@ This section describes every parameter that can be set in the `parameter.csv`. I
 | `single_sheet`              | true, false; Whether a single sheet was used for acquisition                                                                                                                                                                                    |
 | `ls_width`                  | 1xn_channels integer. Light sheet width setting for UltraMicroscope II as percentage. **Default: 50**                                                                                                                                           |
 | `laser_y_displacement`      | [-0.5,0.5]; Displacement of light-sheet along y axis. Value of 0.5 means light-sheet center is positioned at the top of the image. **Default: 0**                                                                                               |
-| `sampling_frequency`        | [0,1]; Fraction of images to read and sample from. Setting to 1 means use all images. **Default: 0.2**                                                                                                                                          |
+| `sampling_frequency`        | [0,1]; The proportion of images to sample for BaSiC. These sampled images will be used to compute shading correction and flatfield for the entire dataset. Setting to 1 means use all images. **Default: 0.2**                                  |
 | `shading_correction_tiles`  | Integer vector. Subset tile positions for calculating shading correction (row major order). It's recommended that bright regions are avoided                                                                                                    |
 | `shading_smoothness`        | numeric >= 1; Factor for adjusting smoothness of shading correction. Greater values lead to a smoother flatfield image. **Default: 2**                                                                                                          |
 | `shading_intensity`         | numeric >= 1; Factor for adjusting the total effect of shading correction. Greater values lead to a smaller overall adjustment. **Default: 1**                                                                                                  |
@@ -317,3 +317,47 @@ We recommend adding the following line to your environment to limit this (typica
 ```bash
 NXF_OPTS='-Xms1g -Xmx4g'
 ```
+
+## Methods description
+
+This section provides a detailed explanation for the individual processing steps, based on the original NuMorph toolbox [publication](https://www.sciencedirect.com/science/article/pii/S2211124721012626?via%3Dihub).
+
+### Intensity adjustment
+
+This step performs two types of intensity adjustments to the raw images before tile stitching:
+
+- Shading correction
+
+- Normalizing intensities between tile stacks
+
+**Shading correction**
+
+The Gaussian shape of the light-sheet causes uneven illumination and shading across the y-axis. To correct these effects the tool BaSiC (MATLAB tool for retrospective shading correction) is used. A fraction of all images is used to estimate the flatfiled for each channel. Every image is then divided by the estimated flatfield to normalize illumination. With the parameter `sampling_frequency`, the fraction of images to use for BaSiC, is specified as a decimal. For example setting the `sampling_frequency` to `0.1`, `10%` of all images will be used to estimate the flatfield.
+
+**Normalizing intensities between tile stacks**
+
+Photo-bleaching and light attenuation can cause differences in brightness between tile stacks. To account for that, the differences in intensities are measured in overlapping regions (vertical and horizontal) of adjacent tiles. Next the adjustment factor $t^{adj}$, based on the 95th percentile of pixel intensities in overlapping regions, is calculated. For this 5% of all images are used.
+The final adjustment is applied with the following formula:
+$$I^{adj}(x,y) = (I(x,y) - D)*t^{adj}(x,y) + D $$
+
+- $I(x,y)$: Original measured image intensities at tile position (x,y)
+- $I^{adj}(x,y)$: Adjusted image intensities at tile position (x,y)
+- $t^{adj}$: Adjustment factor based on the 95th percentile of intensity differences
+- $D$: Darkfield intensity (constant value based on the 5th percentile of pixel intensities across all measured regions)
+
+### Channel alignment
+
+Drifts in sample positions and stage can occur during imaging multiple channels causing spatial misalignment. To correct for these shifts between channels two methods can be chosen:
+
+- Rigid 2D translation: `align_method`: `translation`
+- Nonlinear 3D registration using Elastix : `align_method`: `elastix`
+
+Both methods expect the nuclear channel as reference, to which all other immunolabeled channels will be aligned to.
+
+**Rigid 2D translation**
+
+This approach estimates first the relative z displacement between the nuclei reference channel and every other channel. For each tile, the z correspondence is evaluated using phase correlation against 20 evenly spaced z slices in the nuclei stack. The z position with the highest image similarity based on intensity correlation defines the inter-channel z displacement
+
+Next, multimodal 2D registration is performed on each slices in the image stack by using MATLAB's Image Processing toolbox, to determine xy translations. Outlier translations are defined as translations that are greater than 3 scaled median absolute deviations within a local window of 10 slices. These outliers are corrected by linear interpolation of adjacent images in the stack.
+
+**Nonlinear 3D registration using Elastix**
