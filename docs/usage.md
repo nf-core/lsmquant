@@ -51,16 +51,24 @@ The individual parameters are explained [here](###Analysisspecificparameters)
 
 This section describes every parameter that can be set in the `parameter.csv`. In order for the pipeline to run correctly all named parameters need to be present in the parameter file and its recommended to use the provided parameter file (link). Every parameter has a default value that will be set if not otherwise defined in the `parameter.csv`.
 
-| Parameter                   | Description                                                                                                                                                                                                                                     |
+**Parameters for manual tile shading correction (specific for LaVision Ultramicroscope II)**
+| | |
+|-----|------|
+| `single_sheet` | true, false; Whether a single sheet was used for acquisition |
+| `ls_width` | 1xn_channels integer. Light sheet width setting for UltraMicroscope II as percentage. **Default: 50** |
+| `laser_y_displacement` | [-0.5,0.5]; Displacement of light-sheet along y axis. Value of 0.5 means light-sheet center is positioned at the top of the image. **Default: 0** |
+
+**Parameters for shading correction using BaSiC**
+| | |
+|-----|------|
+| `sampling_frequency` | [0,1]; The proportion of images to sample for BaSiC. These sampled images will be used to compute shading correction and flatfield for the entire dataset. Setting to 1 means use all images. **Default: 0.2** |
+| `shading_correction_tiles` | Integer vector. Subset tile positions for calculating shading correction (row major order). It's recommended that bright regions are avoided |
+| `shading_smoothness` | numeric >= 1; Factor for adjusting smoothness of shading correction. Greater values lead to a smoother flatfield image. **Default: 2** |
+| `shading_intensity` | numeric >= 1; Factor for adjusting the total effect of shading correction. Greater values lead to a smaller overall adjustment. **Default: 1** |
+
+|                             |                                                                                                                                                                                                                                                 |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `darkfield_intensity`       | 1xn_channels; Constant darkfield intensity value (i.e. average intensity of image with nothing present). **Default: 101**                                                                                                                       |
-| `single_sheet`              | true, false; Whether a single sheet was used for acquisition                                                                                                                                                                                    |
-| `ls_width`                  | 1xn_channels integer. Light sheet width setting for UltraMicroscope II as percentage. **Default: 50**                                                                                                                                           |
-| `laser_y_displacement`      | [-0.5,0.5]; Displacement of light-sheet along y axis. Value of 0.5 means light-sheet center is positioned at the top of the image. **Default: 0**                                                                                               |
-| `sampling_frequency`        | [0,1]; The proportion of images to sample for BaSiC. These sampled images will be used to compute shading correction and flatfield for the entire dataset. Setting to 1 means use all images. **Default: 0.2**                                  |
-| `shading_correction_tiles`  | Integer vector. Subset tile positions for calculating shading correction (row major order). It's recommended that bright regions are avoided                                                                                                    |
-| `shading_smoothness`        | numeric >= 1; Factor for adjusting smoothness of shading correction. Greater values lead to a smoother flatfield image. **Default: 2**                                                                                                          |
-| `shading_intensity`         | numeric >= 1; Factor for adjusting the total effect of shading correction. Greater values lead to a smaller overall adjustment. **Default: 1**                                                                                                  |
 | `update_z_adjustment`       | true, false; Update z adjustment steps with new parameters. Otherwise pipeline will search for previously calculated parameters. **Default: false**                                                                                             |
 | `z_positions`               | integer or numeric; Sampling positions along adjacent image stacks to determine z displacement. If <1, uses fraction of all images. Set to 0 for no adjustment, only if you're confident tiles are aligned along z dimension. **Default: 0.01** |
 | `z_window`                  | integer; Search window for finding corresponding tiles (i.e. +/-n z positions). **Default: 5**                                                                                                                                                  |
@@ -338,6 +346,7 @@ The Gaussian shape of the light-sheet causes uneven illumination and shading acr
 
 Photo-bleaching and light attenuation can cause differences in brightness between tile stacks. To account for that, the differences in intensities are measured in overlapping regions (vertical and horizontal) of adjacent tiles. Next the adjustment factor $t^{adj}$, based on the 95th percentile of pixel intensities in overlapping regions, is calculated. For this 5% of all images are used.
 The final adjustment is applied with the following formula:
+
 $$I^{adj}(x,y) = (I(x,y) - D)*t^{adj}(x,y) + D $$
 
 - $I(x,y)$: Original measured image intensities at tile position (x,y)
@@ -356,7 +365,7 @@ Both methods expect the nuclear channel as reference, to which all other immunol
 
 **Rigid 2D translation**
 
-This approach estimates first the relative z displacement between the nuclei reference channel and every other channel. For each tile, the z correspondence is evaluated using phase correlation against 20 evenly spaced z slices in the nuclei stack. The z position with the highest image similarity based on intensity correlation defines the inter-channel z displacement
+This approach estimates first the relative z displacement between the nuclei reference channel and every other channel. For each tile, the z correspondence is evaluated using phase correlation against a number evenly spaced z slices in the nuclei stack. The z position with the highest image similarity based on intensity correlation defines the inter-channel z displacement
 
 Next, multimodal 2D registration is performed on each slices in the image stack by using MATLAB's Image Processing toolbox, to determine xy translations. Outlier translations are defined as translations that are greater than 3 scaled median absolute deviations within a local window of 10 slices. These outliers are corrected by linear interpolation of adjacent images in the stack.
 
