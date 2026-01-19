@@ -447,7 +447,8 @@ Both methods expect the nuclear channel as reference, to which all other immunol
 
 **Rigid 2D translation**
 
-This approach estimates first the relative z displacement between the nuclei reference channel and every other channel. For each tile, the z correspondence is evaluated using phase correlation against a number evenly spaced z slices in the nuclei stack. The z position with the highest image similarity based on intensity correlation defines the inter-channel z displacement
+This approach estimates first the relative z displacement between the nuclei reference channel and every other channel. Within each tile, a number evenly spaced z slices of the reference channel is chosen by the parameter `z_position`. For every z position, phase corelation is calculated between all images from another channel in a search window (set by `z_window`) and summed up.
+The z position with the highest image similarity based on intensity correlation defines the inter-channel z displacement
 
 Next, multimodal 2D registration is performed on each slices in the image stack by using MATLAB's Image Processing toolbox, to determine xy translations. Outlier translations are defined as translations that are greater than 3 scaled median absolute deviations within a local window of 10 slices. These outliers are corrected by linear interpolation of adjacent images in the stack.
 
@@ -481,7 +482,7 @@ The iterative 2D stitching procedure to assemble the whole image, consists of tw
 
 **Estimation of z correspondence between tile stacks**
 
-To determine optimal z correspondence for adjacent tiles, a sample of 10 evenly spaced images from within a stack are registered to every z position within a 20 image window of a adjacent stack (vertically and horizontally) by phase correlation. Z correspondences are ranked by the amount of peak correlations among the 10 images, where the highest count represent the best correspondence. In addition, the difference between the best and the 2nd best z correlation is taken as a weight, indicating the strength of a correspondence (larger difference = stronger correspondence).
+To determine optimal z correspondence for adjacent tiles, a sample of evenly spaced images (set with `z_position`) from within a stack are registered to every z position within a image window (set by `z_window`) of a adjacent stack (vertically and horizontally) by phase correlation. Z correspondences are ranked by the amount of peak correlations among the z positions, where the highest count represent the best correspondence. In addition, the difference between the best and the 2nd best z correlation is taken as a weight, indicating the strength of a correspondence (larger difference = stronger correspondence).
 Finally this results in 4 matrices for a stack representing pairwise horizontal and vertical z displacements and their corresponding weights. To calculate the final z displacement for each tile a minimum spanning tree is used, where displacements are used as vertices and their weights as edges.
 
 **Iterative xy alignment and stitching**

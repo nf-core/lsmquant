@@ -113,7 +113,7 @@ For more details about the output files and reports, please refer to the
 
 ## Credits
 
-nf-core/lsmquant was originally written by Carolin Schwitalla.
+nf-core/lsmquant was originally written by [Carolin Schwitalla](https://github.com/CaroAMN) at the Quantitative Biology Center Tuebingen ([QBiC](https://www.info.qbic.uni-tuebingen.de/)).
 
 The pipeline is mainly based on the NuMorph (Nuclear-Based Morphometry) toolbox developed by Krupa et al., 2021.
 
@@ -125,7 +125,17 @@ The pipeline is mainly based on the NuMorph (Nuclear-Based Morphometry) toolbox 
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
+[Matthias Hörtenhuber](https://github.com/mashehu)\
+[Famke Bäuerle](https://github.com/famosab)\
+[Mark Polster](https://github.com/mapo9)\
+[Susi Jo](https://github.com/SusiJo)\
+[Luis Kuhn Cuellar](https://github.com/luiskuhn)\
+[Daniel Straub](https://github.com/d4straub)
+[Tatiana Woller](https://github.com/tatianawoller)\
+[Niklas Grote](https://github.com/HomoPolyethylen)\
+Jason Stein\
+Felix Kyere\
+Ian Curtin
 
 ## Contributions and Support
 
