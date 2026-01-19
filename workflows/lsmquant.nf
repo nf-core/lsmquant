@@ -34,47 +34,55 @@ workflow LSMQUANT {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    // stage input files into the working directory
-    // if test profile then first data needs to be unzipped
-    if ( workflow.profile.contains('test') ) {
-        params.stage = 'preprocessing'
-        samplesheet
-            .map { meta, img_directory, parameter_file ->
-                tuple(meta, img_directory)
-            }
-            .set { img_archive }
-
-        UNZIP (img_archive)
-        ch_versions = ch_versions.mix(UNZIP.out.versions)
-
-        def unzipped_output = UNZIP.out.unzipped_archive
-
-        unzipped_output
-            .join(samplesheet)
-            .map { meta, unzipped, raw_img_directory, parameter_file ->
-                tuple(meta, unzipped, parameter_file)
-            }
-            .set { ch_samplesheet }
+    // branch input channel based on whether zip archive or directory
+    samplesheet.branch { meta, img_directory, parameter_file ->
+        zip_archive: img_directory[0].endsWith(".zip")
+            return tuple(meta, img_directory, parameter_file)
+        directory: true
+            return tuple(meta, img_directory, parameter_file)
     }
-    else {
-        samplesheet
-            .map { meta, img_directory, parameter_file ->
-                tuple(meta, img_directory)
-            }
-            .set { img_dir }
+    .set { samplesheet_split }
 
-        STAGEFILES (img_dir)
 
-        ch_versions = ch_versions.mix(STAGEFILES.out.versions)
-        def staged_images = STAGEFILES.out.raw_files
+    // if zip archive then unzip first
+    samplesheet_split.zip_archive
+        .map { meta, zip, parameter_file ->
+            tuple(meta, zip)
+        }
+        .set { zip_archive }
 
-        staged_images
-            .join(samplesheet)
-            .map { meta, staged, raw_img_directory, parameter_file ->
-                tuple(meta, staged, parameter_file)
-            }
-            .set { ch_samplesheet }
-    }
+    UNZIP (zip_archive)
+    ch_versions = ch_versions.mix(UNZIP.out.versions)
+    unzipped_output = UNZIP.out.unzipped_archive
+    // join unzipped output with  parameter file
+    unzipped_output
+        .join(samplesheet_split.zip_archive)
+        .map { meta, unzipped, zip, parameter_file ->
+            tuple(meta, unzipped, parameter_file)
+        }
+        .set { ch_unzipped }
+
+    // if directory then stage files
+    samplesheet_split.directory
+        .map { meta, img_directory, parameter_file ->
+            tuple(meta, img_directory)
+        }
+        .set { img_dir }
+
+    STAGEFILES (img_dir)
+    ch_versions = ch_versions.mix(STAGEFILES.out.versions)
+    staged_images = STAGEFILES.out.raw_files
+
+    staged_images
+        .join(samplesheet_split.directory)
+        .map { meta, staged, raw_img_directory, parameter_file ->
+            tuple(meta, staged, parameter_file)
+        }
+        .set { ch_stagedfiles }
+
+    // combine unzipped and staged files channels
+    ch_samplesheet = Channel.empty()
+    ch_samplesheet = ch_unzipped.mix(ch_stagedfiles)
 
     // run different workflows according to parameter setting
     // the complete analysis workflow with the option of ara registration
