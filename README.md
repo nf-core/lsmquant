@@ -130,7 +130,7 @@ We thank the following people for their extensive assistance in the development 
 [Mark Polster](https://github.com/mapo9)\
 [Susi Jo](https://github.com/SusiJo)\
 [Luis Kuhn Cuellar](https://github.com/luiskuhn)\
-[Daniel Straub](https://github.com/d4straub)
+[Daniel Straub](https://github.com/d4straub)\
 [Tatiana Woller](https://github.com/tatianawoller)\
 [Niklas Grote](https://github.com/HomoPolyethylen)\
 Jason Stein\
