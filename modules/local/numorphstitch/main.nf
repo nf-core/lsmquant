@@ -25,12 +25,20 @@ process NUMORPHSTITCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def alignment_table = alignment_table_mat.name ? alignment_table_mat : ''
+    def z_displacement_align = z_displacement_align_mat ? z_displacement_align_mat : ''
     """
 
     mkdir -p results/variables/
 
-    ln -sr ${alignment_table_mat} results/variables
-    ln -sr ${z_displacement_align_mat} results/variables
+    if [ -n "${alignment_table}" ]; then
+        ln -sr ${alignment_table} results/variables/
+    fi
+
+    if [ -n "${z_displacement_align}" ]; then
+        ln -sr ${z_displacement_align} results/variables
+    fi
+
     ln -sr ${thresholds_mat} results/variables
     ln -sr ${adj_params_mat} results/variables
     ln -sr ${path_table_mat} results/variables

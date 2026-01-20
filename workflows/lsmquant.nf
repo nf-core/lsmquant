@@ -5,6 +5,7 @@
 */
 include { NUMORPH_PREPROCESSING  } from '../subworkflows/local/numorph_preprocessing'
 include { ARAREGISTRATION        } from '../subworkflows/local/araregistration'
+include { NUMORPH_STITCH         } from '../subworkflows/local/numorph_stitch'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -110,7 +111,11 @@ workflow LSMQUANT {
         ch_versions = ch_versions.mix(NUMORPH3DUNET.out.versions)
     }
 
-
+    // run stitch only workflow
+    if (params.stage == 'stitch_only') {
+        NUMORPH_STITCH (ch_samplesheet)
+        ch_versions = ch_versions.mix(NUMORPH_STITCH.out.versions)
+    }
 
     // run preprocessing workflow with the option to run ara registration
     if (params.stage == 'preprocessing') {
@@ -132,6 +137,8 @@ workflow LSMQUANT {
         }
 
     }
+    // run intensity and sticht without align
+
 
 
     // Collate and save software versions
