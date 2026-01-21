@@ -29,7 +29,7 @@
                 "stage": {
                     "type": "string",
                     "description": "The stage of the pipeline to run.",
-                    "help_text": "The stage of the pipeline to run. The pipeline has multiple stages that can be run separately or the complete pipeline can be run. Stages are: `full`, `preprocess`",
+                    "help_text": "The stage of the pipeline to run. The pipeline has multiple stages that can be run separately or the complete pipeline can be run. Stages are: `stitch`, `align_stitch`",
                     "fa_icon": "fas fa-cogs"
                 },
                 "ara_registration": {
