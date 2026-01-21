@@ -90,6 +90,15 @@ workflow LSMQUANT {
     if (params.stage == 'stitch') {
         NUMORPH_STITCH (ch_samplesheet)
         ch_versions = ch_versions.mix(NUMORPH_STITCH.out.versions)
+
+        def stitched_output = NUMORPH_STITCH.out.stitched
+
+        stitched_output
+            .join(samplesheet)
+            .map { meta, stitched, raw_img_directory, parameter_file ->
+                tuple(meta, stitched, parameter_file)
+            }
+            .set { stitched_data }
     }
 
     // run preprocessing with multi channel alignment and stitching
@@ -105,7 +114,6 @@ workflow LSMQUANT {
                 tuple(meta, stitched, parameter_file)
             }
             .set { stitched_data }
-        }
     }
 
     // run nuclei quantification
