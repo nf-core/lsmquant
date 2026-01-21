@@ -38,6 +38,12 @@
                     "help_text": "Performs Allen Reference Atlas registration of stitched images. This step is optional and can be skipped if the images are already registered.",
                     "fa_icon": "fas fa-file-image"
                 },
+                "nuclei_quantification": {
+                    "type": "boolean",
+                    "description": "Performs cell nuclei quantification using a pre-trained model.",
+                    "help_text": "Performs cell nuclei quantification using a pre-trained model. This step is optional and can be skipped if not needed.",
+                    "fa_icon": "fas fa-calculator"
+                },
                 "model_file": {
                     "type": "string",
                     "description": "Path to the pre-trained model file.",
