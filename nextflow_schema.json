@@ -29,7 +29,7 @@
                 "stage": {
                     "type": "string",
                     "description": "The stage of the pipeline to run.",
-                    "help_text": "The stage of the pipeline to run. The pipeline has multiple stages that can be run separately or the complete pipeline can be run. Stages are: `full`, `preprocess`",
+                    "help_text": "The stage of the pipeline to run. The pipeline has multiple stages that can be run separately or the complete pipeline can be run. Stages are: `stitch`, `align_stitch`",
                     "fa_icon": "fas fa-cogs"
                 },
                 "ara_registration": {
@@ -37,6 +37,12 @@
                     "description": "Performs Allen Reference Atlas registration of stitched images.",
                     "help_text": "Performs Allen Reference Atlas registration of stitched images. This step is optional and can be skipped if the images are already registered.",
                     "fa_icon": "fas fa-file-image"
+                },
+                "nuclei_quantification": {
+                    "type": "boolean",
+                    "description": "Performs cell nuclei quantification using a pre-trained model.",
+                    "help_text": "Performs cell nuclei quantification using a pre-trained model. This step is optional and can be skipped if not needed.",
+                    "fa_icon": "fas fa-calculator"
                 },
                 "model_file": {
                     "type": "string",

@@ -21,53 +21,33 @@
 
 ## Introduction
 
-**nf-core/lsmquant** is a bioinformatics pipeline that performs preprocessing and analysis of light-sheet microscopy images of tissue cleared samples. The pipeline takes 2D single-channel 16-bit `.tif` images as input. The preprocessing consists of intesity adjustment, channel alignment, and tile stitching to reconstruct the 3D image. For mousebrain samples it offers a registration to the Allen Mouse Brain Reference Atlas for precise region annotation. Cell nuclei quantification is perfomed on the nuclear channel by a 3D-Unet.
+**nf-core/lsmquant** is a bioinformatics pipeline that performs preprocessing and analysis of light-sheet microscopy images of tissue cleared samples. The pipeline takes raw images from a directory or a zip archive as input. The images need to be in a 2D single-channel 16-bit `tif`format.
 
 <div style="text-align: center;">
 <img src="docs/images/lsmquant-metromap.svg" alt="lasmquant metromap">
 </div>
 
-## Basic workflow
+## Pipeline Summary
+
+The pipeline consists of 3 major components: Preprocessing, Cell-Nuclei quantification, and Allen Reference Atlas registration. A detailed explanation on each method can be found in the [Methods description](./docs/usage.md) section.
 
 **Preprocessing**
 
-1. Intensity Adjustment
-2. Channel Alignment
-3. Iterative Stitching
+This stage reconstructs the 3D image from raw light-sheet data. Here two different workflows can be chosen:
 
-**ARA Registration**
+1. `align_stitch` for multi-channel brain images: \
+   Performs intensity adjustment, channel alignment, and iterative tile stitching
 
-4. ARA Registration subworkflow (optional)
-5. Cell Nuclei Quantification
+2. `stitch` for single-channel images: \
+   Performs intensity adjustment and interactive tile stitching.
 
-**Full**
+**Allen Brain Atlas Registration (Optional)**
 
-1. Preprocessing
-2. Nuclei quantification
+This workflow registers full brain images to the Allen Brain Reference Atlas. This is an optional workflow and can be chosen by setting the parameter: `ara_registartion`
 
-## Pipeline Summary
+**Cell Nuclei Quantification**
 
-The pipeline consists of two major workflows `preprocessing` and the `full` workflow. The `ara-regsitration` is an optional subworkflow that works only for whole mouse brain samples.
-
-### Preprocessing
-
-Preprocessing is performed on raw 2D single-channel 16-bit `.tif` images produced by a light sheet microscope. Three individual steps are performed:
-
-- **Intensity adjustments** to correct for the Gaussian shape of the lightsheet and intensity differences between adjacent tiles
-- **Image channel alignment** using a 2D rigid approach or a nonlinear 3D approach using Elastix.
-- **Image tile stitching** via an iterative 2D stitching approach by calculating z displacements and xy translations using phase correlation and SIFT.
-
-### Full
-
-Quantification of cell-nuclei is performed using a 3D-Unet. It is performed on the nuclear channel only, assuming that the corresponding image file names contain the pattern `C1`.
-
-### ARA Registration
-
-Optional registration to the Allen Reference Atlas (ARA) for functional brain region annotation can be perfomed before segmentation.
-This includes the following two steps:
-
-- Downsampling of the high resolution stitched images
-- Registration to the ARA
+Quantification of cell-nuclei is performed using a 3D-Unet and it is performed on the nuclear channel only. This is an optional workflow and can be chosen by setting the parameter:`nuclei_quantification`
 
 ## Usage
 
@@ -130,7 +110,7 @@ We thank the following people for their extensive assistance in the development 
 [Mark Polster](https://github.com/mapo9)\
 [Susi Jo](https://github.com/SusiJo)\
 [Luis Kuhn Cuellar](https://github.com/luiskuhn)\
-[Daniel Straub](https://github.com/d4straub)
+[Daniel Straub](https://github.com/d4straub)\
 [Tatiana Woller](https://github.com/tatianawoller)\
 [Niklas Grote](https://github.com/HomoPolyethylen)\
 Jason Stein\

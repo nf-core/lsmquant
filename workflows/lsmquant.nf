@@ -5,6 +5,7 @@
 */
 include { NUMORPH_PREPROCESSING  } from '../subworkflows/local/numorph_preprocessing'
 include { ARAREGISTRATION        } from '../subworkflows/local/araregistration'
+include { NUMORPH_STITCH         } from '../subworkflows/local/numorph_stitch'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -84,14 +85,13 @@ workflow LSMQUANT {
     ch_samplesheet = Channel.empty()
     ch_samplesheet = ch_unzipped.mix(ch_stagedfiles)
 
-    // run different workflows according to parameter setting
-    // the complete analysis workflow with the option of ara registration
-    if (params.stage == 'full') {
-        NUMORPH_PREPROCESSING (ch_samplesheet)
 
-        def stitched_output = NUMORPH_PREPROCESSING.out.stitched
-        def NM_variables = NUMORPH_PREPROCESSING.out.NM_variables
-        ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
+    // run single channel preprocessing by stitching only
+    if (params.stage == 'stitch') {
+        NUMORPH_STITCH (ch_samplesheet)
+        ch_versions = ch_versions.mix(NUMORPH_STITCH.out.versions)
+
+        def stitched_output = NUMORPH_STITCH.out.stitched
 
         stitched_output
             .join(samplesheet)
@@ -99,39 +99,34 @@ workflow LSMQUANT {
                 tuple(meta, stitched, parameter_file)
             }
             .set { stitched_data }
+    }
 
-        if (params.ara_registration) {
-            ARAREGISTRATION (stitched_data)
-            ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
-        }
+    // run preprocessing with multi channel alignment and stitching
+    if (params.stage == 'align_stitch') {
+        NUMORPH_PREPROCESSING (ch_samplesheet)
+        ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
 
+        def stitched_output = NUMORPH_PREPROCESSING.out.stitched
+
+        stitched_output
+            .join(samplesheet)
+            .map { meta, stitched, raw_img_directory, parameter_file ->
+                tuple(meta, stitched, parameter_file)
+            }
+            .set { stitched_data }
+    }
+
+    // run nuclei quantification
+    if (params.nuclei_quantification) {
         model_file = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
         NUMORPH3DUNET (stitched_data, model_file)
         ch_versions = ch_versions.mix(NUMORPH3DUNET.out.versions)
     }
-
-
-
-    // run preprocessing workflow with the option to run ara registration
-    if (params.stage == 'preprocessing') {
-        NUMORPH_PREPROCESSING (ch_samplesheet)
-        ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
-
-        def stitched_output = NUMORPH_PREPROCESSING.out.stitched
-
-        stitched_output
-            .join(samplesheet)
-            .map { meta, stitched, raw_img_directory, parameter_file ->
-                tuple(meta, stitched, parameter_file)
-            }
-            .set { stitched_data }
-
-        if (params.ara_registration) {
+    // run ara registration
+    if (params.ara_registration) {
             ARAREGISTRATION (stitched_data)
             ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
         }
-
-    }
 
 
     // Collate and save software versions
