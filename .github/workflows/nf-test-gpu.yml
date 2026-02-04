@@ -79,7 +79,7 @@ jobs:
         profile: [docker, singularity]
         shard: ${{ fromJson(needs.get-shards.outputs.shard) }}
         NXF_VER:
-          - "24.10.5"
+          - "25.10.3"
         filters: [pipeline]
 
     steps:
