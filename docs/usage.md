@@ -229,22 +229,19 @@ Update sample orientation
 | --------------------------- | -------------- |
 | `model_file` | Model file name. **Default: ''** |
 | `gpu` | Cuda visible device index. **Default: 0** |
-
-|                           |                                                                                                                   |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `chunk_size`              | 'Chunk size in voxels. **Default: [112, 112, 32]**                                                                |
-| `chunk_overlap`           | Overlap between chunks in voxels. **Default: [16, 16, 8]**                                                        |
-| `pred_threshold`          | Prediction threshold. **Default: 0.5**                                                                            |
-| `normalize_intensity`     | Whether to normalize intensities using min/max. **Default: true**                                                 |
-| `resample_chunks`         | Whether to resample image to match trained image resolution. Note: increases computation time. **Default: false** |
-| `tree_radius`             | Pixel radius for removing centroids near each other. **Default: 2**                                               |
-| `acquired_img_resolution` | Resolution of acquired images. **Default: [0.75, 0.75, 4]**                                                       |
-| `trained_img_resolution`  | Resolution of images the model was trained on. **Default: [0.75, 0.75, 2.5]**                                     |
-| `measure_coloc`           | Measure intensity of co-localized channels. **Default: false**                                                    |
-| `n_channels`              | Number of channels. **Default: ''**                                                                               |
-| `use_mask`                | Use mask. **Default: false**                                                                                      |
-| `mask_file`               | Mask file. **Default: ''**                                                                                        |
-| `resample_resolution`     | Resolution of resampled images. **Default: 25**                                                                   |
+| `chunk_size` | 'Chunk size in voxels. **Default: [112, 112, 32]** |
+| `chunk_overlap` | Overlap between chunks in voxels. **Default: [16, 16, 8]** |
+| `pred_threshold` | Prediction threshold. **Default: 0.5** |
+| `normalize_intensity` | Whether to normalize intensities using min/max. **Default: true** |
+| `resample_chunks` | Whether to resample image to match trained image resolution. Note: increases computation time. **Default: false** |
+| `tree_radius` | Pixel radius for removing centroids near each other. **Default: 2** |
+| `acquired_img_resolution` | Resolution of acquired images. **Default: [0.75, 0.75, 4]** |
+| `trained_img_resolution` | Resolution of images the model was trained on. **Default: [0.75, 0.75, 2.5]** |
+| `measure_coloc` | Measure intensity of co-localized channels. **Default: false** |
+| `n_channels` | Number of channels. **Default: ''** |
+| `use_mask` | Use mask. **Default: false** |
+| `mask_file` | Mask file. **Default: ''** |
+| `resample_resolution` | Resolution of resampled images. **Default: 25** |
 
 ## Running the pipeline
 
@@ -486,3 +483,8 @@ To determine optimal z correspondence for adjacent tiles, a sample of evenly spa
 Finally this results in 4 matrices for a stack representing pairwise horizontal and vertical z displacements and their corresponding weights. To calculate the final z displacement for each tile a minimum spanning tree is used, where displacements are used as vertices and their weights as edges.
 
 **Iterative xy alignment and stitching**
+Stitching process proceeds with iterative alignment in the x–y plane. The starting point for the iterative stitching along the stack is chosen near the middle of the volume. At this position, all tiles contained sufficient signal above background, defined as at least one standard deviation above the darkfield intensity. The initial translations for each tile are computed using phase correlation, providing a robust estimate of relative positioning. These translations are then refined using the Scale-Invariant Feature Transform (SIFT) algorithm, which improves accuracy by matching distinctive image features across overlapping regions. Stitching begins from the top-left tile to maintain consistent positioning and prevent cumulative shifts along the z-axis. Overlapping areas between tiles are blended using a sigmoidal function, ensuring smooth transitions and preserving image contrast. To handle cases where slices lack sufficient tissue content, shifts greater than five pixels compared to the previous iteration are replaced with the previous iteration’s values.
+
+### Nuclei quantification
+
+Images are subdivided into patches of 112 × 112 × 32 voxels with an overlap of 16 × 16 × 8 voxels to reduce boundary artifacts. Each patch is then passed to a modified pretrained 3D‑UNet (based on Çiçek et al., 2016 and Isensee et al., 2018) to predict binary nuclei masks. Individual nuclei are obtained via connected‑component analysis, and centroid coordinates are extracted from these components. To prevent duplicate detections introduced by overlapping patches, centroids located closer than half the overlap to a patch border (< 8 pixels in x/y or < 4 pixels in z) are removed under the assumption they will be captured by the neighboring patch. Remaining centroids across all patches are merged using a kd‑tree nearest‑neighbor search, eliminating duplicates within 1.5 voxels of each other to ensure each nucleus is counted exactly once.

@@ -27,9 +27,16 @@ process NUMORPHSTITCH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def alignment_table = alignment_table_mat.name ? alignment_table_mat : ''
     def z_displacement_align = z_displacement_align_mat ? z_displacement_align_mat : ''
+    def path_table = path_table_mat ? path_table_mat : ''
+    def thresholds = thresholds_mat ? thresholds_mat : ''
+    def adj_params = adj_params_mat ? adj_params_mat : ''
+    def NM_var = NM_variables ? NM_variables : ''
     """
 
     mkdir -p results/variables/
+    img_dir=\$(readlink -f ${img_directory})
+    parameter_file=\$(readlink -f ${parameter_file})
+    results_dir=\$(readlink -f ./results)
 
     if [ -n "${alignment_table}" ]; then
         ln -sr ${alignment_table} results/variables/
@@ -39,18 +46,24 @@ process NUMORPHSTITCH {
         ln -sr ${z_displacement_align} results/variables
     fi
 
-    ln -sr ${thresholds_mat} results/variables
-    ln -sr ${adj_params_mat} results/variables
-    ln -sr ${path_table_mat} results/variables
+    if [ -n "${path_table}" ]; then
+        ln -sr ${path_table} results/variables
+    fi
 
-    # resolve symlinks and paths
-    img_dir=\$(readlink -f ${img_directory})
-    parameter_file=\$(readlink -f ${parameter_file})
-    results_dir=\$(readlink -f ./results)
-    NM_variables=\$(readlink -f ${NM_variables})
+    if [ -n "${thresholds}" ]; then
+        ln -sr ${thresholds} results/variables
+    fi
 
-    numorph_preprocessing 'input_dir' \$img_dir 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'stitch' 'NM_variables' \$NM_variables
+    if [ -n "${adj_params}" ]; then
+        ln -sr ${adj_params} results/variables
+    fi
 
+    if [ -n "${NM_var}" ]; then
+        NM_variables=\$(readlink -f ${NM_var})
+        numorph_preprocessing 'input_dir' \$img_dir 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'stitch' 'NM_variables' \$NM_variables
+    fi
+
+    numorph_preprocessing 'input_dir' \$img_dir 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'stitch'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
