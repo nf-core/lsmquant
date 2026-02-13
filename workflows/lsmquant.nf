@@ -16,6 +16,7 @@ include { UNZIPFILES             } from '../modules/nf-core/unzipfiles'
 include { UNZIP                  } from '../modules/nf-core/unzip'
 include { STAGEFILES             } from '../modules/local/stagefiles'
 include { MULTIQC                } from '../modules/nf-core/multiqc'
+include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,8 +87,39 @@ workflow LSMQUANT {
     ch_samplesheet = ch_unzipped.mix(ch_stagedfiles)
 
 
-    // run single channel preprocessing by stitching only
-    if (params.stage == 'stitch') {
+    // run only stitching
+    if (params.stage == 'stitch_only') {
+        // create empty channels for intensity adjustment outputs
+        empty_adj_params_mat = samplesheet.map {[]}
+        empty_path_table_mat = samplesheet.map {[]}
+        empty_thresholds_mat = samplesheet.map {[]}
+        empty_NM_variables = samplesheet.map {[]}
+        empty_align_table_mat = samplesheet.map {[]}
+        empty_z_displacement_align_mat = samplesheet.map {[]}
+
+        NUMORPHSTITCH (
+            ch_samplesheet,
+            empty_align_table_mat,
+            empty_z_displacement_align_mat,
+            empty_path_table_mat,
+            empty_thresholds_mat,
+            empty_adj_params_mat,
+            empty_NM_variables
+        )
+        ch_versions = ch_versions.mix(NUMORPHSTITCH.out.versions)
+
+        def stitched_output = NUMORPHSTITCH.out.stitched
+
+        stitched_output
+            .join(samplesheet)
+            .map { meta, stitched, raw_img_directory, parameter_file ->
+                tuple(meta, stitched, parameter_file)
+            }
+            .set { stitched_data }
+    }
+
+    // run single channel preprocessing by intensity and stitching
+    if (params.stage == 'int_stitch') {
         NUMORPH_STITCH (ch_samplesheet)
         ch_versions = ch_versions.mix(NUMORPH_STITCH.out.versions)
 
@@ -102,7 +134,7 @@ workflow LSMQUANT {
     }
 
     // run preprocessing with multi channel alignment and stitching
-    if (params.stage == 'align_stitch') {
+    if (params.stage == 'int_align_stitch') {
         NUMORPH_PREPROCESSING (ch_samplesheet)
         ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
 
