@@ -34,13 +34,13 @@ The pipeline consists of 3 major components: Preprocessing, Cell-Nuclei quantifi
 
 **Preprocessing**
 
-This stage reconstructs the 3D image from raw light-sheet data. Here two different workflows can be chosen:
+This stage reconstructs the 3D image from raw light-sheet data. Here three different workflows can be chosen:
 
-1. `align_stitch` for multi-channel brain images: \
-   Performs intensity adjustment, channel alignment, and iterative tile stitching
+1. `int_align_stitch`: Performs intensity adjustment, channel alignment, and iterative tile stitching
 
-2. `stitch` for single-channel images: \
-   Performs intensity adjustment and interactive tile stitching.
+2. `int_stitch`: Performs intensity adjustment and iterative tile stitching.
+
+3. `stitch_only`: Performs only iterative tile stitching
 
 **Allen Brain Atlas Registration (Optional)**
 
