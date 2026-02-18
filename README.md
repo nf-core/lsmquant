@@ -113,12 +113,12 @@ We thank the following people for their extensive assistance in the development 
 [Luis Kuhn Cuellar](https://github.com/luiskuhn)\
 [Daniel Straub](https://github.com/d4straub)\
 [Niklas Grote](https://github.com/HomoPolyethylen)\
-Jason Stein\
-Felix Kyere\
-Ian Curtin\
-[Tatiana Woller](https://github.com/tatianawoller)\
-Irene Lamberti\
-Benjamin Pavie
+[Jason Stein](https://www.steinlab.org/)\
+[Felix Kyere](https://www.steinlab.org/)\
+[Ian Curtin](https://www.steinlab.org/)\
+[Tatiana Woller](https://github.com/tatianawoller) [(VIB)](https://bioimagingcore-leuven.sites.vib.be/en)\
+[Irene Lamberti](https://github.com/irelamb) [(VIB)](https://bioimagingcore-leuven.sites.vib.be/en)\
+[Benjamin Pavie](https://github.com/bpavie) [(VIB)](https://bioimagingcore-leuven.sites.vib.be/en)
 
 ## Contributions and Support
 
