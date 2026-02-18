@@ -12,7 +12,6 @@ include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pi
 include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_lsmquant_pipeline'
 include { MAT2JSON               } from '../modules/local/mat2json'
 include { NUMORPH3DUNET          } from '../modules/local/numorph3dunet'
-include { UNZIPFILES             } from '../modules/nf-core/unzipfiles'
 include { UNZIP                  } from '../modules/nf-core/unzip'
 include { STAGEFILES             } from '../modules/local/stagefiles'
 include { MULTIQC                } from '../modules/nf-core/multiqc'
