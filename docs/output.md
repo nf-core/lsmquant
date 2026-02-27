@@ -38,7 +38,7 @@ This process stages the image files from the input directory to the pipeline's w
     - `[channel]_x_y_z.tif`: Image comparing raw and adjusted image tiles for respective channel. Example for each tile of the middle z slice
     - `flatfield_*.png`: Flatfield correction heatmap for each channel
     - `tile_adj_*.png`: Heatmap of tile positions displaying illumination correction factor for each tile
-    - `y_adj_*.png`: Intensity correction factors along the Y-axis(using intensity profiles specifically for the LaVision Ultramicroscope II)
+    - `y_adj_*.png`: Intensity correction factors along the Y-axis (using intensity profiles specifically for the LaVision Ultramicroscope II)
   - `variables/`
     - `adj_params.mat`: Correction parameters
     - `thresholds.mat`: Intensity thresholds per channel
@@ -134,7 +134,7 @@ This process stages the image files from the input directory to the pipeline's w
 <summary>Output files</summary>
 
 - `process/sampleID`
-  - `*.json/*.csv`: Converted mat file
+  - `*.json|*.csv`: Converted mat file
   </details>
 
   **Mat2JSON** converts a given `.mat`file into a `CSV` if the data is stored as a table data structure or a `JSON` for other nested data structures.
@@ -150,7 +150,7 @@ This process stages the image files from the input directory to the pipeline's w
 
 </details>
 
-**MultiQC** collate pipeline QC from supported tools e.g. FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <http://multiqc.info>.
+[**MultiQC**](http://multiqc.info) collate pipeline QC from supported tools e.g. FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <http://multiqc.info>.
 
 ### Pipeline information
 

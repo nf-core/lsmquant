@@ -45,11 +45,11 @@ Parameter,Value
 z_window,5
 ```
 
-The individual parameters are explained in the methods [section](###Analysisspecificparameters).
+The individual parameters are explained in the following section.
 
 ### Analysis specific parameters
 
-This section describes every parameter that can be set in the `parameter.csv`. In order for the pipeline to run correctly all named parameters need to be present in the parameter file and its recommended to use the provided parameter file (link). Every parameter has a default value that will be set if not otherwise defined in the `parameter.csv`.
+This section describes every parameter that can be set in the `parameter.csv`. In order for the pipeline to run correctly all named parameters need to be present in the parameter file and its recommended to use the [provided parameter file]((../assets/params_template_lsmquant.csv). Every parameter has a default value that will be set if not otherwise defined in the `parameter.csv`.
 
 #### Sample specific information
 
@@ -57,7 +57,7 @@ This section describes every parameter that can be set in the `parameter.csv`. I
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `group`                | Group name/id.**Default: TEST;WT;R1**                                                                                                                                    |
 | `channel_num`          | Channel id.**Default: C01;C00**                                                                                                                                          |
-| `markers`              | Name of markers present.**Default: topro;ctip2**                                                                                                                         |
+| `markers`              | Name of present markers.**Default: topro;ctip2**                                                                                                                         |
 | `position_exp`         | 1x3 string of regular expression specifying image row(y), column(x), slice(z).**Default: [\d*;\d*];Z\d**                                                                 |
 | `resolution`           | Image resolution in um/voxel.**Default: ''**                                                                                                                             |
 | `orientation`          | 1x3 string specifying sample orientation. **Default: ail**                                                                                                               |
@@ -229,7 +229,7 @@ Update sample orientation
 | --------------------------- | -------------- |
 | `model_file` | Model file name. **Default: ''** |
 | `gpu` | Cuda visible device index. **Default: 0** |
-| `chunk_size` | 'Chunk size in voxels. **Default: [112, 112, 32]** |
+| `chunk_size` | Chunk size in voxels. **Default: [112, 112, 32]** |
 | `chunk_overlap` | Overlap between chunks in voxels. **Default: [16, 16, 8]** |
 | `pred_threshold` | Prediction threshold. **Default: 0.5** |
 | `normalize_intensity` | Whether to normalize intensities using min/max. **Default: true** |
@@ -419,14 +419,16 @@ This step performs two types of intensity adjustments to the raw images before t
 
 **Shading correction by using BaSiC**
 
-The Gaussian shape of the light-sheet causes uneven illumination and shading across the y-axis. To correct these effects the tool BaSiC (MATLAB tool for retrospective shading correction) is used. A fraction of all images is used to estimate the flatfiled for each channel. Every image is then divided by the estimated flatfield to normalize illumination. With the parameter `sampling_frequency`, the fraction of images to use for BaSiC, is specified as a decimal. For example setting the `sampling_frequency` to `0.1`, `10%` of all images will be used to estimate the flatfield.
+The Gaussian shape of the light-sheet causes uneven illumination and shading across the y-axis. To correct these effects the tool BaSiC (MATLAB tool for retrospective shading correction) is used. A fraction of all images is used to estimate the flatfield for each channel. Every image is then divided by the estimated flatfield to normalize illumination. With the parameter `sampling_frequency`, the fraction of images to use for BaSiC, is specified as a decimal. For example setting the `sampling_frequency` to `0.1`, `10%` of all images will be used to estimate the flatfield.
 
 **Normalizing intensities between tile stacks**
 
 Photo-bleaching and light attenuation can cause differences in brightness between tile stacks. To account for that, the differences in intensities are measured in overlapping regions (vertical and horizontal) of adjacent tiles. Next the adjustment factor $t^{adj}$, based on the 95th percentile of pixel intensities in overlapping regions, is calculated. For this 5% of all images are used.
 The final adjustment is applied with the following formula:
 
-$$I^{adj}(x,y) = (I(x,y) - D)*t^{adj}(x,y) + D $$
+$$
+I^{adj}(x,y) = (I(x,y) - D) \cdot t^{adj}(x,y) + D
+$$
 
 - $I(x,y)$: Original measured image intensities at tile position (x,y)
 - $I^{adj}(x,y)$: Adjusted image intensities at tile position (x,y)
@@ -437,12 +439,12 @@ $$I^{adj}(x,y) = (I(x,y) - D)*t^{adj}(x,y) + D $$
 
 Drifts in sample positions and stage can occur during imaging multiple channels causing spatial misalignment. To correct for these shifts between channels two methods can be chosen:
 
-- Rigid 2D translation: `align_method`: `translation`
-- Nonlinear 3D registration using Elastix : `align_method`: `elastix`
+- Rigid 2D translation: `align_method: translation{:groovy}`
+- Nonlinear 3D registration using Elastix : `align_method: elastix{:groovy}`
 
 Both methods expect the nuclear channel as reference, to which all other immunolabeled channels will be aligned to.
 
-**Rigid 2D translation**
+#### Rigid 2D translation
 
 This approach estimates first the relative z displacement between the nuclei reference channel and every other channel. Within each tile, a number evenly spaced z slices of the reference channel is chosen by the parameter `z_position`. For every z position, phase corelation is calculated between all images from another channel in a search window (set by `z_window`) and summed up.
 The z position with the highest image similarity based on intensity correlation defines the inter-channel z displacement
