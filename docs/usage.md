@@ -55,95 +55,95 @@ This section describes every parameter that can be set in the `parameter.csv`. I
 
 |                        |                                                                                                                                                                          |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `group`                | Group name/id.**Default: TEST;WT;R1**                                                                                                                                    |
-| `channel_num`          | Channel id.**Default: C01;C00**                                                                                                                                          |
-| `markers`              | Name of present markers.**Default: topro;ctip2**                                                                                                                         |
-| `position_exp`         | 1x3 string of regular expression specifying image row(y), column(x), slice(z).**Default: [\d*;\d*];Z\d**                                                                 |
-| `resolution`           | Image resolution in um/voxel.**Default: ''**                                                                                                                             |
-| `orientation`          | 1x3 string specifying sample orientation. **Default: ail**                                                                                                               |
-| `hemisphere`           | "left","right","both","none". **Default: left**                                                                                                                          |
-| `use_processed_images` | false or name of sub-directory in output directory (i.e. aligned, stitched...); Load previously processed images in output directory as input images. **Default: false** |
-| `ignore_markers`       | completely ignore marker from processing steps. **Default: Auto**                                                                                                        |
-| `save_images`          | true or false; Save images during processing. Otherwise only parameters will be calculated and saved. **Default: true**                                                  |
-| `save_samples`         | true, false; Save sample results for each major step. **Default: true**                                                                                                  |
+| `group`                | Group name/id. _Default: TEST;WT;R1_                                                                                                                                     |
+| `channel_num`          | Channel id. _Default: C01;C00_                                                                                                                                           |
+| `markers`              | Name of present markers. _Default: topro;ctip2_                                                                                                                          |
+| `position_exp`         | 1x3 string of regular expression specifying image row(y), column(x), slice(z). _Default: [\d\*;\d\*];Z\d_                                                                |
+| `resolution`           | Image resolution in um/voxel. _Default: ''_                                                                                                                              |
+| `orientation`          | 1x3 string specifying sample orientation. _Default: ail_                                                                                                                 |
+| `hemisphere`           | `left`,`right`,`both`,`none`. _Default: left_                                                                                                                            |
+| `use_processed_images` | `false` or name of sub-directory in output directory (i.e. aligned, stitched...); Load previously processed images in output directory as input images. _Default: false_ |
+| `ignore_markers`       | completely ignore marker from processing steps. _Default: Auto_                                                                                                          |
+| `save_images`          | `true` or `false`; Save images during processing. Otherwise only parameters will be calculated and saved. _Default: true_                                                |
+| `save_samples`         | `true`, `false`; Save sample results for each major step. _Default: true_                                                                                                |
 
 #### Parameters for adjusting intensities
 
-|                             |                                                                                                                                                                                                    |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `adjust_intensity`          | true, update, false; Whether to calculate and apply any of the following intensity adjustments. Intensity adjustment measurements should typically be performed on raw images. **Default: update** |
-| `darkfield_intensity`       | 1xn_channels; Constant darkfield intensity value (i.e. average intensity of image with nothing present). **Default: 101**                                                                          |
-| `adjust_tile_shading`       | basic, manual, false; Can be 1xn_channels. Perform shading correction using BaSIC algorithm or using manual measurements from UMII microscope. **Default: basic**                                  |
-| `adjust_tile_position`      | true, false; Can be 1xn_channels. Normalize tile intensities by position using overlapping regions. **Default: true**                                                                              |
-| `adjust_tile_position`      | true, false; Can be 1xn_channels. Normalize tile intensities by position using overlapping regions. **Default: true**                                                                              |
-| `update_intensity_channels` | integers; Update intensity adjustments only to certain channels                                                                                                                                    |
+|                             |                                                                                                                                                                                                        |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `adjust_intensity`          | `true`, `update`, `false`; Whether to calculate and apply any of the following intensity adjustments. Intensity adjustment measurements should typically be performed on raw images. _Default: update_ |
+| `darkfield_intensity`       | 1xn*channels; Constant darkfield intensity value (i.e. average intensity of image with nothing present). \_Default: 101*                                                                               |
+| `adjust_tile_shading`       | `basic`, `manual`, `false`; Can be 1xn*channels. Perform shading correction using BaSIC algorithm or using manual measurements from UMII microscope. \_Default: basic*                                 |
+| `adjust_tile_position`      | `true`, `false`; Can be 1xn*channels. Normalize tile intensities by position using overlapping regions. \_Default: true*                                                                               |
+| `adjust_tile_position`      | `true`, `false`; Can be 1xn*channels. Normalize tile intensities by position using overlapping regions. \_Default: true*                                                                               |
+| `update_intensity_channels` | integers; Update intensity adjustments only to certain channels                                                                                                                                        |
 
 Manual tile shading correction (specific for LaVision Ultramicroscope II):
 | | |
 |-----|------|
-| `single_sheet` | true, false; Whether a single sheet was used for acquisition |
-| `ls_width` | 1xn_channels integer. Light sheet width setting for UltraMicroscope II as percentage. **Default: 50** |
-| `laser_y_displacement` | [-0.5,0.5]; Displacement of light-sheet along y axis. Value of 0.5 means light-sheet center is positioned at the top of the image. **Default: 0** |
+| `single_sheet` | `true`, `false`; Whether a single sheet was used for acquisition |
+| `ls_width` | 1xn*channels `integer`. Light sheet width setting for UltraMicroscope II as percentage. \_Default: 50* |
+| `laser_y_displacement` | `[-0.5,0.5]`; Displacement of light-sheet along y axis. Value of 0.5 means light-sheet center is positioned at the top of the image. _Default: 0_ |
 
 Shading correction using BaSiC:
 | | |
 |-----|------|
-| `sampling_frequency` | [0,1]; The proportion of images to sample for BaSiC. These sampled images will be used to compute shading correction and flatfield for the entire dataset. Setting to 1 means use all images. **Default: 0.2** |
-| `shading_correction_tiles` | Integer vector. Subset tile positions for calculating shading correction (row major order). It's recommended that bright regions are avoided |
-| `shading_smoothness` | numeric >= 1; Factor for adjusting smoothness of shading correction. Greater values lead to a smoother flatfield image. **Default: 2** |
-| `shading_intensity` | numeric >= 1; Factor for adjusting the total effect of shading correction. Greater values lead to a smaller overall adjustment. **Default: 1** |
+| `sampling_frequency` | `[0,1]`; The proportion of images to sample for BaSiC. These sampled images will be used to compute shading correction and flatfield for the entire dataset. Setting to 1 means use all images. It`s recommended to chose a fraction that loads max 200 images.  *Default: 0.2* |
+| `shading*correction_tiles`|`Integer vector`. Subset tile positions for calculating shading correction (row major order). It's recommended that bright regions are avoided |
+| `shading_smoothness`|`numeric >= 1`; Factor for adjusting smoothness of shading correction. Greater values lead to a smoother flatfield image. *Default: 2* |
+| `shading_intensity`|`numeric >= 1`; Factor for adjusting the total effect of shading correction. Greater values lead to a smaller overall adjustment. \_Default: 1* |
 
 #### Parameters for channel alignment
 
-|                     |                                                                                                                                 |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `channel_alignment` | true, update, false; Channel alignment. **Default: true**                                                                       |
-| `align_method`      | elastix, translation; Channel alignment by rigid, 2D translation or non-rigid B-splines using elastix. **Default: translation** |
-| `align_tiles`       | Option to align only certain stacks and not all stacks. Row-major order. **Default: ''**                                        |
-| `align_channels`    | Option to align only certain channels (set to >1). **Default: ''**                                                              |
-| `align_slices`      | Option to align only certain slice ranges. Set as cell array for non-continuous ranges (i.e. {1:100,200:300}). **Default: ''**  |
+|                     |                                                                                                                                   |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `channel_alignment` | `true`, `update`, `false`; Channel alignment. _Default: true_                                                                     |
+| `align_method`      | `elastix`, `translation`; Channel alignment by rigid, 2D translation or non-rigid B-splines using elastix. _Default: translation_ |
+| `align_tiles`       | Option to align only certain stacks and not all stacks. Row-major order. _Default: ''_                                            |
+| `align_channels`    | `[>1]`; Option to align only certain channels. _Default: ''_                                                                      |
+| `align_slices`      | Option to align only certain slice ranges. Set as cell array for non-continuous ranges (i.e. `{1:100,200:300}`). _Default: ''_    |
 
 Z alignment parameters (for stitching and align by translation)
 | | |
 | ------------- | ---------- |
-| `update_z_adjustment` | true, false; Update z adjustment steps with new parameters. Otherwise pipeline will search for previously calculated parameters. **Default: false** |
-| `z_positions` | integer or numeric; Sampling positions along adjacent image stacks to determine z displacement. If <1, uses fraction of all images. Set to 0 for no adjustment, only if you're confident tiles are aligned along z dimension. **Default: 0.01** |
-| `z_window` | integer; Search window for finding corresponding tiles (i.e. +/-n z positions). **Default: 5** |
-| `z_initial` | 1xn_channels-1 integer; Predicted initial z displacement between reference channel and secondary channel. **Default: 0** |
+| `update_z_adjustment` | `true`, `false`; Update z adjustment steps with new parameters. Otherwise pipeline will search for previously calculated parameters. _Default: false_ |
+| `z_positions` | `integer` or `numeric`; Sampling positions along adjacent image stacks to determine z displacement. If <1, uses fraction of all images. Set to 0 for no adjustment, only if you're confident tiles are aligned along z dimension. _Default: 0.01_ |
+| `z_window` | `integer`; Search window for finding corresponding tiles (i.e. +/-n z positions). _Default: 5_ |
+| `z_initial` | 1xn*channels-1 `integer`; Predicted initial z displacement between reference channel and secondary channel. \_Default: 0* |
 
 For align by translation
 | | |
 | ------------- | ---------- |
-| `align_stepsize` | integer; Only for alignment by translation. Number of images sampled for determining translations. Images in between are interpolated. **Default: 5** |
-| `only_pc` | true, false; Use only phase correlation for registration. This gives only a quick estimate for channel alignment. **Default: false** |
+| `align_stepsize` | `integer`; Only for alignment by translation. Number of images sampled for determining translations. Images in between are interpolated. _Default: 5_ |
+| `only_pc` | `true`, `false`; Use only phase correlation for registration. This gives only a quick estimate for channel alignment. _Default: false_ |
 
 Specific for align by elastix
 | | |
 | ------------- | ---------- |
-| `align_chunks` | Only for alignment by elastix. Option to align only certain chunks. **Default: ''** |
-| `elastix_params` | 1xn_channels-1 string; Name of folders containing elastix registration parameters. Place in /supplementary_data/elastix_parameter_files/channel_alignment. **Default: 32_bins** |
-| `pre_align` | true, false; (Experimental) Option to pre-align using translation method prior to non-linear registration. **Default: false** |
-| `max_chunk_size` | integer; Chunk size for elastix alignment. Decreasing may improve precision but can give spurious results. **Default: 300** |
-| `chunk_pad` | integer; Padding around chunks. Should be set to value greater than the maximum expected translation in z. **Default: 30** |
-| `mask_int_threshold` | numeric; Mask intensity threshold for choosing signal pixels in elastix channel alignment. Leave empty to calculate automatically. **Default: ''** |
-| `resample_s` | 1x3 integer. Amount of downsampling along each axis. Some downsampling, ideally close to isotropic resolution, is recommended. **Default: 3;3;1** |
-| `hist_match` | 1xn_channels-1 integer; Match histogram bins to reference channel? If so, specify number of bins. Otherwise leave empty or set to 0. This can be useful for low contrast images. **Default: 64** |
+| `align_chunks` | Only for alignment by elastix. Option to align only certain chunks. _Default: ''_ |
+| `elastix_params` | 1xn*channels-1 `string`; Name of folders containing elastix registration parameters. Place in /supplementary_data/elastix_parameter_files/channel_alignment. \_Default: 32_bins* |
+| `pre_align` | `true`, `false`; (Experimental) Option to pre-align using translation method prior to non-linear registration. _Default: false_ |
+| `max_chunk_size` | `integer`; Chunk size for elastix alignment. Decreasing may improve precision but can give spurious results. _Default: 300_ |
+| `chunk_pad` | `integer`; Padding around chunks. Should be set to value greater than the maximum expected translation in z. _Default: 30_ |
+| `mask_int_threshold` | `numeric`; Mask intensity threshold for choosing signal pixels in elastix channel alignment. Leave empty to calculate automatically. _Default: ''_ |
+| `resample_s` | 1x3 `integer`. Amount of downsampling along each axis. Some downsampling, ideally close to isotropic resolution, is recommended. _Default: 3;3;1_ |
+| `hist_match` | 1xn*channels-1 `integer`; Match histogram bins to reference channel? If so, specify number of bins. Otherwise leave empty or set to 0. This can be useful for low contrast images. \_Default: 64* |
 
 #### Stitching parameters
 
 Specific for iterative 2D stitching
 | | |
 | ------------- | ---------- |
-| `stitch_images` | true, update, false; 2D iterative stitching. **Default: true** |
-| `sift_refinement` | true, false; Refine stitching using SIFT algorithm (requires vl_fleat toolbox). **Default: true** |
-| `load_alignment_params` | true, false; Apply channel alignment translations during stitching. **Default: true** |
-| `overlap` | 0:1; overlap between tiles as fraction. **Default: 0.20** |
-| `stitch_sub_stack` | z positions; If only stitching a certain z range from all the images. **Default: ''** |
-| `stitch_sub_channel` | channel index; If only stitching certain channels. **Default: ''** |
-| `stitch_start_slice` | z index; Start stitching from specific position. Otherwise this will be optimized. **Default: ''** |
-| `blending_method` | sigmoid, linear, max. **Default: sigmoid** |
-| `sd` | 0:1; Recommended: ~0.05. Steepness of sigmoid-based blending. Larger values give more block-like blending. **Default: 0.05** |
-| `border_pad` | integer >= 0; Crops borders during stitching. Increase if images shift significantly between channels to prevent zeros values from entering stitched image. **Default: 25** |
+| `stitch_images` | `true`, `update`, `false`; 2D iterative stitching. _Default: true_ |
+| `sift_refinement` | `true`, `false`; Refine stitching using SIFT algorithm (requires vl*fleat toolbox). \_Default: true* |
+| `load_alignment_params` | `true`, `false`; Apply channel alignment translations during stitching. _Default: true_ |
+| `overlap` | `0:1`; overlap between tiles as fraction. _Default: 0.20_ |
+| `stitch_sub_stack` | `z positions`; If only stitching a certain z range from all the images. _Default: ''_ |
+| `stitch_sub_channel` | `channel index`; If only stitching certain channels. _Default: ''_ |
+| `stitch_start_slice` | `z index`; Start stitching from specific position. Otherwise this will be optimized. _Default: ''_ |
+| `blending_method` | `sigmoid`, `linear`, `max`. _Default: sigmoid_ |
+| `sd` | `0:1`; Recommended: ~0.05. Steepness of sigmoid-based blending. Larger values give more block-like blending. _Default: 0.05_ |
+| `border_pad` | `integer >= 0`; Crops borders during stitching. Increase if images shift significantly between channels to prevent zeros values from entering stitched image. _Default: 25_ |
 
 #### Postprocessing parameters
 
@@ -153,95 +153,95 @@ Parameters for rescale intensities
 
 |                       |                                                                                                      |
 | --------------------- | ---------------------------------------------------------------------------------------------------- |
-| `rescale_intensities` | true, false; Rescaling intensities and applying gamma. **Default: false**                            |
-| `lowerThresh`         | 1xn_channels numeric; Lower intensity for rescaling. **Default: ''**                                 |
-| `signalThresh`        | 1xn_channels numeric; Rough estimate for minimal intensity for features of interest. **Default: ''** |
-| `upperThresh`         | 1xn_channels numeric; Upper intensity for rescaling. **Default: ''**                                 |
-| `Gamma`               | 1xn_channels numeric; Gamma intensity adjustment. **Default: ''**                                    |
+| `rescale_intensities` | `true`, `false`; Rescaling intensities and applying gamma. _Default: false_                          |
+| `lowerThresh`         | `1xn_channels numeric`; Lower intensity for rescaling. _Default: ''_                                 |
+| `signalThresh`        | `1xn_channels numeric`; Rough estimate for minimal intensity for features of interest. _Default: ''_ |
+| `upperThresh`         | `1xn_channels numeric`; Upper intensity for rescaling. _Default: ''_                                 |
+| `Gamma`               | `1xn_channels numeric`; Gamma intensity adjustment. _Default: ''_                                    |
 
 Parameters for background subtraction
 | | |
 | --------------------------- | -------------- |
-| `subtract_background` | true, false. Subtract background (similar to Fiji's rolling ball background subtraction).**Default: false** |
-| `nuc_radius` | numeric >= 1; Max radius of cell nuclei along x/y in pixels. Required also for DoG filtering.**Default: 13** |
+| `subtract_background` | `true`, `false`. Subtract background (similar to Fiji's rolling ball background subtraction)._Default: false_ |
+| `nuc_radius` | `numeric >= 1`; Max radius of cell nuclei along x/y in pixels. Required also for DoG filtering._Default: 13_ |
 
 Difference-of-Gaussian filter
 | | |
 | --------------------------- | -------------- |
-| `DoG_img` | true,false; Apply difference of gaussian enhancement of blobs.**Default: false** |
-| `DoG_minmax` | 1x2 numeric; Min/max sigma values to take differences from.**Default: 0.8;2** |
-| `DoG_factor` | [0,1]; Factor controlling amount of adjustment to apply. Set to 1 for absolute DoG.**Default: 1** |
+| `DoG_img` | `true`,`false`; Apply difference of gaussian enhancement of blobs. _Default: false_ |
+| `DoG_minmax` | `1x2 numeric`; Min/max sigma values to take differences from. _Default: 0.8;2_ |
+| `DoG_factor` | `[0,1]`; Factor controlling amount of adjustment to apply. Set to 1 for absolute DoG. _Default: 1_ |
 
 Smoothing filters
 | | |
 | --------------------------- | -------------- |
-| `smooth_img` | 1xn_channels, "gaussian", "median", "guided". Apply a smoothing filter.**Default: false** |
-| `smooth_sigma` | 1xn_channels numeric; Size of smoothing kernel. For median and guided filters, it is the dimension of the kernel size. **Default: ''** |
+| `smooth_img` | 1xn*channels, `gaussian`, `median`, `guided`. Apply a smoothing filter. \_Default: false* |
+| `smooth_sigma` | 1xn*channels `numeric`; Size of smoothing kernel. For median and guided filters, it is the dimension of the kernel size. \_Default: ''* |
 
 Update sample orientation
 | | |
 | --------------------------- | -------------- |
-| `flip_axis` | "none", "horizontal", "vertical", "both"; Flip image along horizontal or vertical axis.**Default: none** |
-| `rotate_axis` | 0, 90 or -90; Rotate image.**Default: 0** |
+| `flip_axis` | `none`, `horizontal`, `vertical`, "both"; Flip image along horizontal or vertical axis. _Default: none_ |
+| `rotate_axis` | `0`, `90` or `-90`; Rotate image. _Default: 0_ |
 
-|                   |                                                                                            |
-| ----------------- | ------------------------------------------------------------------------------------------ |
-| `resample_images` | true, update, false; Perform image resampling. **Default: true**                           |
-| `register_images` | true, update, false; Register image to reference atlas. **Default: true**                  |
-| `count_nuclei`    | true, update, false; Count cell nuclei or other blob objects.**Default: true**             |
-| `classify_cells`  | true, update, false; Classify cell-types for detected nuclei centroids. **Default: false** |
+|                   |                                                                                                |
+| ----------------- | ---------------------------------------------------------------------------------------------- |
+| `resample_images` | `true`, `update`, `false`; Perform image resampling. _Default: true_                           |
+| `register_images` | `true`, `update`, `false`; Register image to reference atlas. _Default: true_                  |
+| `count_nuclei`    | `true`, `update`, `false`; Count cell nuclei or other blob objects. _Default: true_            |
+| `classify_cells`  | `true`, `update`, `false`; Classify cell-types for detected nuclei centroids. _Default: false_ |
 
 #### Resampling and annotations parameters
 
-|                         |                                                                                                                |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `resample_resolution`   | Isotropic resample resolution. This is also the resolution at which registration is performed. **Default: 25** |
-| `resample_channels`     | Resample specific channels. If empty, only registration channels will be resampled. **Default: ''**            |
-| `use_annotation_mask`   | true, false; Use annotation mask for cell counting. **Default: false**                                         |
-| `annotation_mapping`    | atlas, image; Specify whether annotation file is mapped to the atlas or light-sheet image. **Default: atlas**  |
-| `annotation_file`       | File for storing structure annotation data. **Default: ''**                                                    |
-| `annotation_resolution` | Isotropic resolution of the annotation file. Only needed when mapping is to the image. **Default: 25**         |
+|                         |                                                                                                                         |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `resample_resolution`   | `integer`; Isotropic resample resolution. This is also the resolution at which registration is performed. _Default: 25_ |
+| `resample_channels`     | Resample specific channels. If empty, only registration channels will be resampled. _Default: ''_                       |
+| `use_annotation_mask`   | `true`, `false`; Use annotation mask for cell counting. _Default: false_                                                |
+| `annotation_mapping`    | `atlas`, `image`; Specify whether annotation file is mapped to the atlas or light-sheet image. _Default: atlas_         |
+| `annotation_file`       | File for storing structure annotation data. _Default: ''_                                                               |
+| `annotation_resolution` | `integer`; Isotropic resolution of the annotation file. Only needed when mapping is to the image. _Default: 25_         |
 
 #### Registration parameters
 
-|                             |                                                                                                                                                         |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `registration_direction`    | atlas_to_image, image_to_atlas; Direction to perform registration. **Default: atlas_to_image**                                                          |
-| `registration_parameters`   | default, points, or name of folder containing elastix registration parameters in /data/elastix_parameter_files/atlas_registration. **Default: default** |
-| `registration_channels`     | integer; Which light-sheet channels to register. Can select more than 1. **Default: 1**                                                                 |
-| `registration_prealignment` | image. Pre-align multiple light-sheet images by rigid transformation prior to registration. **Default: image**                                          |
-| `atlas_file`                | ara_nissl_25.nii and/or average_template_25.nii and/or a specific atlas .nii file in /data/atlas. **Default: 3Drecon-ADMBA-P4_atlasVolume.nii**         |
-| `use_points`                | Use points during registration. **Default: false**                                                                                                      |
-| `prealign_annotation_index` | Not used. **Default: ''**                                                                                                                               |
-| `points_file`               | Name of points file to guide registration. **Default: ''**                                                                                              |
-| `save_registered_images`    | Whether to save registered images. **Default: true**                                                                                                    |
-| `mask_cerebellum_olfactory` | Remove olfactory bulbs and cerebellum from atlas ROI. **Default: true**                                                                                 |
+|                             |                                                                                                                                                              |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `registration_direction`    | `atlas_to_image`, `image_to_atlas`; Direction to perform registration. _Default: atlas_to_image_                                                             |
+| `registration_parameters`   | `default`, `points`, or `name` of folder containing elastix registration parameters in /data/elastix*parameter_files/atlas_registration. \_Default: default* |
+| `registration_channels`     | `integer`; Which light-sheet channels to register. Can select more than 1. _Default: 1_                                                                      |
+| `registration_prealignment` | `image`. Pre-align multiple light-sheet images by rigid transformation prior to registration. _Default: image_                                               |
+| `atlas_file`                | `ara_nissl_25.nii` and/or `average_template_25.nii` and/or a specific atlas .nii file in /data/atlas. _Default: 3Drecon-ADMBA-P4_atlasVolume.nii_            |
+| `use_points`                | `true`, `false`; Use points during registration. _Default: false_                                                                                            |
+| `prealign_annotation_index` | Not used. _Default: ''_                                                                                                                                      |
+| `points_file`               | Name of points file to guide registration. _Default: ''_                                                                                                     |
+| `save_registered_images`    | `true`, `false`; Whether to save registered images. _Default: true_                                                                                          |
+| `mask_cerebellum_olfactory` | `true`, `false`; Remove olfactory bulbs and cerebellum from atlas ROI. _Default: true_                                                                       |
 
 #### Nuclei Detection
 
-|                 |                                                       |
-| --------------- | ----------------------------------------------------- |
-| `count_method`  | **Default: 3dunet**                                   |
-| `int_threshold` | Minimum intensity of positive cells. **Default: 200** |
+|                 |                                                     |
+| --------------- | --------------------------------------------------- |
+| `count_method`  | _Default: 3dunet_                                   |
+| `int_threshold` | Minimum intensity of positive cells. _Default: 200_ |
 
 3-DUnet specific parameters
 | | |
 | --------------------------- | -------------- |
-| `model_file` | Model file name. **Default: ''** |
-| `gpu` | Cuda visible device index. **Default: 0** |
-| `chunk_size` | Chunk size in voxels. **Default: [112, 112, 32]** |
-| `chunk_overlap` | Overlap between chunks in voxels. **Default: [16, 16, 8]** |
-| `pred_threshold` | Prediction threshold. **Default: 0.5** |
-| `normalize_intensity` | Whether to normalize intensities using min/max. **Default: true** |
-| `resample_chunks` | Whether to resample image to match trained image resolution. Note: increases computation time. **Default: false** |
-| `tree_radius` | Pixel radius for removing centroids near each other. **Default: 2** |
-| `acquired_img_resolution` | Resolution of acquired images. **Default: [0.75, 0.75, 4]** |
-| `trained_img_resolution` | Resolution of images the model was trained on. **Default: [0.75, 0.75, 2.5]** |
-| `measure_coloc` | Measure intensity of co-localized channels. **Default: false** |
-| `n_channels` | Number of channels. **Default: ''** |
-| `use_mask` | Use mask. **Default: false** |
-| `mask_file` | Mask file. **Default: ''** |
-| `resample_resolution` | Resolution of resampled images. **Default: 25** |
+| `model_file` | Model file name. _Default: ''_ |
+| `gpu` | `integer`; Cuda visible device index. _Default: 0_ |
+| `chunk_size` | Chunk size in voxels. _Default: [112, 112, 32]_ |
+| `chunk_overlap` | Overlap between chunks in voxels. _Default: [16, 16, 8]_ |
+| `pred_threshold` | Prediction threshold. _Default: 0.5_ |
+| `normalize_intensity` | `true`, `false`; Whether to normalize intensities using min/max. _Default: true_ |
+| `resample_chunks` | `true`, `false`; Whether to resample image to match trained image resolution. Note: increases computation time. _Default: false_ |
+| `tree_radius` | `integer`; Pixel radius for removing centroids near each other. _Default: 2_ |
+| `acquired_img_resolution` | Resolution of acquired images. _Default: [0.75, 0.75, 4]_ |
+| `trained_img_resolution` | Resolution of images the model was trained on. _Default: [0.75, 0.75, 2.5]_ |
+| `measure_coloc` | `true`, `false`;Measure intensity of co-localized channels. _Default: false_ |
+| `n_channels` | `integer`;Number of channels. _Default: ''_ |
+| `use_mask` | Use mask. _Default: false_ |
+| `mask_file` | Mask file. _Default: ''_ |
+| `resample_resolution` | `integer`; Resolution of resampled images. _Default: 25_ |
 
 ## Running the pipeline
 

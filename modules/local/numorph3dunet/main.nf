@@ -9,15 +9,15 @@ process NUMORPH3DUNET {
     path(model_file)
 
     output:
-    path "results/*"              , emit: cellcounts
-    path "versions.yml"           , emit: versions
+    path "${prefix}/*"              , emit: cellcounts
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     source /opt/conda/etc/profile.d/conda.sh
@@ -26,16 +26,14 @@ process NUMORPH3DUNET {
     echo "Checking GPU access:"
     nvidia-smi
 
-    mkdir -p ./results
-    mkdir -p ./images
+    mkdir -p ${prefix}
+    img_dir=\$(readlink -f ${img_directory})
 
-    # move images to images directory
 
-    ln -sr ${img_directory} ./images/
 
     numorph_3dunet.predict \\
-        -i images/ \\
-        -o results \\
+        -i \$img_dir \\
+        -o ${prefix} \\
         --model_file ${model_file} \\
         --sample_id ${prefix} \\
         $args
@@ -48,12 +46,12 @@ process NUMORPH3DUNET {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p \$PWD/results
-    touch results/${prefix}.csv
-    touch results/${prefix}_counts.csv
+    mkdir -p ${prefix}
+    touch ${prefix}/${prefix}.csv
+    touch ${prefix}/${prefix}_counts.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -26,16 +26,8 @@ nextflow_process {
         }
 
         then {
-            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
-            assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    // Number of successful tasks
-                    workflow.trace.succeeded().size(),
-                    // All stable path name, with a relative path
-                    stable_name.isEmpty() ? 'No stable paths' : stable_name
-                ).match()}
-            )
+            assert process.success              // Check process completed successfully
+            assert snapshot(process.out).match() // Validate outputs match expected snapshot
         }
 
     }
@@ -60,16 +52,8 @@ nextflow_process {
         }
 
         then {
-            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
-            assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    // Number of successful tasks
-                    workflow.trace.succeeded().size(),
-                    // All stable path name, with a relative path
-                    stable_name.isEmpty() ? 'No stable paths' : stable_name
-                ).match()}
-            )
+            assert process.success              // Check process completed successfully
+            assert snapshot(process.out).match() // Validate outputs match expected snapshot
         }
 
     }
