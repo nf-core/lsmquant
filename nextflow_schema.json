@@ -30,7 +30,8 @@
                     "type": "string",
                     "description": "The stage of the pipeline to run.",
                     "help_text": "The stage of the pipeline to run. The pipeline has multiple stages that can be run separately or the complete pipeline can be run. Stages are: `int_stitch`, `int_align_stitch`, `stitch_only`",
-                    "fa_icon": "fas fa-cogs"
+                    "fa_icon": "fas fa-cogs",
+                    "enum": ["int_stitch", "int_align_stitch", "stitch_only"]
                 },
                 "ara_registration": {
                     "type": "boolean",
@@ -48,7 +49,8 @@
                     "type": "string",
                     "description": "Path to the pre-trained model file.",
                     "help_text": "Path to the pre-trained model file for cell nuclei segmentation. It can be a local file path or the default is the URL to the model stored at Zenodo.",
-                    "fa_icon": "fas fa-file-image"
+                    "fa_icon": "fas fa-file-image",
+                    "default": "https://zenodo.org/records/16893708/files/075_121_model.h5"
                 },
                 "email": {
                     "type": "string",
