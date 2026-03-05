@@ -24,9 +24,7 @@
 
 **nf-core/lsmquant** is a bioinformatics pipeline that performs preprocessing and analysis of light-sheet microscopy images of tissue cleared samples. The pipeline takes raw images from a directory or a zip archive as input. The images need to be in a 2D single-channel 16-bit `tif`format.
 
-<div style="text-align: center;">
-<img src="docs/images/lsmquant-metromap.svg" alt="lasmquant metromap">
-</div>
+![lsmquant metromap](docs/images/lsmquant-metromap.svg)
 
 ## Pipeline Summary
 
@@ -42,13 +40,13 @@ This stage reconstructs the 3D image from raw light-sheet data. Here three diffe
 
 3. `stitch_only`: Performs only iterative tile stitching
 
-**Allen Brain Atlas Registration (Optional)**
-
-This workflow registers full brain images to the Allen Brain Reference Atlas. This is an optional workflow and can be chosen by setting the parameter: `ara_registartion`
-
 **Cell Nuclei Quantification**
 
 Quantification of cell-nuclei is performed using a 3D-Unet and it is performed on the nuclear channel only. This is an optional workflow and can be chosen by setting the parameter:`nuclei_quantification`
+
+**Allen Brain Atlas Registration (Optional)**
+
+This workflow registers full brain images to the Allen Brain Reference Atlas. This is an optional workflow and can be chosen by setting the parameter: `ara_registartion`
 
 ## Usage
 
@@ -67,7 +65,6 @@ TEST1,path/to/image-files,path/to/parameter/file.csv
 The parameter csv file includes sample specific parameters that are used for processing the given data. It needs to follow a specific structure.
 
 Please get the basic template file [here](../assets/params_template_lsmquant.csv).
-`parametersheet.csv`
 
 Now, you can run the pipeline using:
 
