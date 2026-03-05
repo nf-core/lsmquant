@@ -5,7 +5,7 @@ nextflow_workflow {
     workflow "ARAREGISTRATION"
 
     tag "subworkflows"
-    tag "subworkflows_"
+    tag "subworkflows_nfcore"
     tag "subworkflows/araregistration"
 
     tag "numorphresample"

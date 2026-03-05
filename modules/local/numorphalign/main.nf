@@ -14,12 +14,12 @@ process NUMORPHALIGN {
 
 
     output:
-    path "results/samples/alignment/*"                    , emit: samples
-    path "results/variables/path_table.mat"               , emit: path_table_mat
-    path "results/variables/alignment_table.mat"          , emit: alignment_table_mat
-    path "results/variables/z_displacement_align.mat"     , emit: z_displacement_align_mat
-    path "results/NM_variables.mat"                       , emit: NM_variables
-    path "versions.yml"                                   , emit: versions
+    path "./results/samples/alignment/"                     , emit: samples
+    path "./results/variables/path_table.mat"               , emit: path_table_mat
+    path "./results/variables/alignment_table.mat"          , emit: alignment_table_mat
+    path "./results/variables/z_displacement_align.mat"     , emit: z_displacement_align_mat
+    path "./results/NM_variables.mat"                       , emit: NM_variables
+    path "versions.yml"                                     , emit: versions
 
 
     when:
@@ -27,15 +27,18 @@ process NUMORPHALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p results/samples/
-    mkdir -p results/variables/
+    # create output directories needed by the tool
+    mkdir -p ./results/samples/
+    mkdir -p ./results/variables/
 
-    ln -sr ${adj_params_mat} results/variables
-    ln -sr ${path_table_mat} results/variables
-    ln -sr ${thresholds_mat} results/variables
+
+    # symlink input files to variables directory
+    ln -sr ${adj_params_mat} ./results/variables
+    ln -sr ${path_table_mat} ./results/variables
+    ln -sr ${thresholds_mat} ./results/variables
 
     # resolve symlinks and paths
     img_dir=\$(readlink -f ${img_directory})
@@ -54,7 +57,7 @@ process NUMORPHALIGN {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir -p results/samples/alignment

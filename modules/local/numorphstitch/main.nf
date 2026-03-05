@@ -14,8 +14,8 @@ process NUMORPHSTITCH {
     path NM_variables
 
     output:
-    tuple val(meta),  path("results/stitched/*")                            , emit: stitched
-    path "results/variables/*"                                              , emit: variables
+    tuple val(meta),  path("results/stitched/")                           , emit: stitched
+    path "results/variables/"                                              , emit: variables
     path "results/NM_variables.mat"                                         , emit: NM_variables
     path "versions.yml"                                                     , emit: versions
 
@@ -24,7 +24,7 @@ process NUMORPHSTITCH {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def alignment_table = alignment_table_mat.name ? alignment_table_mat : ''
     def z_displacement_align = z_displacement_align_mat ? z_displacement_align_mat : ''
     def path_table = path_table_mat ? path_table_mat : ''
@@ -34,28 +34,30 @@ process NUMORPHSTITCH {
     """
 
     mkdir -p results/variables/
+    mkdir -p results/stitched/
+
     img_dir=\$(readlink -f ${img_directory})
     parameter_file=\$(readlink -f ${parameter_file})
-    results_dir=\$(readlink -f ./results)
+    results_dir=\$(readlink -f results)
 
     if [ -n "${alignment_table}" ]; then
         ln -sr ${alignment_table} results/variables/
     fi
 
     if [ -n "${z_displacement_align}" ]; then
-        ln -sr ${z_displacement_align} results/variables
+        ln -sr ${z_displacement_align} results/variables/
     fi
 
     if [ -n "${path_table}" ]; then
-        ln -sr ${path_table} results/variables
+        ln -sr ${path_table} results/variables/
     fi
 
     if [ -n "${thresholds}" ]; then
-        ln -sr ${thresholds} results/variables
+        ln -sr ${thresholds} results/variables/
     fi
 
     if [ -n "${adj_params}" ]; then
-        ln -sr ${adj_params} results/variables
+        ln -sr ${adj_params} results/variables/
     fi
 
     if [ -n "${NM_var}" ]; then
@@ -73,7 +75,7 @@ process NUMORPHSTITCH {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir -p results/stitched

@@ -15,8 +15,8 @@ nextflow_process {
     test("Numorph3DUnet test - tif") {
 
         setup {
-            run ("UNZIPFILES") {
-                script "../../../nf-core/unzipfiles/main.nf"
+            run ("UNZIP") {
+                script "../../../nf-core/unzip/main.nf"
                 process {
                     """
                     input[0] = Channel.fromList([
@@ -34,11 +34,12 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = UNZIPFILES.out.files.map { meta, unzipped ->
+                input[0] = UNZIP.out.unzipped_archive.map { meta, unzipped_archive ->
+                    def image_dir = file(unzipped_archive).listFiles().find { it.isDirectory() }
                     tuple(
-                    meta,
-                    unzipped,
-                    file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
+                        meta,
+                        image_dir ?: unzipped_archive, // if no directory found use unzipped archive path (in case of zip containing files directly)
+                        file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
                 }
                 input[1] = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
                 """
@@ -46,17 +47,36 @@ nextflow_process {
         }
 
         then {
-            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
-            assert workflow.success
+            assert process.success              // Check process completed successfully
+            assert snapshot(process.out).match() // Validate outputs match expected snapshot
+        }
+
+    }
+
+    test("Numorph3DUnet stub test - tif") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromList([
+                    tuple([ id:'TEST1'], // meta map
+                    file('https://zenodo.org/records/14916478/files/ctip2_topro.zip'),
+                    file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
+                    ])
+                input[1] = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
+                """
+            }
+        }
+
+        then {
             assertAll(
-                { assert snapshot(
-                    // Number of successful tasks
-                    workflow.trace.succeeded().size(),
-                    // All stable path name, with a relative path
-                    stable_name.isEmpty() ? 'No stable paths' : stable_name
-                ).match()}
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
     }
+
 }
