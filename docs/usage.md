@@ -446,12 +446,14 @@ Both methods expect the nuclear channel as reference, to which all other immunol
 
 #### Rigid 2D translation
 
-This approach estimates first the relative z displacement between the nuclei reference channel and every other channel. Within each tile, a number evenly spaced z slices of the reference channel is chosen by the parameter `z_position`. For every z position, phase corelation is calculated between all images from another channel in a search window (set by `z_window`) and summed up.
+This approach estimates first the relative z displacement between the nuclei reference channel and every other channel. 
+Within each tile, a number of evenly spaced z slices of the reference channel is chosen by the parameter `z_position`. 
+For every z position, phase corelation is calculated between all images from another channel in a search window (set by `z_window`) and summed up.
 The z position with the highest image similarity based on intensity correlation defines the inter-channel z displacement
 
 Next, multimodal 2D registration is performed on each slices in the image stack by using MATLAB's Image Processing toolbox, to determine xy translations. Outlier translations are defined as translations that are greater than 3 scaled median absolute deviations within a local window of 10 slices. These outliers are corrected by linear interpolation of adjacent images in the stack.
 
-**Nonlinear 3D registration using Elastix**
+#### Nonlinear 3D registration using Elastix
 
 To correct for rotations and other drifts for which 2D rigid translation is not sufficient, a nonlinear 3D B-spline registration using Elastix can be applied on individual tiles.
 
@@ -479,12 +481,15 @@ The iterative 2D stitching procedure to assemble the whole image, consists of tw
 - Estimation of z correspondence between tile stacks
 - Iterative xy alignment and stitching
 
-**Estimation of z correspondence between tile stacks**
+#### Estimation of z correspondence between tile stacks
 
-To determine optimal z correspondence for adjacent tiles, a sample of evenly spaced images (set with `z_position`) from within a stack are registered to every z position within a image window (set by `z_window`) of a adjacent stack (vertically and horizontally) by phase correlation. Z correspondences are ranked by the amount of peak correlations among the z positions, where the highest count represent the best correspondence. In addition, the difference between the best and the 2nd best z correlation is taken as a weight, indicating the strength of a correspondence (larger difference = stronger correspondence).
+To determine optimal z correspondence for adjacent tiles, a sample of evenly spaced images (set with `z_position`) from within a stack are registered to every z position within a image window (set by `z_window`) of a adjacent stack (vertically and horizontally) by phase correlation. 
+Z correspondences are ranked by the amount of peak correlations among the z positions, where the highest count represent the best correspondence. 
+
+In addition, the difference between the best and the 2nd best z correlation is taken as a weight, indicating the strength of a correspondence (larger difference = stronger correspondence).
 Finally this results in 4 matrices for a stack representing pairwise horizontal and vertical z displacements and their corresponding weights. To calculate the final z displacement for each tile a minimum spanning tree is used, where displacements are used as vertices and their weights as edges.
 
-**Iterative xy alignment and stitching**
+#### Iterative xy alignment and stitching
 Stitching process proceeds with iterative alignment in the x–y plane. The starting point for the iterative stitching along the stack is chosen near the middle of the volume. At this position, all tiles contained sufficient signal above background, defined as at least one standard deviation above the darkfield intensity. The initial translations for each tile are computed using phase correlation, providing a robust estimate of relative positioning. These translations are then refined using the Scale-Invariant Feature Transform (SIFT) algorithm, which improves accuracy by matching distinctive image features across overlapping regions. Stitching begins from the top-left tile to maintain consistent positioning and prevent cumulative shifts along the z-axis. Overlapping areas between tiles are blended using a sigmoidal function, ensuring smooth transitions and preserving image contrast. To handle cases where slices lack sufficient tissue content, shifts greater than five pixels compared to the previous iteration are replaced with the previous iteration’s values.
 
 ### Nuclei quantification

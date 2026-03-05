@@ -21,12 +21,12 @@ workflow ARAREGISTRATION {
     def resample_output = NUMORPHRESAMPLE.out.resampled
     ch_versions = ch_versions.mix(NUMORPHRESAMPLE.out.versions)
 
-    resample_output
+    
+def resample_data = resample_output
         .join(stitched_data)
         .map { meta, resampled, stitched_img_directory, parameter_file ->
             tuple(meta, resampled, parameter_file)
         }
-        .set { resample_data }
 
     NUMORPHREGISTER (
         resample_data
