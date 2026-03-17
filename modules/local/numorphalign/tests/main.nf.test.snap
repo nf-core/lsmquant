@@ -1,103 +1,105 @@
 {
-    "Numorphalign stub test": {
+    "numorph align stub test": {
         "content": [
             {
                 "0": [
                     [
-                        "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        {
+                            "id": "TEST1"
+                        },
+                        [
+                            "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "1": [
-                    "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "2": [
-                    "alignment_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "3": [
-                    "z_displacement_align.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "4": [
-                    "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "5": [
-                    "versions.yml:md5,c413276640fb035336c7c5bc450abde3"
-                ],
-                "NM_variables": [
-                    "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "alignment_table_mat": [
-                    "alignment_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "path_table_mat": [
-                    "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "samples": [
                     [
-                        "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        {
+                            "id": "TEST1"
+                        },
+                        [
+                            "alignment_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "z_displacement_align.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,c413276640fb035336c7c5bc450abde3"
+                "2": [
+                    [
+                        {
+                            "id": "TEST1"
+                        },
+                        "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
-                "z_displacement_align_mat": [
-                    "z_displacement_align.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                "3": [
+                    [
+                        "NUMORPHALIGN",
+                        "numorph_align",
+                        "1.0.0"
+                    ]
+                ],
+                "NM_variable": [
+                    [
+                        {
+                            "id": "TEST1"
+                        },
+                        "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "samples_alignment": [
+                    [
+                        {
+                            "id": "TEST1"
+                        },
+                        [
+                            "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "variables_alignment": [
+                    [
+                        {
+                            "id": "TEST1"
+                        },
+                        [
+                            "alignment_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "z_displacement_align.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions_numorph_align": [
+                    [
+                        "NUMORPHALIGN",
+                        "numorph_align",
+                        "1.0.0"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-03-03T14:30:54.95773882",
+        "timestamp": "2026-03-17T17:10:49.358968725",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
         }
     },
-    "Numorphalign test": {
+    "numorph align test": {
         "content": [
-            {
-                "0": [
-                    [
-                        "TEST1_ctip2_full.tif:md5,fb17be9f66140c674dad1c0eba3b7a2e",
-                        "TEST1_topro_full.tif:md5,5e6784fc7062215bc6538ccccc49a5f4"
-                    ]
-                ],
-                "1": [
-                    "path_table.mat:md5,6d28da9ab999af745f65c31cbb8181aa"
-                ],
-                "2": [
-                    "alignment_table.mat:md5,6e1c52a153b9f1e6291ffb25aa50dca8"
-                ],
-                "3": [
-                    "z_displacement_align.mat:md5,83c68de544880b80e2f461800fe2af5e"
-                ],
-                "4": [
-                    "NM_variables.mat:md5,8856cdb790358fee2f6960f80e5f4999"
-                ],
-                "5": [
-                    "versions.yml:md5,c413276640fb035336c7c5bc450abde3"
-                ],
-                "NM_variables": [
-                    "NM_variables.mat:md5,8856cdb790358fee2f6960f80e5f4999"
-                ],
-                "alignment_table_mat": [
-                    "alignment_table.mat:md5,6e1c52a153b9f1e6291ffb25aa50dca8"
-                ],
-                "path_table_mat": [
-                    "path_table.mat:md5,6d28da9ab999af745f65c31cbb8181aa"
-                ],
-                "samples": [
-                    [
-                        "TEST1_ctip2_full.tif:md5,fb17be9f66140c674dad1c0eba3b7a2e",
-                        "TEST1_topro_full.tif:md5,5e6784fc7062215bc6538ccccc49a5f4"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,c413276640fb035336c7c5bc450abde3"
-                ],
-                "z_displacement_align_mat": [
-                    "z_displacement_align.mat:md5,83c68de544880b80e2f461800fe2af5e"
-                ]
-            }
+            [
+                "adj_params.mat",
+                "alignment_table.mat",
+                "path_table.mat",
+                "thresholds.mat",
+                "z_displacement_align.mat"
+            ],
+            [
+                "TEST1_ctip2_full.tif",
+                "TEST1_topro_full.tif"
+            ],
+            null
         ],
-        "timestamp": "2026-03-03T14:30:11.551865428",
+        "timestamp": "2026-03-17T17:10:19.809733384",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
