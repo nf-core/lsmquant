@@ -3,7 +3,7 @@ nextflow_process {
     script "../main.nf"
     process "NUMORPHSTITCH"
 
-    test("Numorphstitch test") {
+    test("numorph stitch test") {
         setup {
             run ("UNZIP") {
                 script "../../../nf-core/unzip/main.nf"
@@ -19,33 +19,46 @@ nextflow_process {
         }
         when {
             params {
-                outdir = "$workDir/output"
+                outdir = outdir = "$outputDir"
             }
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map { meta, unzipped_archive ->
-                    tuple(
-                    meta,
-                    unzipped_archive,
-                    file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
-                } //
-                input[1] = UNZIP.out.unzipped_archive.map {[]}
-                input[2] = UNZIP.out.unzipped_archive.map {[]}
-                input[3] = UNZIP.out.unzipped_archive.map {[]}
-                input[4] = UNZIP.out.unzipped_archive.map {[]}
-                input[5] = UNZIP.out.unzipped_archive.map {[]}
-                input[6] = UNZIP.out.unzipped_archive.map {[]}
+                input[0] = UNZIP.out.unzipped_archive
+                    .map { meta, unzipped_archive ->
+                        [
+                            meta,
+                            unzipped_archive,
+                            file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'),
+                            [],
+                            []
+                        ]
+                    }
                 """
-
             }
         }
         then {
-            assert process.success              // Check process completed successfully
-            assert snapshot(process.out).match() // Validate outputs match expected snapshot
+            // Get the directory paths
+            def variablesDir = process.out.variables_stitched.get(0).get(1)
+            def samplesDir = process.out.stitched.get(0).get(1)
+
+            // Use getAllFilesFromDir to get relative file paths
+            def variablesFiles = getAllFilesFromDir(variablesDir, relative: true, includeDir: false)
+            def samplesFiles = getAllFilesFromDir(samplesDir, relative: true, includeDir: false)
+            assertAll (
+                { assert process.success },             // Check process completed successfully
+                { assert file(process.out.NM_variable.get(0).get(1)).exists() : "NM_variables.mat file does not exist" },
+                { assert variablesFiles.size() == 6 },
+                { assert samplesFiles.size() == 36 },
+                { assert snapshot(
+                    variablesFiles,
+                    samplesFiles,
+                    process.out.versions
+                ).match()}
+            )
         }
     }
 
-    test("Numorphstitch stub test") {
+    test("numorph stitch stub test") {
         options '-stub'
         setup {
             run ("UNZIP") {
@@ -64,18 +77,16 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map { meta, unzipped_archive ->
-                    tuple(
-                    meta,
-                    unzipped_archive,
-                    file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
-                } //
-                input[1] = UNZIP.out.unzipped_archive.map {[]}
-                input[2] = UNZIP.out.unzipped_archive.map {[]}
-                input[3] = UNZIP.out.unzipped_archive.map {[]}
-                input[4] = UNZIP.out.unzipped_archive.map {[]}
-                input[5] = UNZIP.out.unzipped_archive.map {[]}
-                input[6] = UNZIP.out.unzipped_archive.map {[]}
+                input[0] = UNZIP.out.unzipped_archive
+                    .map { meta, unzipped_archive ->
+                        [
+                            meta,
+                            unzipped_archive,
+                            file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'),
+                            [], // variables
+                            []  // NM_variable
+                        ]
+                    }
                 """
             }
         }

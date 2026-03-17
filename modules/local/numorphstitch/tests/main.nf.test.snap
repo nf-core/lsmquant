@@ -1,64 +1,61 @@
 {
-    "Numorphstitch stub test": {
+    "numorph stitch test": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "TEST1"
-                        },
-                        [
-                            "TEST1_stitched.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        "adjusted_z.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "stitch_tforms.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "z_dips_matrix.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "3": [
-                    "versions.yml:md5,078a96bac91c7c12facb9f321644c34d"
-                ],
-                "NM_variables": [
-                    "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "stitched": [
-                    [
-                        {
-                            "id": "TEST1"
-                        },
-                        [
-                            "TEST1_stitched.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "variables": [
-                    [
-                        "adjusted_z.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "stitch_tforms.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "z_dips_matrix.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,078a96bac91c7c12facb9f321644c34d"
-                ]
-            }
+            [
+                "adj_params.mat",
+                "adjusted_z.mat",
+                "path_table.mat",
+                "stitch_tforms.mat",
+                "thresholds.mat",
+                "z_disp_matrix.mat"
+            ],
+            [
+                "TEST1_0001_C1_topro_stitched.tif",
+                "TEST1_0001_C2_ctip2_stitched.tif",
+                "TEST1_0002_C1_topro_stitched.tif",
+                "TEST1_0002_C2_ctip2_stitched.tif",
+                "TEST1_0003_C1_topro_stitched.tif",
+                "TEST1_0003_C2_ctip2_stitched.tif",
+                "TEST1_0004_C1_topro_stitched.tif",
+                "TEST1_0004_C2_ctip2_stitched.tif",
+                "TEST1_0005_C1_topro_stitched.tif",
+                "TEST1_0005_C2_ctip2_stitched.tif",
+                "TEST1_0006_C1_topro_stitched.tif",
+                "TEST1_0006_C2_ctip2_stitched.tif",
+                "TEST1_0007_C1_topro_stitched.tif",
+                "TEST1_0007_C2_ctip2_stitched.tif",
+                "TEST1_0008_C1_topro_stitched.tif",
+                "TEST1_0008_C2_ctip2_stitched.tif",
+                "TEST1_0009_C1_topro_stitched.tif",
+                "TEST1_0009_C2_ctip2_stitched.tif",
+                "TEST1_0010_C1_topro_stitched.tif",
+                "TEST1_0010_C2_ctip2_stitched.tif",
+                "TEST1_0011_C1_topro_stitched.tif",
+                "TEST1_0011_C2_ctip2_stitched.tif",
+                "TEST1_0012_C1_topro_stitched.tif",
+                "TEST1_0012_C2_ctip2_stitched.tif",
+                "TEST1_0013_C1_topro_stitched.tif",
+                "TEST1_0013_C2_ctip2_stitched.tif",
+                "TEST1_0014_C1_topro_stitched.tif",
+                "TEST1_0014_C2_ctip2_stitched.tif",
+                "TEST1_0015_C1_topro_stitched.tif",
+                "TEST1_0015_C2_ctip2_stitched.tif",
+                "TEST1_0016_C1_topro_stitched.tif",
+                "TEST1_0016_C2_ctip2_stitched.tif",
+                "TEST1_0017_C1_topro_stitched.tif",
+                "TEST1_0017_C2_ctip2_stitched.tif",
+                "TEST1_0018_C1_topro_stitched.tif",
+                "TEST1_0018_C2_ctip2_stitched.tif"
+            ],
+            null
         ],
-        "timestamp": "2026-03-03T14:53:45.612822526",
+        "timestamp": "2026-03-17T17:46:00.900539825",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
         }
     },
-    "Numorphstitch test": {
+    "numorph stitch stub test": {
         "content": [
             {
                 "0": [
@@ -67,63 +64,45 @@
                             "id": "TEST1"
                         },
                         [
-                            "TEST1_0001_C1_topro_stitched.tif:md5,317719086b501e2ff598b6378b5000bc",
-                            "TEST1_0001_C2_ctip2_stitched.tif:md5,1425cb6fb2329192c34dabc4cdeb608b",
-                            "TEST1_0002_C1_topro_stitched.tif:md5,acd2b0c07253e62a51a2211835ee8af3",
-                            "TEST1_0002_C2_ctip2_stitched.tif:md5,b7836b5a8128d5624370dcff2d856150",
-                            "TEST1_0003_C1_topro_stitched.tif:md5,6933ba04253290df92563ca7325fb5bb",
-                            "TEST1_0003_C2_ctip2_stitched.tif:md5,da0da4d07b03c84ab954b49c4452a43c",
-                            "TEST1_0004_C1_topro_stitched.tif:md5,17380c9c3bd67ea205a8ad69d696f6c6",
-                            "TEST1_0004_C2_ctip2_stitched.tif:md5,42231c67bff5d7051ad9db89deeb0b81",
-                            "TEST1_0005_C1_topro_stitched.tif:md5,808ba7185dbfe7acfccf390c64a68df3",
-                            "TEST1_0005_C2_ctip2_stitched.tif:md5,529c88a62de7cb8a294c61ee38e43701",
-                            "TEST1_0006_C1_topro_stitched.tif:md5,97b1952d5ae7ab10196a1fe02211db52",
-                            "TEST1_0006_C2_ctip2_stitched.tif:md5,1e18a59e46c87ceec5e6b3e560bbfe59",
-                            "TEST1_0007_C1_topro_stitched.tif:md5,7b0f423cdf9bc72519672ddf1a8c9ed2",
-                            "TEST1_0007_C2_ctip2_stitched.tif:md5,28cb58d3ded0f479f71de60aee69108b",
-                            "TEST1_0008_C1_topro_stitched.tif:md5,fc7b2560cc5f1ba4c335f8a1d7bbad07",
-                            "TEST1_0008_C2_ctip2_stitched.tif:md5,f83338d7cc9ad0edf821740a3e099551",
-                            "TEST1_0009_C1_topro_stitched.tif:md5,8577e1c25565d821454a649af56f26a5",
-                            "TEST1_0009_C2_ctip2_stitched.tif:md5,732e3383f5fa11e268b8c06383962cd7",
-                            "TEST1_0010_C1_topro_stitched.tif:md5,1d74b4614291da7c113ca8ccfc401d4f",
-                            "TEST1_0010_C2_ctip2_stitched.tif:md5,4b221f6bdbea74f19a25a7d538706b22",
-                            "TEST1_0011_C1_topro_stitched.tif:md5,878c9f781913909444e9b8c41b1b0d35",
-                            "TEST1_0011_C2_ctip2_stitched.tif:md5,957f0006cdf0ae6042f48ff96f4047b8",
-                            "TEST1_0012_C1_topro_stitched.tif:md5,d4b1f55d2d49d202073914104ca1c6a1",
-                            "TEST1_0012_C2_ctip2_stitched.tif:md5,f822aef32fa1db9adbbfd77874e0677c",
-                            "TEST1_0013_C1_topro_stitched.tif:md5,23f0b137845b4ab97bcadcc8e79a919f",
-                            "TEST1_0013_C2_ctip2_stitched.tif:md5,80ff9f38cf9234528001774382f4517d",
-                            "TEST1_0014_C1_topro_stitched.tif:md5,b9dee935166a2c5b397e26bfc2e1e84a",
-                            "TEST1_0014_C2_ctip2_stitched.tif:md5,13e3b82bb65c1cd731624d523f2eef19",
-                            "TEST1_0015_C1_topro_stitched.tif:md5,92f9c0faa413b03af76aa7927799b66f",
-                            "TEST1_0015_C2_ctip2_stitched.tif:md5,609280edb271acc6820f0deefa0576f7",
-                            "TEST1_0016_C1_topro_stitched.tif:md5,26e73500b59443cb94aa73c0c45f87c6",
-                            "TEST1_0016_C2_ctip2_stitched.tif:md5,ae48a90a29a518e3cd121c91b8e4955c",
-                            "TEST1_0017_C1_topro_stitched.tif:md5,6d9aa1739003ecb59900dad867a094b0",
-                            "TEST1_0017_C2_ctip2_stitched.tif:md5,fb252141f1e9c3344c44acb97bf6b9f6",
-                            "TEST1_0018_C1_topro_stitched.tif:md5,685c86092c751a15c7bc692af8ea9202",
-                            "TEST1_0018_C2_ctip2_stitched.tif:md5,2c559e7593d692e1b399a9de4f83e250"
+                            "TEST1_stitched.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
                 "1": [
                     [
-                        "adj_params.mat:md5,d5167c9600e0226bd5b881d96037bd59",
-                        "adjusted_z.mat:md5,ad4d29ee2993dfa6e00094784f1e91f4",
-                        "path_table.mat:md5,a390d01bef77120d498824ef3834e02a",
-                        "stitch_tforms.mat:md5,3755a8a3d972f1f6f1cdaf7b86192ee6",
-                        "thresholds.mat:md5,22df3871672064004c90109bac9507d0",
-                        "z_disp_matrix.mat:md5,98e73020659173d085c9c740cba2d9f3"
+                        {
+                            "id": "TEST1"
+                        },
+                        [
+                            "adjusted_z.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "stitch_tforms.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "z_dips_matrix.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "2": [
-                    "NM_variables.mat:md5,6910248be76b9b5d098192b801f45c0e"
+                    [
+                        {
+                            "id": "TEST1"
+                        },
+                        "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "3": [
-                    "versions.yml:md5,078a96bac91c7c12facb9f321644c34d"
+                    [
+                        "NUMORPHSTITCH",
+                        "numorph_stitch",
+                        "1.0.0"
+                    ]
                 ],
-                "NM_variables": [
-                    "NM_variables.mat:md5,6910248be76b9b5d098192b801f45c0e"
+                "NM_variable": [
+                    [
+                        {
+                            "id": "TEST1"
+                        },
+                        "NM_variables.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "stitched": [
                     [
@@ -131,61 +110,33 @@
                             "id": "TEST1"
                         },
                         [
-                            "TEST1_0001_C1_topro_stitched.tif:md5,317719086b501e2ff598b6378b5000bc",
-                            "TEST1_0001_C2_ctip2_stitched.tif:md5,1425cb6fb2329192c34dabc4cdeb608b",
-                            "TEST1_0002_C1_topro_stitched.tif:md5,acd2b0c07253e62a51a2211835ee8af3",
-                            "TEST1_0002_C2_ctip2_stitched.tif:md5,b7836b5a8128d5624370dcff2d856150",
-                            "TEST1_0003_C1_topro_stitched.tif:md5,6933ba04253290df92563ca7325fb5bb",
-                            "TEST1_0003_C2_ctip2_stitched.tif:md5,da0da4d07b03c84ab954b49c4452a43c",
-                            "TEST1_0004_C1_topro_stitched.tif:md5,17380c9c3bd67ea205a8ad69d696f6c6",
-                            "TEST1_0004_C2_ctip2_stitched.tif:md5,42231c67bff5d7051ad9db89deeb0b81",
-                            "TEST1_0005_C1_topro_stitched.tif:md5,808ba7185dbfe7acfccf390c64a68df3",
-                            "TEST1_0005_C2_ctip2_stitched.tif:md5,529c88a62de7cb8a294c61ee38e43701",
-                            "TEST1_0006_C1_topro_stitched.tif:md5,97b1952d5ae7ab10196a1fe02211db52",
-                            "TEST1_0006_C2_ctip2_stitched.tif:md5,1e18a59e46c87ceec5e6b3e560bbfe59",
-                            "TEST1_0007_C1_topro_stitched.tif:md5,7b0f423cdf9bc72519672ddf1a8c9ed2",
-                            "TEST1_0007_C2_ctip2_stitched.tif:md5,28cb58d3ded0f479f71de60aee69108b",
-                            "TEST1_0008_C1_topro_stitched.tif:md5,fc7b2560cc5f1ba4c335f8a1d7bbad07",
-                            "TEST1_0008_C2_ctip2_stitched.tif:md5,f83338d7cc9ad0edf821740a3e099551",
-                            "TEST1_0009_C1_topro_stitched.tif:md5,8577e1c25565d821454a649af56f26a5",
-                            "TEST1_0009_C2_ctip2_stitched.tif:md5,732e3383f5fa11e268b8c06383962cd7",
-                            "TEST1_0010_C1_topro_stitched.tif:md5,1d74b4614291da7c113ca8ccfc401d4f",
-                            "TEST1_0010_C2_ctip2_stitched.tif:md5,4b221f6bdbea74f19a25a7d538706b22",
-                            "TEST1_0011_C1_topro_stitched.tif:md5,878c9f781913909444e9b8c41b1b0d35",
-                            "TEST1_0011_C2_ctip2_stitched.tif:md5,957f0006cdf0ae6042f48ff96f4047b8",
-                            "TEST1_0012_C1_topro_stitched.tif:md5,d4b1f55d2d49d202073914104ca1c6a1",
-                            "TEST1_0012_C2_ctip2_stitched.tif:md5,f822aef32fa1db9adbbfd77874e0677c",
-                            "TEST1_0013_C1_topro_stitched.tif:md5,23f0b137845b4ab97bcadcc8e79a919f",
-                            "TEST1_0013_C2_ctip2_stitched.tif:md5,80ff9f38cf9234528001774382f4517d",
-                            "TEST1_0014_C1_topro_stitched.tif:md5,b9dee935166a2c5b397e26bfc2e1e84a",
-                            "TEST1_0014_C2_ctip2_stitched.tif:md5,13e3b82bb65c1cd731624d523f2eef19",
-                            "TEST1_0015_C1_topro_stitched.tif:md5,92f9c0faa413b03af76aa7927799b66f",
-                            "TEST1_0015_C2_ctip2_stitched.tif:md5,609280edb271acc6820f0deefa0576f7",
-                            "TEST1_0016_C1_topro_stitched.tif:md5,26e73500b59443cb94aa73c0c45f87c6",
-                            "TEST1_0016_C2_ctip2_stitched.tif:md5,ae48a90a29a518e3cd121c91b8e4955c",
-                            "TEST1_0017_C1_topro_stitched.tif:md5,6d9aa1739003ecb59900dad867a094b0",
-                            "TEST1_0017_C2_ctip2_stitched.tif:md5,fb252141f1e9c3344c44acb97bf6b9f6",
-                            "TEST1_0018_C1_topro_stitched.tif:md5,685c86092c751a15c7bc692af8ea9202",
-                            "TEST1_0018_C2_ctip2_stitched.tif:md5,2c559e7593d692e1b399a9de4f83e250"
+                            "TEST1_stitched.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
-                "variables": [
+                "variables_stitched": [
                     [
-                        "adj_params.mat:md5,d5167c9600e0226bd5b881d96037bd59",
-                        "adjusted_z.mat:md5,ad4d29ee2993dfa6e00094784f1e91f4",
-                        "path_table.mat:md5,a390d01bef77120d498824ef3834e02a",
-                        "stitch_tforms.mat:md5,3755a8a3d972f1f6f1cdaf7b86192ee6",
-                        "thresholds.mat:md5,22df3871672064004c90109bac9507d0",
-                        "z_disp_matrix.mat:md5,98e73020659173d085c9c740cba2d9f3"
+                        {
+                            "id": "TEST1"
+                        },
+                        [
+                            "adjusted_z.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "path_table.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "stitch_tforms.mat:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "z_dips_matrix.mat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,078a96bac91c7c12facb9f321644c34d"
+                "versions_numorph_stitch": [
+                    [
+                        "NUMORPHSTITCH",
+                        "numorph_stitch",
+                        "1.0.0"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-03-03T14:53:15.760841717",
+        "timestamp": "2026-03-17T17:46:20.120876903",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
