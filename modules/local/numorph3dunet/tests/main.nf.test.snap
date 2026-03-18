@@ -1,57 +1,60 @@
 {
-    "Numorph3DUnet test - tif": {
+    "numorph-3DUnet test - tif": {
         "content": [
-            {
-                "0": [
-                    [
-                        "TEST1.csv:md5,fa930f84f08fa69d825bca59cc08dcec",
-                        "TEST1_counts.csv:md5,6f482bb276d66163f0646ba6d4712075"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,a48272c66a933f2bbbaa710df8129f03"
-                ],
-                "cellcounts": [
-                    [
-                        "TEST1.csv:md5,fa930f84f08fa69d825bca59cc08dcec",
-                        "TEST1_counts.csv:md5,6f482bb276d66163f0646ba6d4712075"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,a48272c66a933f2bbbaa710df8129f03"
-                ]
-            }
+            [
+                "TEST1.csv",
+                "TEST1_counts.csv"
+            ],
+            null
         ],
-        "timestamp": "2026-02-28T16:52:51.765396671",
+        "timestamp": "2026-03-18T09:39:51.811502005",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
         }
     },
-    "Numorph3DUnet stub test - tif": {
+    "numorph-3DUnet stub test - tif": {
         "content": [
             {
                 "0": [
                     [
-                        "TEST1.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "TEST1_counts.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        {
+                            "id": "TEST1"
+                        },
+                        [
+                            "TEST1.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "TEST1_counts.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,a48272c66a933f2bbbaa710df8129f03"
+                    [
+                        "NUMORPH3DUNET",
+                        "numorph-3dunet",
+                        "1.0.0"
+                    ]
                 ],
                 "cellcounts": [
                     [
-                        "TEST1.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "TEST1_counts.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        {
+                            "id": "TEST1"
+                        },
+                        [
+                            "TEST1.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "TEST1_counts.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,a48272c66a933f2bbbaa710df8129f03"
+                "versions_numorph_3dunet": [
+                    [
+                        "NUMORPH3DUNET",
+                        "numorph-3dunet",
+                        "1.0.0"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-03-03T15:01:48.714597704",
+        "timestamp": "2026-03-18T09:40:24.396612007",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
