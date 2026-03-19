@@ -3,7 +3,6 @@ include { NUMORPH_INTENSITY                    } from '../../../modules/nf-core/
 include { NUMORPHALIGN                         } from '../../../modules/local/numorphalign/'
 include { NUMORPHSTITCH                        } from '../../../modules/local/numorphstitch/'
 include { MAT2JSON                             } from '../../../modules/nf-core/mat2json/'
-include { softwareVersionsToYAML               } from '../../../subworkflows/nf-core/utils_nfcore_pipeline/'
 
 workflow NUMORPH_PREPROCESSING {
 
@@ -57,8 +56,8 @@ workflow NUMORPH_PREPROCESSING {
 
     emit:
 
-    variables                 = NUMORPHSTITCH.out.variables_stitched          // channel: [ path(variables_dir) ]
-    stitched                  = NUMORPHSTITCH.out.stitched                   // channel: [ path(stitched_dir) ]
-    NM_variables              = NUMORPHSTITCH.out.NM_variable                // channel: [path(NM_variables) ]
+    variables                 = NUMORPHSTITCH.out.variables_stitched
+    stitched                  = NUMORPHSTITCH.out.stitched
+    NM_variable               = NUMORPHSTITCH.out.NM_variable
 
 }
