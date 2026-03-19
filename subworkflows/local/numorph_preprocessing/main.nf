@@ -1,10 +1,8 @@
 
-include { NUMORPHINTENSITY                     } from '../../../modules/local/numorphintensity/'
+include { NUMORPH_INTENSITY                    } from '../../../modules/nf-core/numorph/intensity'
 include { NUMORPHALIGN                         } from '../../../modules/local/numorphalign/'
 include { NUMORPHSTITCH                        } from '../../../modules/local/numorphstitch/'
-include { MAT2JSON as MAT2JSON_INT             } from '../../../modules/local/mat2json/'
-include { MAT2JSON as MAT2JSON_ALIGN           } from '../../../modules/local/mat2json/'
-include { MAT2JSON as MAT2JSON_STITCH          } from '../../../modules/local/mat2json/'
+include { MAT2JSON                             } from '../../../modules/nf-core/mat2json/'
 include { softwareVersionsToYAML               } from '../../../subworkflows/nf-core/utils_nfcore_pipeline/'
 
 workflow NUMORPH_PREPROCESSING {
@@ -14,83 +12,53 @@ workflow NUMORPH_PREPROCESSING {
 
     main:
 
-    ch_versions = Channel.empty()
 
-    sample_meta = samplesheet.map { meta, img_dir, params -> meta }
-
-
-    NUMORPHINTENSITY (samplesheet)
-    def intensity_out = NUMORPHINTENSITY.out
-    ch_versions = ch_versions.mix(intensity_out.versions)
-
-    // Create a tuple channel with all mat files and appropriate meta
-    sample_meta.combine(NUMORPHINTENSITY.out.adj_params_mat)
-    .mix(
-        sample_meta.combine(NUMORPHINTENSITY.out.path_table_mat),
-        sample_meta.combine(NUMORPHINTENSITY.out.thresholds_mat),
-        sample_meta.combine(NUMORPHINTENSITY.out.NM_variables)
-    )
-    .set { mat_files_int}
-
-    NUMORPHALIGN (
-        samplesheet,
-        intensity_out.adj_params_mat,
-        intensity_out.path_table_mat,
-        intensity_out.thresholds_mat,
-        intensity_out.NM_variables
-    )
-    def align_out = NUMORPHALIGN.out
-    ch_versions = ch_versions.mix(align_out.versions)
-
-    sample_meta.combine(NUMORPHALIGN.out.alignment_table_mat)
-    .mix(
-        sample_meta.combine(NUMORPHALIGN.out.path_table_mat),
-        sample_meta.combine(NUMORPHALIGN.out.z_displacement_align_mat),
-        sample_meta.combine(NUMORPHALIGN.out.NM_variables)
-    )
-    .set { mat_files_align }
+    NUMORPH_INTENSITY (samplesheet)
 
 
-    NUMORPHSTITCH (
-        samplesheet,
-        align_out.alignment_table_mat,
-        align_out.z_displacement_align_mat,
-        align_out.path_table_mat,
-        intensity_out.thresholds_mat,
-        intensity_out.adj_params_mat,
-        align_out.NM_variables
-        )
+    def align_input = samplesheet
+        .combine(NUMORPH_INTENSITY.out.variables)
+        .combine(NUMORPH_INTENSITY.out.NM_variable)
+        .map { meta, img_dir, parameter_file, meta2, variables, meta3, NM_variable ->
+            [
+                meta,
+                img_dir,
+                parameter_file,
+                variables,
+                NM_variable
+            ]
+        }
 
-    def stitch_out = NUMORPHSTITCH.out
-    ch_versions = ch_versions.mix(stitch_out.versions)
+    NUMORPHALIGN (align_input)
 
-    stitch_out.variables
-        .flatten()
-        .filter { file -> file.toString().endsWith('.mat') }
-        .combine(sample_meta)
-        .map {file, meta -> tuple(meta, file) }
-        .set { mat_files_stitch }
+    def stitch_input = samplesheet
+        .combine(NUMORPHALIGN.out.variables_alignment)
+        .combine(NUMORPHALIGN.out.NM_variable)
+        .map { meta, img_dir, parameter_file, meta2, variables_alignment, meta3, NM_variable ->
+            [
+                meta,
+                img_dir,
+                parameter_file,
+                variables_alignment,
+                NM_variable
+            ]
+        }
 
+    NUMORPHSTITCH (stitch_input)
 
-    MAT2JSON_INT (mat_files_int, "intensity" )
-    MAT2JSON_ALIGN (mat_files_align, "align" )
-    MAT2JSON_STITCH (mat_files_stitch, "stitch" )
-    ch_versions = ch_versions.mix(MAT2JSON_INT.out.versions)
+    def mat_files = NUMORPHSTITCH.out.variables_stitched
+        .flatMap { meta, variables_dir ->
+            variables_dir.listFiles()
+                .findAll { it.name.endsWith('.mat') }
+                .collect { matfile ->  [meta, matfile] }
+        }
 
-    // Collate and save software versions
-    //
-    softwareVersionsToYAML(ch_versions)
-        .collectFile(
-            storeDir: "${params.outdir}/pipeline_info",
-            name: 'nf_core_'  +  'lsmquant_software_'  + 'mqc_'  + 'versions.yml',
-            sort: true,
-            newLine: true
-        ).set { ch_collated_versions }
+    MAT2JSON (mat_files, "preprocessing" )
 
     emit:
 
-    stitched                  = stitch_out.stitched                    // channel: [ path(stitched_dir) ]
-    intensity_thresholds      = intensity_out.thresholds_mat           // channel: [path(thresholds_mat) ]
-    NM_variables              = stitch_out.NM_variables                // channel: [path(NM_variables) ]
-    versions                  = ch_collated_versions                   // channel: [ versions.yml ]
+    variables                 = NUMORPHSTITCH.out.variables_stitched          // channel: [ path(variables_dir) ]
+    stitched                  = NUMORPHSTITCH.out.stitched                   // channel: [ path(stitched_dir) ]
+    NM_variables              = NUMORPHSTITCH.out.NM_variable                // channel: [path(NM_variables) ]
+
 }
