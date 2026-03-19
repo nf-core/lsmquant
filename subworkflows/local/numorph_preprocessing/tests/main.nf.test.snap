@@ -2,9 +2,6 @@
     "numorph preprocessing tiff": {
         "content": [
             12,
-            {
-                
-            },
             [
                 "mat2json",
                 "mat2json/preprocessing",
@@ -272,24 +269,24 @@
                 "stitch_tforms.json:md5,b5cc9b439f94631bee62e3f8315dd9aa",
                 "z_disp_matrix.json:md5,575020a27eee808b03c615e0a80ca506",
                 "z_displacement_align.json:md5,0eb5dab0b44ab3c5ceaa8b053ec250e0",
-                "NM_variables.mat:md5,3982a6d0a9f7d2a101cf4752901f7826",
+                "NM_variables.mat:md5,a4edf2d0e1ae0010fff3aa6a302ca826",
                 "ctip2_1_1_11.tif:md5,fccec39adaa86a092dd7fca25b480234",
                 "ctip2_1_2_11.tif:md5,f7eb54ccc7add77d02d5463ff7898356",
                 "ctip2_2_1_11.tif:md5,684a579cc8df0800a11d2ff892c3938d",
                 "ctip2_2_2_11.tif:md5,5f4305e1581ccd4651fd750669e3b69a",
-                "flatfield_1.png:md5,e05597b35cf490010e801dab0fc5c6c6",
-                "flatfield_2.png:md5,3c7caebab483c0de451220d8a1fedd30",
-                "tile_adj_1.png:md5,cd253f654d92dd4ebb10b4ec750a9f4a",
-                "tile_adj_2.png:md5,a7232e5c2b5752fdaf104cbaf8e0adb6",
+                "flatfield_1.png:md5,9bcccc81a1d7efd27d1518199150a4b2",
+                "flatfield_2.png:md5,34a05a01a8522063b5573a53c75c2dc3",
+                "tile_adj_1.png:md5,9f7c5647a83c2bfcc438da21c4d9d1b7",
+                "tile_adj_2.png:md5,ac7a8ae352697405e3f3db8afcf4a660",
                 "topro_1_1_11.tif:md5,733e3e7bc32916dfcbc73c9c77404d69",
                 "topro_1_2_11.tif:md5,4652de23e14b9b3546c462d18a70e542",
                 "topro_2_1_11.tif:md5,918562924baffc0b99976837ef4b5121",
                 "topro_2_2_11.tif:md5,9f6a1c2b631a11cd675e96fd6e29c1b4",
-                "y_adj_1.png:md5,4b60c9c51d3fe54da166df4097938445",
-                "y_adj_2.png:md5,96125de11f1aa1b6095ccddf4bca8447",
-                "adj_params.mat:md5,4dcbf2637cf720131f682f00826fcbf5",
-                "path_table.mat:md5,f399730ae1556f7729416c9515cefd2b",
-                "thresholds.mat:md5,f843a58f779fb29c1259fb7ab7285a39",
+                "y_adj_1.png:md5,711d09ff4defb119346d2c2ed9be88c6",
+                "y_adj_2.png:md5,fb4da0f00238ddd577fffc47738f7f76",
+                "adj_params.mat:md5,8f77bd1c4f3e882a181a6107594d9012",
+                "path_table.mat:md5,240e9822c4d685da5a997f9c34f6db22",
+                "thresholds.mat:md5,6c48f8b4d4a3b9b69af5209a53510c19",
                 "TEST1_ctip2_full.tif:md5,fb17be9f66140c674dad1c0eba3b7a2e",
                 "TEST1_topro_full.tif:md5,5e6784fc7062215bc6538ccccc49a5f4",
                 "16-35-34_WT7R_ctip2_topro_2-5x_0-085NA_4z_UltraII[02 x 02]_C00_xyz-Table Z0600.ome.tif:md5,5bceac0b61030e08808592c7bf3e8db0",
@@ -462,7 +459,7 @@
                 "16-35-34_WT7R_ctip2_topro_2-5x_0-085NA_4z_UltraII[03 x 03]_C01_xyz-Table Z0620.ome.tif:md5,b4f4be8e38b3b84dcd1a34a2b1968abc"
             ]
         ],
-        "timestamp": "2026-03-19T13:28:36.534500775",
+        "timestamp": "2026-03-19T16:13:49.151050141",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
@@ -471,9 +468,6 @@
     "numorph preprocessing stub": {
         "content": [
             8,
-            {
-                
-            },
             [
                 "mat2json",
                 "mat2json/preprocessing",
@@ -518,7 +512,7 @@
                 "TEST1_full.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
             ]
         ],
-        "timestamp": "2026-03-19T13:29:04.232677396",
+        "timestamp": "2026-03-19T16:14:17.731253075",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"

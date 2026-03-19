@@ -16,32 +16,14 @@ workflow NUMORPH_PREPROCESSING {
 
 
     def align_input = samplesheet
-        .combine(NUMORPH_INTENSITY.out.variables)
-        .combine(NUMORPH_INTENSITY.out.NM_variable)
-        .map { meta, img_dir, parameter_file, meta2, variables, meta3, NM_variable ->
-            [
-                meta,
-                img_dir,
-                parameter_file,
-                variables,
-                NM_variable
-            ]
-        }
+        .join(NUMORPH_INTENSITY.out.variables)
+        .join(NUMORPH_INTENSITY.out.NM_variable)
 
     NUMORPHALIGN (align_input)
 
     def stitch_input = samplesheet
-        .combine(NUMORPHALIGN.out.variables_alignment)
-        .combine(NUMORPHALIGN.out.NM_variable)
-        .map { meta, img_dir, parameter_file, meta2, variables_alignment, meta3, NM_variable ->
-            [
-                meta,
-                img_dir,
-                parameter_file,
-                variables_alignment,
-                NM_variable
-            ]
-        }
+        .join(NUMORPHALIGN.out.variables_alignment)
+        .join(NUMORPHALIGN.out.NM_variable)
 
     NUMORPHSTITCH (stitch_input)
 

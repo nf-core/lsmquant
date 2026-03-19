@@ -16,6 +16,7 @@ include { UNZIP                  } from '../modules/nf-core/unzip'
 include { STAGEFILES             } from '../modules/local/stagefiles'
 include { MULTIQC                } from '../modules/nf-core/multiqc'
 include { NUMORPHSTITCH          } from '../modules/local/numorphstitch'
+include { VALIDATE_PARAMETERS    } from '../modules/local/validate_parameters'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,8 +33,14 @@ workflow LSMQUANT {
 
     main:
 
-    ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
+    ch_versions = Channel.empty()
+
+
+    // validate numorph specific parameters
+    ch_parameter_file = samplesheet.map { meta, img_dir, parameter_file -> [meta, parameter_file] }
+    schema_json = file("${projectDir}/assets/numorph_params_schema.json")
+    VALIDATE_PARAMETERS(ch_parameter_file, schema_json)
 
     // branch input channel based on whether zip archive or directory
     samplesheet.branch { meta, img_directory, parameter_file ->
@@ -53,7 +60,6 @@ workflow LSMQUANT {
         .set { zip_archive }
 
     UNZIP (zip_archive)
-    ch_versions = ch_versions.mix(UNZIP.out.versions)
     unzipped_output = UNZIP.out.unzipped_archive
     // join unzipped output with  parameter file
     unzipped_output
@@ -71,7 +77,6 @@ workflow LSMQUANT {
         .set { img_dir }
 
     STAGEFILES (img_dir)
-    ch_versions = ch_versions.mix(STAGEFILES.out.versions)
     staged_images = STAGEFILES.out.raw_files
 
     staged_images
@@ -86,77 +91,54 @@ workflow LSMQUANT {
     ch_samplesheet = ch_unzipped.mix(ch_stagedfiles)
 
 
+
     // run only stitching
     if (params.stage == 'stitch_only') {
         // create empty channels for intensity adjustment outputs
-        empty_adj_params_mat = samplesheet.map {[]}
-        empty_path_table_mat = samplesheet.map {[]}
-        empty_thresholds_mat = samplesheet.map {[]}
-        empty_NM_variables = samplesheet.map {[]}
-        empty_align_table_mat = samplesheet.map {[]}
-        empty_z_displacement_align_mat = samplesheet.map {[]}
 
-        NUMORPHSTITCH (
-            ch_samplesheet,
-            empty_align_table_mat,
-            empty_z_displacement_align_mat,
-            empty_path_table_mat,
-            empty_thresholds_mat,
-            empty_adj_params_mat,
-            empty_NM_variables
-        )
-        ch_versions = ch_versions.mix(NUMORPHSTITCH.out.versions)
+        def stitch_input = ch_samplesheet
+                .map { meta, img_directory, parameter_file ->
+                    [meta, img_directory, parameter_file, [],[]]
+                }
 
-        def stitched_output = NUMORPHSTITCH.out.stitched
+        NUMORPHSTITCH (stitch_input)
+        stitched_output = NUMORPHSTITCH.out.stitched
 
-        stitched_output
-            .join(samplesheet)
-            .map { meta, stitched, raw_img_directory, parameter_file ->
-                tuple(meta, stitched, parameter_file)
-            }
-            .set { stitched_data }
     }
 
     // run single channel preprocessing by intensity and stitching
     if (params.stage == 'int_stitch') {
+
         NUMORPH_STITCH (ch_samplesheet)
-        ch_versions = ch_versions.mix(NUMORPH_STITCH.out.versions)
+        stitched_output = NUMORPH_STITCH.out.stitched
 
-        def stitched_output = NUMORPH_STITCH.out.stitched
-
-        stitched_output
-            .join(samplesheet)
-            .map { meta, stitched, raw_img_directory, parameter_file ->
-                tuple(meta, stitched, parameter_file)
-            }
-            .set { stitched_data }
     }
 
     // run preprocessing with multi channel alignment and stitching
     if (params.stage == 'int_align_stitch') {
+
         NUMORPH_PREPROCESSING (ch_samplesheet)
-        ch_versions = ch_versions.mix(NUMORPH_PREPROCESSING.out.versions)
+        stitched_output= NUMORPH_PREPROCESSING.out.stitched
 
-        def stitched_output = NUMORPH_PREPROCESSING.out.stitched
-
-        stitched_output
-            .join(samplesheet)
-            .map { meta, stitched, raw_img_directory, parameter_file ->
-                tuple(meta, stitched, parameter_file)
-            }
-            .set { stitched_data }
     }
+
+    stitched_data = ch_samplesheet
+            .join (stitched_output)
+            .map { meta, img_dir, parameter_file, stitched_data ->
+                [meta, stitched_data, parameter_file]
+            }
 
     // run nuclei quantification
     if (params.nuclei_quantification) {
-        model_file = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
+
+        def model_file = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
         NUMORPH3DUNET (stitched_data, model_file)
-        ch_versions = ch_versions.mix(NUMORPH3DUNET.out.versions)
+
     }
     // run ara registration
     if (params.ara_registration) {
             ARAREGISTRATION (stitched_data)
-            ch_versions = ch_versions.mix(ARAREGISTRATION.out.versions)
+
         }
 
 
@@ -179,6 +161,9 @@ workflow LSMQUANT {
             "${process}:\n${tool_versions.join('\n')}"
         }
 
+    //ch_collated_versions = softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
+    //  .mix(topic_versions_string)
+    ch_versions = ch_versions.mix(UNZIP.out.versions)
     softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
         .mix(topic_versions_string)
         .collectFile(
@@ -188,28 +173,24 @@ workflow LSMQUANT {
             newLine: true
         ).set { ch_collated_versions }
 
+
      //
     // MODULE: MultiQC
     //
-    ch_multiqc_config        = channel.fromPath(
-        "$projectDir/assets/multiqc_config.yml", checkIfExists: true)
-    ch_multiqc_custom_config = params.multiqc_config ?
-        channel.fromPath(params.multiqc_config, checkIfExists: true) :
-        channel.empty()
-    ch_multiqc_logo          = params.multiqc_logo ?
-        channel.fromPath(params.multiqc_logo, checkIfExists: true) :
-        channel.empty()
+    ch_multiqc_config        = channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
+    ch_multiqc_custom_config = params.multiqc_config ? channel.fromPath(params.multiqc_config, checkIfExists: true) : channel.empty()
+    ch_multiqc_logo          = params.multiqc_logo ? channel.fromPath(params.multiqc_logo, checkIfExists: true) : channel.empty()
 
-    summary_params      = paramsSummaryMap(
-        workflow, parameters_schema: "nextflow_schema.json")
+    summary_params      = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
     ch_workflow_summary = channel.value(paramsSummaryMultiqc(summary_params))
-    ch_multiqc_files = ch_multiqc_files.mix(
-        ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_custom_methods_description = params.multiqc_methods_description ?
-        file(params.multiqc_methods_description, checkIfExists: true) :
-        file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
-    ch_methods_description                = channel.value(
-        methodsDescriptionText(ch_multiqc_custom_methods_description))
+
+    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+
+    ch_multiqc_custom_methods_description = params.multiqc_methods_description
+            ? file(params.multiqc_methods_description, checkIfExists: true)
+            : file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
+
+    ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
 
     ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
     ch_multiqc_files = ch_multiqc_files.mix(

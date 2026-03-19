@@ -15,21 +15,10 @@ workflow NUMORPH_STITCH {
     NUMORPH_INTENSITY (samplesheet)
 
     def stitch_input = samplesheet
-        .combine(NUMORPH_INTENSITY.out.variables)
-        .combine(NUMORPH_INTENSITY.out.NM_variable)
-        .map { meta, img_dir, parameter_file, meta2, variables, meta3, NM_variable ->
-            [
-                meta,
-                img_dir,
-                parameter_file,
-                variables,
-                NM_variable
-            ]
-        }
+        .join(NUMORPH_INTENSITY.out.variables)
+        .join(NUMORPH_INTENSITY.out.NM_variable)
 
     NUMORPHSTITCH (stitch_input)
-
-    def stitch_out = NUMORPHSTITCH.out
 
 
     def mat_files = NUMORPHSTITCH.out.variables_stitched
