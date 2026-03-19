@@ -104,6 +104,16 @@ workflow LSMQUANT {
         NUMORPHSTITCH (stitch_input)
         stitched_output = NUMORPHSTITCH.out.stitched
 
+        // get all mat files
+        def mat_files = NUMORPHSTITCH.out.variables_stitched
+        .flatMap { meta, variables_dir ->
+            variables_dir.listFiles()
+                .findAll { it.name.endsWith('.mat') }
+                .collect { matfile ->  [meta, matfile] }
+        }
+
+        MAT2JSON (mat_files, "stitch_only" )
+
     }
 
     // run single channel preprocessing by intensity and stitching
@@ -137,6 +147,7 @@ workflow LSMQUANT {
     }
     // run ara registration
     if (params.ara_registration) {
+
             ARAREGISTRATION (stitched_data)
 
         }
@@ -161,8 +172,7 @@ workflow LSMQUANT {
             "${process}:\n${tool_versions.join('\n')}"
         }
 
-    //ch_collated_versions = softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
-    //  .mix(topic_versions_string)
+
     ch_versions = ch_versions.mix(UNZIP.out.versions)
     softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
         .mix(topic_versions_string)
