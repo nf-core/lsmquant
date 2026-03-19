@@ -1,3 +1,4 @@
+
 include { NUMORPH_INTENSITY                    } from '../../../modules/nf-core/numorph/intensity'
 include { NUMORPHSTITCH                        } from '../../../modules/local/numorphstitch/'
 include { MAT2JSON                             } from '../../../modules/nf-core/mat2json/'
