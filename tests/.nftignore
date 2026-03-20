@@ -12,12 +12,12 @@ multiqc/multiqc_plots/{svg,pdf,png}/*.{svg,pdf,png}
 multiqc/multiqc_report.html
 fastqc/*_fastqc.{html,zip}
 pipeline_info/*.{html,json,txt,yml}
-{numorphintensity,numorphalign,numorphstitch,numorphregister,numorphresample}/*/NM_variables.mat
-{numorphintensity,numorphalign,numorphstitch}/*/*/path_table.mat
+{numorph_intensity,numorphalign,numorphstitch,numorphregister,numorphresample}/*/NM_variables.mat
+{numorph_intensity,numorphalign,numorphstitch}/*/*/path_table.mat
 numorphalign/*/*/alignment_table.mat
 numorphalign/*/*/z_displacement_align.mat
-numorphintensity/*/variables/*.mat
-numorphintensity/*/samples/*/*.png
+numorph_intensity/*/variables/*.mat
+numorph_intensity/*/samples/*/*.png
 numorphstitch/*/variables/*.mat
 numorph3dunet/*/*
 mat2json/*/*/{NM_variables,alignment_table,path_table,adj_params,thresholds,stitch_tforms}.json
