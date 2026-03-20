@@ -28,7 +28,7 @@
 
 ## Pipeline Summary
 
-The pipeline consists of 3 major components: Preprocessing, Cell-Nuclei quantification, and Allen Reference Atlas registration. A detailed explanation on each method can be found in the [Methods description](./docs/usage.md) section.
+The pipeline consists of 3 major components: Preprocessing, Cell-Nuclei quantification, and Allen Reference Atlas registration. A detailed explanation on each method can be found in the [methods description](./docs/usage#methods-description) section of the usage documentation.
 
 **Preprocessing**
 
@@ -42,7 +42,7 @@ This stage reconstructs the 3D image from raw light-sheet data. Here three diffe
 
 **Cell Nuclei Quantification**
 
-Quantification of cell-nuclei is performed using a 3D-Unet and it is performed on the nuclear channel only. This is an optional workflow and can be chosen by setting the parameter:`nuclei_quantification`
+Quantification of cell-nuclei is performed using a 3D-Unet and it is performed on the nuclear channel only. This is an optional workflow and can be chosen by setting the parameter:[`nuclei_quantification`](./parameters#nuclei_quantification)
 
 **Allen Brain Atlas Registration (Optional)**
 
