@@ -12,7 +12,6 @@ The directories listed below will be created in the results directory after the 
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-- [StageFiles](#stagefiles) - Stageing images from the input directory into the work directory.
 - [NumorphIntensity](#numorphintensity) - Measures intensity parameters for illumination correction
 - [NumorphAlign](#numorphalign) - Performs 2D rigid or 3D non-linear channel alignment
 - [NumorphStitch](#numoprhstitch) - Performs 2D iterative stitching of image tiles
