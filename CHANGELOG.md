@@ -9,7 +9,7 @@ Initial release of nf-core/lsmquant, created with the [nf-core](https://nf-co.re
 
 ### `Added`
 
-The main functionalities of the NuMorph toolbox are added up until the nuclei quantification via a 3DUnet
+The main functionalities of the NuMorph toolbox are added up until the nuclei quantification via a 3DUnet.
 
 local Modules:
 

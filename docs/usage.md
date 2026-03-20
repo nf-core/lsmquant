@@ -37,7 +37,7 @@ If different samples should be processed with the same parameter set specified i
 
 ### Parameter file
 
-In the `parameter.csv` file you should specify processing parameters for your data and pipeline run. The `CSV` contains specific fields that are needed for the processes to run and only the value column should be modified. You can download a template parameter file [here](../assets/params_template_lsmquant.csv).
+In the `parameter.csv` file you should specify processing parameters for your data and pipeline run for each sample. The `CSV` contains specific fields that are needed for the processes to run and only the value column should be modified. You can download a template parameter file [here](../assets/params_template_lsmquant.csv).
 An example row is displayed below:
 
 ```csv title="params.csv"
