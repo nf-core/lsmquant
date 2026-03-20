@@ -1,5 +1,9 @@
 # nf-core/lsmquant: Usage
 
+## :warning: Please read this documentation on the nf-core website: [https://nf-co.re/lsmquant/usage](https://nf-co.re/lsmquant/usage)
+
+> _Documentation of pipeline parameters is generated automatically from the pipeline schema and can no longer be found in markdown files._
+
 ## Introduction
 
 ## Samplesheet input
@@ -34,6 +38,13 @@ TEST3,/path/to/TEST3/,/path/to/params_TEST3.csv
 ```
 
 If different samples should be processed with the same parameter set specified in the `params.csv`, you can use the same `params.csv` for different samples.
+
+```csv title="samplesheet2.csv"
+sample_id,img_directory,parameter_file
+TEST1,/path/to/TEST1/,/path/to/params_set1.csv
+TEST2,/path/to/TEST2/,/path/to/params_set1.csv
+TEST3,/path/to/TEST3/,/path/to/params_set1.csv
+```
 
 ### Parameter file
 
@@ -345,7 +356,7 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
 - `wave`
   - A generic configuration profile to enable [Wave](https://seqera.io/wave/) containers. Use together with one of the above (requires Nextflow ` 24.03.0-edge` or later).
 - `conda`
-  - This profile is not available for nf-core/lsmquant
+  - This profile is not available for nf-core/lsmquant. The main tools used in this pipeline are compiled MATLAB applications and cannot be distributed via conda
 
 ### `-resume`
 
@@ -493,4 +504,4 @@ Stitching process proceeds with iterative alignment in the x–y plane. The star
 
 ### Nuclei quantification
 
-Images are subdivided into patches of 112 × 112 × 32 voxels with an overlap of 16 × 16 × 8 voxels to reduce boundary artifacts. Each patch is then passed to a modified pretrained 3D‑UNet (based on Çiçek et al., 2016 and Isensee et al., 2018) to predict binary nuclei masks. Individual nuclei are obtained via connected‑component analysis, and centroid coordinates are extracted from these components. To prevent duplicate detections introduced by overlapping patches, centroids located closer than half the overlap to a patch border (< 8 pixels in x/y or < 4 pixels in z) are removed under the assumption they will be captured by the neighboring patch. Remaining centroids across all patches are merged using a kd‑tree nearest‑neighbor search, eliminating duplicates within 1.5 voxels of each other to ensure each nucleus is counted exactly once.
+Images are subdivided into patches of 112 × 112 × 32 voxels with an overlap of 16 × 16 × 8 voxels to reduce boundary artifacts. Each patch is then passed to a modified pretrained 3D‑UNet (based on [Ellis et al., 2022](https://www.frontiersin.org/journals/neuroimaging/articles/10.3389/fnimg.2022.834883/full), [Çiçek et al., 2016](https://arxiv.org/abs/1606.06650) and [Isensee et al., 2018](https://arxiv.org/abs/1802.10508)) to predict binary nuclei masks. Individual nuclei are obtained via connected‑component analysis, and centroid coordinates are extracted from these components. To prevent duplicate detections introduced by overlapping patches, centroids located closer than half the overlap to a patch border (< 8 pixels in x/y or < 4 pixels in z) are removed under the assumption they will be captured by the neighboring patch. Remaining centroids across all patches are merged using a kd‑tree nearest‑neighbor search, eliminating duplicates within 1.5 voxels of each other to ensure each nucleus is counted exactly once.

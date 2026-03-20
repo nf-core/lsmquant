@@ -46,7 +46,7 @@ Quantification of cell-nuclei is performed using a 3D-Unet and it is performed o
 
 **Allen Brain Atlas Registration (Optional)**
 
-This workflow registers full brain images to the Allen Brain Reference Atlas. This is an optional workflow and can be chosen by setting the parameter: `ara_registartion`
+This workflow registers full brain images to the Allen Brain Reference Atlas. This is an optional workflow and can be chosen by setting the parameter: [`ara_registration`](./parameters/#ara_registration)
 
 ## Usage
 
@@ -55,9 +55,7 @@ This workflow registers full brain images to the Allen Brain Reference Atlas. Th
 
 To run the pipeline you need to provide a samplesheet with your data in the following structure:
 
-`samplesheet.csv`
-
-```csv
+```csv title="samplesheet.csv
 sample_id,img_directory,parameter_file
 TEST1,path/to/image-files,path/to/parameter/file.csv
 ```
