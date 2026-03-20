@@ -2,6 +2,32 @@
     "default test gpu -stub": {
         "content": [
             11,
+            {
+                "MAT2JSON": {
+                    "mat2json": "1.0.0"
+                },
+                "NUMORPH3DUNET": {
+                    "numorph-3dunet": "1.0.0"
+                },
+                "NUMORPHALIGN": {
+                    "numorph_align": "1.0.0"
+                },
+                "NUMORPHSTITCH": {
+                    "numorph_stitch": "1.0.0"
+                },
+                "NUMORPH_INTENSITY": {
+                    "numorph_intensity": "1.0.0"
+                },
+                "UNZIP": {
+                    "7za": 16.02
+                },
+                "VALIDATE_PARAMETERS": {
+                    "numorph_param_validation": "1.0.0"
+                },
+                "Workflow": {
+                    "nf-core/lsmquant": "v1.0.0"
+                }
+            },
             [
                 "mat2json",
                 "mat2json/preprocessing",
@@ -53,7 +79,7 @@
                 "params_TEST1_lsmquant.csv:md5,a1edc3a22e8f390e473102d0193a8f1c"
             ]
         ],
-        "timestamp": "2026-03-20T12:43:58.032799222",
+        "timestamp": "2026-03-20T13:18:41.89714723",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
@@ -61,6 +87,33 @@
     },
     "default test gpu": {
         "content": [
+            15,
+            {
+                "MAT2JSON": {
+                    "mat2json": "1.0.0"
+                },
+                "NUMORPH3DUNET": {
+                    "numorph-3dunet": "1.0.0"
+                },
+                "NUMORPHALIGN": {
+                    "numorph_align": "1.0.0"
+                },
+                "NUMORPHSTITCH": {
+                    "numorph_stitch": "1.0.0"
+                },
+                "NUMORPH_INTENSITY": {
+                    "numorph_intensity": "1.0.0"
+                },
+                "UNZIP": {
+                    "7za": 16.02
+                },
+                "VALIDATE_PARAMETERS": {
+                    "numorph_param_validation": "1.0.0"
+                },
+                "Workflow": {
+                    "nf-core/lsmquant": "v1.0.0"
+                }
+            },
             [
                 "mat2json",
                 "mat2json/preprocessing",
@@ -526,7 +579,7 @@
                 "params_TEST1_lsmquant.csv:md5,a1edc3a22e8f390e473102d0193a8f1c"
             ]
         ],
-        "timestamp": "2026-03-20T12:43:17.391368915",
+        "timestamp": "2026-03-20T13:17:57.078651506",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.3"
