@@ -5,19 +5,14 @@ process NUMORPHSTITCH {
     container "nf-core/numorph_preprocessing:1.0.0"
 
     input:
-    tuple val(meta), path(img_directory), path(parameter_file)
-    path alignment_table_mat
-    path z_displacement_align_mat
-    path path_table_mat
-    path thresholds_mat
-    path adj_params_mat
-    path NM_variables
+    tuple val(meta), path(img_directory), path(parameter_file), path(variables), path(NM_variable)
 
     output:
-    tuple val(meta),  path("results/stitched/")                           , emit: stitched
-    path "results/variables/"                                              , emit: variables
-    path "results/NM_variables.mat"                                         , emit: NM_variables
-    path "versions.yml"                                                     , emit: versions
+    tuple val(meta),  path("results/stitched/")                              , emit: stitched
+    tuple val(meta),  path("results/variables/")                             , emit: variables_stitched
+    tuple val(meta),  path("results/NM_variables.mat")                       , emit: NM_variable
+
+    tuple val("${task.process}"), val('numorph_stitch'), val('1.0.0'), emit: versions_numorph_stitch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,41 +20,23 @@ process NUMORPHSTITCH {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def alignment_table = alignment_table_mat.name ? alignment_table_mat : ''
-    def z_displacement_align = z_displacement_align_mat ? z_displacement_align_mat : ''
-    def path_table = path_table_mat ? path_table_mat : ''
-    def thresholds = thresholds_mat ? thresholds_mat : ''
-    def adj_params = adj_params_mat ? adj_params_mat : ''
-    def NM_var = NM_variables ? NM_variables : ''
+    def NM_var = NM_variable ? NM_variable : ''
+    def variables_input = variables ? variables : ''
     """
+    # create output directories needed by the tool
+    mkdir -p ./results/stitched/
 
-    mkdir -p results/variables/
-    mkdir -p results/stitched/
+    # symlink input files to variables directory if variables input is provided
+    if [ -n "${variables_input}" ]; then
+        cp -rL ${variables_input} ./results
+    fi
+        mkdir -p ./results/variables/
 
     img_dir=\$(readlink -f ${img_directory})
     parameter_file=\$(readlink -f ${parameter_file})
-    results_dir=\$(readlink -f results)
+    results_dir=\$(readlink -f ./results)
 
-    if [ -n "${alignment_table}" ]; then
-        ln -sr ${alignment_table} results/variables/
-    fi
-
-    if [ -n "${z_displacement_align}" ]; then
-        ln -sr ${z_displacement_align} results/variables/
-    fi
-
-    if [ -n "${path_table}" ]; then
-        ln -sr ${path_table} results/variables/
-    fi
-
-    if [ -n "${thresholds}" ]; then
-        ln -sr ${thresholds} results/variables/
-    fi
-
-    if [ -n "${adj_params}" ]; then
-        ln -sr ${adj_params} results/variables/
-    fi
-
+    # if NM_variable  exist provide it as input to the tool
     if [ -n "${NM_var}" ]; then
         NM_variables=\$(readlink -f ${NM_var})
         numorph_preprocessing 'input_dir' \$img_dir 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'stitch' 'NM_variables' \$NM_variables
@@ -67,10 +44,6 @@ process NUMORPHSTITCH {
 
     numorph_preprocessing 'input_dir' \$img_dir 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'stitch'
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        numorphstitch: 1.0
-    END_VERSIONS
     """
 
     stub:
@@ -88,9 +61,5 @@ process NUMORPHSTITCH {
     touch results/NM_variables.mat
     touch results/stitched/${meta.id}_stitched.tif
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        numorphstitch: 1.0
-    END_VERSIONS
     """
 }

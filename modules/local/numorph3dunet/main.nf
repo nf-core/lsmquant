@@ -9,8 +9,9 @@ process NUMORPH3DUNET {
     path(model_file)
 
     output:
-    path "${prefix}/*"              , emit: cellcounts
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path ("${prefix}/")              , emit: cellcounts
+
+    tuple val("${task.process}"), val('numorph-3dunet'), val('1.0.0'), emit: versions_numorph_3dunet, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +39,6 @@ process NUMORPH3DUNET {
         --sample_id ${prefix} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        numorph3dunet: 1.0
-    END_VERSIONS
     """
 
     stub:
@@ -53,9 +50,5 @@ process NUMORPH3DUNET {
     touch ${prefix}/${prefix}.csv
     touch ${prefix}/${prefix}_counts.csv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        numorph3dunet: 1.0
-    END_VERSIONS
     """
 }

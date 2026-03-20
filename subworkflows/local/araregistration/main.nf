@@ -1,7 +1,7 @@
 
-include { NUMORPHRESAMPLE        } from '../../../modules/local/numorphresample/'
-include { NUMORPHREGISTER        } from '../../../modules/local/numorphregister/'
-include { MAT2JSON               } from '../../../modules/local/mat2json'
+include { NUMORPH_RESAMPLE       } from '../../../modules/nf-core/numorph/resample'
+include { NUMORPHREGISTER        } from '../../../modules/local/numorphregister'
+include { MAT2JSON               } from '../../../modules/nf-core/mat2json'
 include { softwareVersionsToYAML } from '../../../subworkflows/nf-core/utils_nfcore_pipeline/'
 
 workflow ARAREGISTRATION {
@@ -14,23 +14,16 @@ workflow ARAREGISTRATION {
     ch_versions = Channel.empty()
     sample_meta = stitched_data.map { meta, img_dir, params -> meta }
 
-    NUMORPHRESAMPLE (
-            stitched_data
-        )
+    NUMORPH_RESAMPLE (stitched_data)
 
-    def resample_output = NUMORPHRESAMPLE.out.resampled
-    ch_versions = ch_versions.mix(NUMORPHRESAMPLE.out.versions)
-
-    
-def resample_data = resample_output
-        .join(stitched_data)
-        .map { meta, resampled, stitched_img_directory, parameter_file ->
-            tuple(meta, resampled, parameter_file)
+    def resampled_data = stitched_data
+        .join(NUMORPH_RESAMPLE.out.resampled)
+        .map { meta, stitched_img_directory, parameter_file, resampled ->
+            [meta, resampled, parameter_file]
         }
 
-    NUMORPHREGISTER (
-        resample_data
-    )
+
+    NUMORPHREGISTER (resampled_data)
 
     ch_versions = ch_versions.mix(NUMORPHREGISTER.out.versions)
     def reg_output = NUMORPHREGISTER.out
@@ -57,7 +50,7 @@ def resample_data = resample_output
 
     emit:
 
-    res_mat     = NUMORPHREGISTER.out.res_mat
+    res_mat      = NUMORPHREGISTER.out.res_mat
     variables    = NUMORPHREGISTER.out.variables            // channel: variables
     registered   = NUMORPHREGISTER.out.registered           // channel: registered
     NM_variables = NUMORPHREGISTER.out.NM_variables         // channel: NM_variables
