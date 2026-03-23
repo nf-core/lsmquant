@@ -2,17 +2,17 @@ process NUMORPHREGISTER {
     tag "$meta.id"
     label 'process_high_long'
 
-    container "nf-core/numorph_analyze:1.0.1"
+    container "nf-core/numorph_analyze:1.0.0"
 
     input:
     tuple val(meta), path(resampled_directory), path(parameter_file)
 
     output:
-    path "results/*results.mat"                 , emit: res_mat
-    path "results/variables/*"                  , emit: variables
-    path "results/NM_variables.mat"             , emit: NM_variables
-    path "results/registered/*"                 , emit: registered
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("results/registered/")                 , emit: registered
+    tuple val(meta), path("results/variables/")                  , emit: variables
+    tuple val(meta), path("results/NM_variables.mat")             , emit: NM_variables
+
+    tuple val("${task.process}"), val('numorphregister'), val('1.0.0'), emit: versions_numorph_analyze, topic: versions
 
 
     when:
@@ -37,11 +37,6 @@ process NUMORPHREGISTER {
 
     numorph_analyze 'input_dir' \$resampled_directory 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${prefix} 'stage' 'register' 'NM_variables' '' 'use_processed_images' 'resampled'
 
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        numorphregister: 1.0
-    END_VERSIONS
     """
 
     stub:
@@ -55,12 +50,7 @@ process NUMORPHREGISTER {
     touch results/variables/reg_params.mat
     touch results/variables/${prefix}_mask.mat
     touch results/NM_variables.mat
-    touch results/${prefix}_results.mat
     touch results/registered/${prefix}_registered.tif
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        numorphregister: 1.0
-    END_VERSIONS
     """
 }
