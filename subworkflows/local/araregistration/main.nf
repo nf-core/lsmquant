@@ -25,34 +25,21 @@ workflow ARAREGISTRATION {
 
     NUMORPHREGISTER (resampled_data)
 
-    ch_versions = ch_versions.mix(NUMORPHREGISTER.out.versions)
-    def reg_output = NUMORPHREGISTER.out
+    def mat_files = NUMORPHREGISTER.out.variables
+        .flatMap { meta, variables_dir ->
+            variables_dir.listFiles()
+                .findAll { it.name.endsWith('.mat') }
+                .collect { matfile ->  [meta, matfile] }
+        }
+        .mix(NUMORPHREGISTER.out.NM_variables)
 
-    def registration_files = reg_output.variables.flatten()
+    MAT2JSON (mat_files, "registration")
 
-    sample_meta.combine(registration_files)
-            .mix (
-                sample_meta.combine(reg_output.res_mat),
-                sample_meta.combine(reg_output.NM_variables)
-            )
-            .set {mat_files_reg}
-
-    MAT2JSON (mat_files_reg, "registration")
-    ch_versions = ch_versions.mix(MAT2JSON.out.versions)
-
-    softwareVersionsToYAML(ch_versions)
-        .collectFile(
-            storeDir: "${params.outdir}/pipeline_info",
-            name: 'nf_core_'  +  'lsmquant_software_'  + 'mqc_'  + 'versions.yml',
-            sort: true,
-            newLine: true
-        ).set { ch_collated_versions }
 
     emit:
 
-    res_mat      = NUMORPHREGISTER.out.res_mat
     variables    = NUMORPHREGISTER.out.variables            // channel: variables
     registered   = NUMORPHREGISTER.out.registered           // channel: registered
-    NM_variables = NUMORPHREGISTER.out.NM_variables         // channel: NM_variables
-    versions     = ch_collated_versions                     // channel: [ versions.yml ]
+    NM_variable  = NUMORPHREGISTER.out.NM_variables         // channel: NM_variables
+
 }

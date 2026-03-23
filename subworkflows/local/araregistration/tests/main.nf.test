@@ -17,21 +17,6 @@ nextflow_workflow {
     test("ARA registration stub test") {
 
         options '-stub'
-        setup {
-            run ("NUMORPHINTENSITY") {
-                script "../../../../modules/local/numorphintensity/main.nf"
-                options '-stub'
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                        tuple([ id:'TEST1'],
-                        file('https://zenodo.org/records/14916478/files/ctip2_topro.zip'),
-                        file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
-                        ])
-                    """
-                }
-            }
-        }
 
         when {
             workflow {
@@ -41,7 +26,6 @@ nextflow_workflow {
                         file('https://zenodo.org/records/14916478/files/ctip2_topro.zip'),
                         file(params.pipelines_testdata_base_path + '/test_data/parameterfiles/params_TEST1_lsmquant.csv'))
                         ])
-                input[1] = NUMORPHINTENSITY.out.NM_variables
                 """
             }
         }
