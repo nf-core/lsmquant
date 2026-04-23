@@ -6,7 +6,7 @@ process NUMORPH3DUNET {
 
     input:
     tuple val(meta), path(img_directory), path(parameter_file)
-    path(model_file)
+    each path(model_file)
 
     output:
     tuple val(meta), path ("${prefix}/")              , emit: cellcounts
