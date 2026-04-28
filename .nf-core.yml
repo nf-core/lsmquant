@@ -1,4 +1,6 @@
-nf_core_version: 3.5.1
+lint:
+  included_configs: false
+nf_core_version: 4.0.0
 repository_type: pipeline
 template:
   author: Carolin Schwitalla
@@ -9,4 +11,7 @@ template:
   name: lsmquant
   org: nf-core
   outdir: .
+  skip_features:
+    - fastqc
+    - igenomes
   version: 1.0.0
