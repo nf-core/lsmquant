@@ -1,6 +1,6 @@
 lint:
   included_configs: false
-nf_core_version: 4.0.0
+nf_core_version: 4.0.1
 repository_type: pipeline
 template:
   author: Carolin Schwitalla
