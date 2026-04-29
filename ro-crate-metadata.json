@@ -1,6 +1,6 @@
 {
     "@context": [
-        "https://w3id.org/ro/crate/1.1/context",
+        "https://w3id.org/ro/crate/1.2/context",
         {
             "GithubService": "https://w3id.org/ro/terms/test#GithubService",
             "JenkinsService": "https://w3id.org/ro/terms/test#JenkinsService",
@@ -102,7 +102,7 @@
             },
             "mentions": [
                 {
-                    "@id": "#c2ddda56-ca93-4e51-9bba-60e75e52a7b7"
+                    "@id": "#ff151a37-12ab-4056-93fa-70f752c18a8b"
                 }
             ],
             "name": "nf-core/lsmquant"
@@ -115,7 +115,7 @@
             },
             "conformsTo": [
                 {
-                    "@id": "https://w3id.org/ro/crate/1.1"
+                    "@id": "https://w3id.org/ro/crate/1.2"
                 },
                 {
                     "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
@@ -124,13 +124,14 @@
         },
         {
             "@id": "main.nf",
-            "@type": [
-                "File",
-                "SoftwareSourceCode",
-                "ComputationalWorkflow"
+            "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
+            "contributor": [
+                {
+                    "@id": "https://orcid.org/0009-0006-2520-7157"
+                }
             ],
             "dateCreated": "",
-            "dateModified": "2025-11-20T09:32:07Z",
+            "dateModified": "2026-04-28T11:20:56Z",
             "dct:conformsTo": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE/",
             "keywords": [
                 "nf-core",
@@ -172,14 +173,14 @@
             "url": {
                 "@id": "https://www.nextflow.io/"
             },
-            "version": "!>=25.04.0"
+            "version": "!>=25.10.4"
         },
         {
-            "@id": "#c2ddda56-ca93-4e51-9bba-60e75e52a7b7",
+            "@id": "#ff151a37-12ab-4056-93fa-70f752c18a8b",
             "@type": "TestSuite",
             "instance": [
                 {
-                    "@id": "#307c0c4c-c0d9-4314-8114-58a7839b3dac"
+                    "@id": "#72868a32-9cfb-4e7c-84a0-87996dc83734"
                 }
             ],
             "mainEntity": {
@@ -188,7 +189,7 @@
             "name": "Test suite for nf-core/lsmquant"
         },
         {
-            "@id": "#307c0c4c-c0d9-4314-8114-58a7839b3dac",
+            "@id": "#72868a32-9cfb-4e7c-84a0-87996dc83734",
             "@type": "TestInstance",
             "name": "GitHub Actions workflow for testing nf-core/lsmquant",
             "resource": "repos/nf-core/lsmquant/actions/workflows/nf-test.yml",
@@ -320,6 +321,11 @@
             "@type": "Organization",
             "name": "nf-core",
             "url": "https://nf-co.re/"
+        },
+        {
+            "@id": "https://orcid.org/0009-0006-2520-7157",
+            "@type": "Person",
+            "name": "Carolin Schwitalla"
         }
     ]
 }
