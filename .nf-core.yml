@@ -2,6 +2,8 @@ lint:
   included_configs: false
 nf_core_version: 4.0.0
 repository_type: pipeline
+lint:
+  included_configs: False
 template:
   author: Carolin Schwitalla
   description: A pipeline for preprocessing and analysis of large-scale light-sheet

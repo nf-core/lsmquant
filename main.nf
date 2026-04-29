@@ -14,11 +14,11 @@
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
-include { LSMQUANT  } from './workflows/lsmquant'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
+include { PIPELINE_INITIALISATION       } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
+include { PIPELINE_COMPLETION           } from './subworkflows/local/utils_nfcore_lsmquant_pipeline'
+include { LSMQUANT                      } from './workflows/lsmquant'
 /*
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOWS FOR PIPELINE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,24 +28,16 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_lsmq
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
 workflow NFCORE_LSMQUANT {
-
     take:
     samplesheet // channel: samplesheet read in from --input
 
     main:
 
-    //
-    // WORKFLOW: Run pipeline
-    //
-    LSMQUANT (
-        samplesheet,
-        params.multiqc_config,
-        params.multiqc_logo,
-        params.multiqc_methods_description,
-        params.outdir,
-    )
+    LSMQUANT(samplesheet)
+
     emit:
-    multiqc_report = LSMQUANT.out.multiqc_report // channel: /path/to/multiqc_report.html
+    multiqc_report = LSMQUANT.out.multiqc_report
+
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
