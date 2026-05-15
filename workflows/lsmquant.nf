@@ -134,7 +134,7 @@ workflow LSMQUANT {
 
     stitched_data = ch_samplesheet
             .join (stitched_output)
-            .map { meta, img_dir, parameter_file, stitched_data ->
+            .map { meta, input_img, parameter_file, stitched_data ->
                 [meta, stitched_data, parameter_file]
             }
 
