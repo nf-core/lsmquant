@@ -141,7 +141,7 @@ workflow LSMQUANT {
     // run nuclei quantification
     if (params.nuclei_quantification) {
 
-        def model_file = Channel.fromPath(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
+        model_file = file(params.model_file, checkIfExists: !params.model_file.startsWith('http'))
         NUMORPH3DUNET (stitched_data, model_file)
 
     }
