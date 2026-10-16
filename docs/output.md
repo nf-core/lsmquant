@@ -134,6 +134,7 @@ This process stages the image files from the input directory to the pipeline's w
 
 - `process/sampleID`
   - `*.json|*.csv`: Converted mat file
+
   </details>
 
   **Mat2JSON** converts a given `.mat`file into a `CSV` if the data is stored as a table data structure or a `JSON` for other nested data structures.
