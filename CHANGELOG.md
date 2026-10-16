@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - update documentation (README + usage) for both profiles
 - [Issue#70](https://github.com/nf-core/lsmquant/issues/70) update nf-schema to 2.7.2
 
-## 1.0.3 - Excited Squid Patch
+## 1.0.3 - Excited Squid Patch - [unreleased<!-- TODO nf-core: replace with date on release -->]
 
 ### `Added`
 
