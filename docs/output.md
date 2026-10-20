@@ -134,6 +134,7 @@ This process stages the image files from the input directory to the pipeline's w
 
 - `process/sampleID`
   - `*.json|*.csv`: Converted mat file
+
   </details>
 
   **Mat2JSON** converts a given `.mat`file into a `CSV` if the data is stored as a table data structure or a `JSON` for other nested data structures.
@@ -164,4 +165,4 @@ This process stages the image files from the input directory to the pipeline's w
 
 </details>
 
-[Nextflow](https://www.nextflow.io/docs/latest/tracing.html) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.
+[Nextflow](https://docs.seqera.io/platform-cloud/reports/overview) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.

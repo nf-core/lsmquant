@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.x.x -
 
+### `Changed`
+
+- [PR#90](https://github.com/nf-core/lsmquant/pull/90) - Template update to nf-core/tools 4.1.0
+
 ### `Fixed`
 
 - [Issue#71](https://github.com/nf-core/lsmquant/issues/71):
