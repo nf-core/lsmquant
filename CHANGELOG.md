@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.x.x -
 
+### `Changed`
+
+- [PR#90](https://github.com/nf-core/lsmquant/pull/90) - Template update to nf-core/tools 4.1.0
+
 ### `Fixed`
 
 - [Issue#71](https://github.com/nf-core/lsmquant/issues/71):
@@ -13,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - update documentation (README + usage) for both profiles
 - [Issue#70](https://github.com/nf-core/lsmquant/issues/70) update nf-schema to 2.7.2
 
-## 1.0.3 - Excited Squid Patch - [unreleased<!-- TODO nf-core: replace with date on release -->]
+## 1.0.3 - Excited Squid Patch
 
 ### `Added`
 
