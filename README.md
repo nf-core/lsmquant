@@ -57,7 +57,7 @@ This workflow registers full brain images to the Allen Brain Reference Atlas. Th
 > ```bash
 > nextflow run nf-core/lsmquant \
 >   -profile test,<docker/singularity/.../institute> \
->   --outdir <OUTDIR> \
+>   --outdir <OUTDIR>
 > ```
 >
 > Or to test with GPU:
@@ -65,7 +65,7 @@ This workflow registers full brain images to the Allen Brain Reference Atlas. Th
 > ```bash
 > nextflow run nf-core/lsmquant \
 >   -profile test_gpu,gpu,<docker/singularity/.../institute> \
->   --outdir <OUTDIR> \
+>   --outdir <OUTDIR>
 > ```
 
 To run the pipeline you need to provide a samplesheet with your data in the following structure:
