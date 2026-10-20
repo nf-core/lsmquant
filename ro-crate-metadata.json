@@ -161,10 +161,10 @@
             },
             "url": [
                 "https://github.com/nf-core/lsmquant",
-                "https://nf-co.re/lsmquant/1.0.3/"
+                "https://nf-co.re/lsmquant/dev/"
             ],
             "version": [
-                "1.0.3"
+                "1.0.4dev"
             ]
         },
         {
