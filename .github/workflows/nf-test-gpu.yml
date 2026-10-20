@@ -39,7 +39,7 @@ jobs:
       total_shards: ${{ steps.set-shards.outputs.total_shards }}
     steps:
       - name: Check out pipeline code
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -64,7 +64,6 @@ jobs:
     name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }} | ${{ matrix.NXF_VER }} | ${{ matrix.filters }}"
     env:
       NXF_VER: ${{ matrix.NXF_VER }}
-      NXF_VERSION: ${{ matrix.NXF_VER }}
 
     # Only run on push if this is the nf-core dev branch (merged PRs)
     # and number of shards is greater than 0
@@ -85,7 +84,7 @@ jobs:
 
     steps:
       - name: Check out pipeline code
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -95,6 +94,8 @@ jobs:
 
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test
+        env:
+          NXF_VERSION: ${{ matrix.NXF_VER }}
         with:
           profile: ${{ matrix.profile }},gpu
           shard: ${{ matrix.shard }}
