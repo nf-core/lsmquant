@@ -35,6 +35,9 @@
                     "@id": "modules/"
                 },
                 {
+                    "@id": "modules/local/"
+                },
+                {
                     "@id": "modules/nf-core/"
                 },
                 {
@@ -107,8 +110,12 @@
         },
         {
             "@id": "main.nf",
-            "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
-            "contributor": [
+            "@type": [
+                "File",
+                "SoftwareSourceCode",
+                "ComputationalWorkflow"
+            ],
+            "author": [
                 {
                     "@id": "https://orcid.org/0009-0006-2520-7157"
                 }
@@ -126,8 +133,12 @@
                 "segmentation",
                 "stitching"
             ],
-            "license": ["MIT"],
-            "name": ["nf-core/lsmquant"],
+            "license": [
+                "MIT"
+            ],
+            "name": [
+                "nf-core/lsmquant"
+            ],
             "programmingLanguage": {
                 "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow"
             },
@@ -218,6 +229,11 @@
             "description": "Modules used by the pipeline"
         },
         {
+            "@id": "modules/local/",
+            "@type": "Dataset",
+            "description": "Pipeline-specific modules"
+        },
+        {
             "@id": "modules/nf-core/",
             "@type": "Dataset",
             "description": "nf-core modules"
@@ -306,7 +322,10 @@
         {
             "@id": "https://orcid.org/0009-0006-2520-7157",
             "@type": "Person",
-            "name": "Carolin Schwitalla"
+            "affiliation": "Quantitative Biology Center (QBiC), University of Tuebingen",
+            "email": "carolin.schwitalla@uni-tuebingen.de",
+            "name": "Carolin Schwitalla",
+            "url": "https://github.com/CaroAMN"
         }
     ]
 }
